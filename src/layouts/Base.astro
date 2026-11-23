@@ -12,20 +12,13 @@ import { SITE } from '../data/site';
 interface Props {
 	title?: string;
 	description?: string;
-	/** Which primary nav item is current (path like "/work"). */
+	/** Nav item to mark as current (path like "/work"). */
 	current?: string;
-	/** Hide the "Get in touch" button in the header (Contact page). */
-	hideCta?: boolean;
-	footer?: 'full' | 'simple' | 'contact';
+	/** Home uses a taller backdrop and the short footer. */
+	home?: boolean;
 }
 
-const {
-	title = SITE.title,
-	description = SITE.description,
-	current = '/',
-	hideCta = false,
-	footer = 'simple',
-} = Astro.props;
+const { title = SITE.title, description = SITE.description, current = '', home = false } = Astro.props;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
 ---
 
@@ -43,10 +36,14 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="theme-color" content="#08090A" />
 		<link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
+		<slot name="head" />
 	</head>
 	<body>
-		<Header current={current} hideCta={hideCta} />
-		<slot />
-		<Footer variant={footer} />
+		<div class:list={['v2spot', { home }]} aria-hidden="true"><div class="gridbg"></div><div class="spot"></div></div>
+		<Header current={current} home={home} />
+		<main class="col" id="top" style="position: relative">
+			<slot />
+		</main>
+		<Footer home={home} />
 	</body>
 </html>

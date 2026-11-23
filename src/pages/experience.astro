@@ -1,0 +1,182 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+
+type Ev = { m: string; t: string; k: string; d?: string; kind?: 'role' | 'mile' | 'cur' };
+const years: { y: string; evs: Ev[] }[] = [
+	{ y: '1998 — 2017', evs: [{ m: '', t: 'Childhood and school', k: 'Life', d: '[A LINE ABOUT GROWING UP — WHERE, FIRST COMPUTER, WHAT GOT YOU INTO BUILDING THINGS]' }] },
+	{
+		y: '2022',
+		evs: [
+			{ m: 'Feb', t: 'BSc in Computer Science &amp; Engineering', k: 'Education', d: 'Completed my degree, with research in machine learning.' },
+			{ m: 'Feb', t: 'Intern · Sheba Technologies', k: 'Role', d: 'First job in the industry, on the frontend team.', kind: 'role' },
+			{ m: 'Apr', t: 'Paper published · IEEE ICIRCA 2022', k: 'Research', d: 'First author, on recognising Bangla handwritten characters. <a href="/highlights/research" class="ilink">Read more</a>', kind: 'mile' },
+			{ m: 'May', t: 'Junior Software Engineer · Sheba Technologies', k: 'Role', d: 'Built the BRAC learning management system with React and Redux.', kind: 'role' },
+		],
+	},
+	{
+		y: '2023',
+		evs: [
+			{ m: 'Mar', t: 'IBM — Developing Front-End Apps with React', k: 'Certificate' },
+			{ m: 'Aug', t: 'Meta Front-End Developer certificate', k: 'Certificate' },
+			{ m: 'Oct', t: 'Junior Software Engineer · Adventure Dhaka Limited', k: 'Role', d: 'Joined the team behind <a href="/work/adventure-inc" class="ilink">adventure.inc</a>, a travel booking platform in 84+ locales.', kind: 'role' },
+		],
+	},
+	{
+		y: '2024',
+		evs: [
+			{ m: 'Jul', t: 'Best Employee of the Year · FY 2023–24', k: 'Award', d: 'Adventure Dhaka Limited', kind: 'mile' },
+			{ m: 'Oct', t: 'Software Engineer · Adventure Dhaka Limited', k: 'Role', d: 'Search module, the unified property module and <a href="/highlights/performance" class="ilink">performance work</a>.', kind: 'role' },
+		],
+	},
+	{
+		y: '2025',
+		evs: [
+			{ m: 'Jan', t: 'Best Flexible Employee · FY 2024–25', k: 'Award', d: 'Adventure Dhaka Limited', kind: 'mile' },
+			{ m: 'Oct', t: 'Senior Software Engineer · Adventure Dhaka Limited', k: 'Role', d: 'Head of the frontend department. <a href="/highlights/taming-memory" class="ilink">Memory audit</a>, <a href="/highlights/seo" class="ilink">SEO across 84+ locales</a> and flight search.', kind: 'role' },
+		],
+	},
+	{
+		y: '2026',
+		evs: [
+			{ m: 'Jan', t: 'Best Employee of the Year · FY 2025–26', k: 'Award', d: 'Adventure Dhaka Limited, for the second time.', kind: 'mile' },
+			{ m: 'Now', t: 'Building and learning', k: 'Now', d: 'Senior Software Engineer at Adventure Dhaka Limited, building <a href="/work/repo-galaxy" class="ilink">Repo Galaxy</a>, and studying IT and Business Systems at KCGI.', kind: 'cur' },
+		],
+	},
+];
+---
+
+<Base title="Experience — Shahariar Niloy" description="Roles, research, recognition and the steps in between." current="/experience">
+	<PageHead title="Experience" lede="Everything in order, from the start: roles, research, recognition and the steps in between." />
+	<section style="padding-top: 64px">
+		<h2 class="lbl">Timeline</h2>
+		<ol class="ytl">
+			{
+				years.map((yr) => (
+					<li class="yr">
+						<h3 class="yrl">{yr.y}</h3>
+						<ul class="yre">
+							{yr.evs.map((e) => (
+								<li class:list={['ev', e.kind === 'cur' ? 'role cur' : e.kind]}>
+									<span class="mono evm">{e.m}</span>
+									<div>
+										<div class="evt">
+											<Fragment set:html={e.t} /> <span class="evk">{e.k}</span>
+										</div>
+										{e.d && <div class="evd" set:html={e.d} />}
+									</div>
+								</li>
+							))}
+						</ul>
+					</li>
+				))
+			}
+		</ol>
+	</section>
+</Base>
+
+<style>
+	ol,
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.yr {
+		display: grid;
+		grid-template-columns: 120px minmax(0, 1fr);
+		gap: 0 24px;
+		position: relative;
+	}
+	.yrl {
+		margin: 0;
+		font-family: var(--mono);
+		font-size: 13px;
+		font-weight: 400;
+		color: var(--fg);
+		padding-top: 2px;
+		position: sticky;
+		top: 20px;
+		align-self: start;
+	}
+	.yre {
+		position: relative;
+		padding: 0 0 40px 28px;
+		border-left: 1px solid var(--line2);
+	}
+	.yr:last-child .yre {
+		padding-bottom: 4px;
+	}
+	.ev {
+		display: grid;
+		grid-template-columns: 44px minmax(0, 1fr);
+		gap: 12px;
+		position: relative;
+		padding-bottom: 22px;
+	}
+	.ev:last-child {
+		padding-bottom: 0;
+	}
+	.ev::before {
+		content: '';
+		position: absolute;
+		left: -32px;
+		top: 6px;
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--line2);
+		box-shadow: 0 0 0 4px var(--bg);
+	}
+	.ev.mile::before {
+		background: var(--acc);
+	}
+	.ev.role::before {
+		background: var(--bg);
+		border: 1px solid var(--acc);
+		width: 9px;
+		height: 9px;
+		left: -33px;
+		top: 5px;
+	}
+	.ev.cur::before {
+		background: var(--acc);
+		box-shadow: 0 0 0 4px var(--bg), 0 0 0 7px color-mix(in srgb, var(--acc) 30%, transparent);
+	}
+	.evm {
+		color: var(--mut);
+		padding-top: 1px;
+	}
+	.evt {
+		color: var(--fg);
+		font-weight: 500;
+		line-height: 1.45;
+	}
+	.evk {
+		font-family: var(--mono);
+		font-size: 11px;
+		font-weight: 400;
+		color: var(--mut);
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		padding: 1px 7px;
+		margin-left: 6px;
+		white-space: nowrap;
+		vertical-align: 1px;
+	}
+	.evd {
+		color: var(--mut);
+		font-size: 14px;
+		line-height: 1.6;
+		margin-top: 3px;
+	}
+	@media (max-width: 640px) {
+		.yr {
+			grid-template-columns: 1fr;
+		}
+		.yrl {
+			position: static;
+			margin-bottom: 12px;
+		}
+	}
+</style>

@@ -1,0 +1,46 @@
+---
+interface Props {
+	href: string;
+	kicker: string;
+	title: string;
+}
+const { href, kicker, title } = Astro.props;
+---
+
+<section style="padding-top: 72px">
+	<a href={href} class="nextp">
+		<span>
+			<span class="mono" style="color: var(--mut); display: block">{kicker}</span>
+			<span class="t">{title}</span>
+		</span>
+		<svg width="16" height="16" viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+	</a>
+</section>
+
+<style>
+	.nextp {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 16px;
+		padding: 22px 20px;
+		border: 1px solid var(--line);
+		border-radius: 14px;
+		text-decoration: none;
+		color: var(--mut);
+		transition: background-color 0.25s, border-color 0.25s;
+	}
+	.nextp:hover {
+		background: var(--card);
+		border-color: var(--line2);
+	}
+	.t {
+		font-size: 18px;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		color: var(--fg);
+	}
+	svg {
+		flex-shrink: 0;
+	}
+</style>

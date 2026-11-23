@@ -1,0 +1,35 @@
+---
+import Base from './Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Illustration from '../components/Illustration.astro';
+import NextCard from '../components/NextCard.astro';
+import { HIGHLIGHTS } from '../data/site';
+import { ILL } from '../lib/illustrations';
+
+interface Props {
+	slug: (typeof HIGHLIGHTS)[number]['slug'];
+	lede: string;
+}
+const { slug, lede } = Astro.props;
+const i = HIGHLIGHTS.findIndex((h) => h.slug === slug);
+const h = HIGHLIGHTS[i];
+const next = HIGHLIGHTS[(i + 1) % HIGHLIGHTS.length];
+---
+
+<Base title={`${h.title} — Shahariar Niloy`} description={h.short}>
+	<PageHead title={h.title} trail={[{ href: '/#highlights', label: 'Highlights' }]} lede={lede} />
+	<!-- "inview" from the start: the illustration draws as soon as the page loads. -->
+	<section class="cap armed inview" style="padding-top: 48px">
+		<div class="card" style="padding: 28px">
+			<Illustration ill={ILL[h.ill]} w={h.w} h={h.h} maxWidth="520px" />
+		</div>
+	</section>
+	<slot />
+	<NextCard href={`/highlights/${next.slug}`} kicker="Next highlight" title={next.title} />
+</Base>
+
+<style>
+	.card :global(.ill) {
+		margin: 0 auto;
+	}
+</style>

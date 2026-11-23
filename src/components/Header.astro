@@ -3,57 +3,37 @@ import { NAV, SITE } from '../data/site';
 
 interface Props {
 	current: string;
-	hideCta?: boolean;
+	home?: boolean;
 }
-const { current, hideCta = false } = Astro.props;
+const { current, home = false } = Astro.props;
 ---
 
-<header class="site-header">
-	<div class="wrap bar">
-		<div class="left">
-			<a href="/" class="brand">
-				<img src="/images/logo.png" alt={`${SITE.name}, home`} width="27" height="24" />
-			</a>
-			<nav aria-label="Primary" class="nav">
-				{
-					NAV.map((item) => (
-						<a
-							href={item.href}
-							class:list={['nl', { on: item.href === current }]}
-							aria-current={item.href === current ? 'page' : undefined}
-						>
-							{item.label}
-						</a>
-					))
-				}
-			</nav>
-		</div>
-		<div class="right">
-			{!hideCta && <a href="/contact" class="btn">Get in touch</a>}
-		</div>
-	</div>
+<header class="col site-header">
+	<a href={home ? '#top' : '/'} class="brand">
+		<img src="/images/logo.png" alt={`${SITE.name}, home`} width="25" height="22" />
+	</a>
+	<nav aria-label="Primary" class="nav">
+		{
+			NAV.map((item) => (
+				<a href={home && item.href.startsWith('/#') ? item.href.slice(1) : item.href} class="navl" aria-current={item.href === current ? 'page' : undefined}>
+					{item.label}
+				</a>
+			))
+		}
+	</nav>
 </header>
 
 <style>
 	.site-header {
-		border-bottom: 1px solid var(--line);
-		position: relative;
-		z-index: 2;
-	}
-	.bar {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 12px;
-		padding-top: 10px;
-		padding-bottom: 10px;
+		padding-top: 20px;
+		padding-bottom: 20px;
 		flex-wrap: wrap;
-	}
-	.left {
-		display: flex;
-		align-items: center;
-		gap: 20px;
-		flex-wrap: wrap;
+		position: relative;
+		z-index: 2;
 	}
 	.brand {
 		display: flex;
@@ -61,7 +41,7 @@ const { current, hideCta = false } = Astro.props;
 		padding: 10px 0;
 	}
 	.brand img {
-		height: 24px;
+		height: 22px;
 		width: auto;
 		display: block;
 	}
@@ -69,10 +49,4 @@ const { current, hideCta = false } = Astro.props;
 		display: flex;
 		flex-wrap: wrap;
 	}
-	.right {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-	}
 </style>
-

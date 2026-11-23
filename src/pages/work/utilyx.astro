@@ -1,0 +1,46 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Meta from '../../components/Meta.astro';
+import NextCard from '../../components/NextCard.astro';
+---
+
+<Base title="utilyx.dev — Shahariar Niloy" description="Developer tools that run entirely in your browser. Zero servers, nothing uploaded." current="/work">
+	<PageHead
+		title="utilyx.dev"
+		trail={[{ href: '/work', label: 'Work' }]}
+		lede="A growing collection of developer tools — formatters, encoders, generators and validators — that run entirely in your browser. Nothing is uploaded and there is no server to wait for."
+	/>
+	<Meta
+		items={[
+			['Type', 'Personal product'],
+			['Role', 'Design and engineering'],
+			['Tools', '50+ and growing'],
+			['Link', '<a href="https://utilyx.dev" class="ilink" target="_blank" rel="noopener">utilyx.dev</a>'],
+		]}
+	/>
+	<section style="padding-top: 64px">
+		<h2 class="lbl">Why it exists</h2>
+		<div class="prose"><p>Most online dev tools send your data to a server just to format some JSON or decode a token. That is slow and, for anything sensitive, risky. <strong>utilyx does all of it on your machine</strong>, so it is instant and private by design.</p></div>
+	</section>
+	<section style="padding-top: 64px">
+		<h2 class="lbl">How it's built</h2>
+		<ul class="bl">
+			<li><span><b>Zero-server architecture.</b> Every tool runs client-side; the site is static. <a href="/highlights/zero-server" class="ilink">Read more</a></span></li>
+			<li><span><b>Fast by default.</b> Each tool loads only what it needs.</span></li>
+			<li><span><b>One catalogue.</b> Search across every tool from one place.</span></li>
+		</ul>
+	</section>
+	<section style="padding-top: 64px">
+		<h2 class="lbl">Now</h2>
+		<ul class="bl">
+			<li><span>Redesigning the landing page, catalogue and tool pages.</span></li>
+			<li><span>Adding an SEO category: hreflang generator and validator, canonical and robots.txt generators, sitemap validator, Open Graph and JSON-LD generators, meta preview.</span></li>
+		</ul>
+	</section>
+	<section style="padding-top: 64px">
+		<h2 class="lbl">Screens</h2>
+		<div class="shot"><div><span class="mono" style="color: var(--mut)">[SCREENSHOT — tool catalogue]</span></div></div>
+	</section>
+	<NextCard href="/work/truly-remote-work" kicker="Next project" title="Truly Remote Work" />
+</Base>

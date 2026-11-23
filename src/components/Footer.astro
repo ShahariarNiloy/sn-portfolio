@@ -1,133 +1,53 @@
 ---
-import { NAV, SITE } from '../data/site';
+import { SITE } from '../data/site';
 
 interface Props {
-	variant?: 'full' | 'simple' | 'contact';
+	home?: boolean;
 }
-const { variant = 'simple' } = Astro.props;
-const year = 2026;
+const { home = false } = Astro.props;
+const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
+<footer class:list={['col', 'foot', { home }]}>
+	<span>© {year} {SITE.name}</span>
 	{
-		variant === 'full' ? (
-			<div class="wrap foot full">
-				<div class="top">
-					<div class="about">
-						<span class="name">{SITE.name}</span>
-						<span class="blurb">Frontend engineer in Dhaka. Making software lighter, one kilobyte at a time.</span>
-					</div>
-					<div class="cols">
-						<div class="col">
-							<span class="mono head">Pages</span>
-							{NAV.map((n) => <a href={n.href}>{n.label}</a>)}
-						</div>
-						<div class="col">
-							<span class="mono head">Elsewhere</span>
-							<a href={SITE.github}>GitHub</a>
-							<a href={SITE.linkedin}>LinkedIn</a>
-							<a href={SITE.utilyx}>utilyx.dev</a>
-						</div>
-					</div>
-				</div>
-				<div class="bottom">
-					<span>© {year} {SITE.name}</span>
-					<span class="avail">
-						<span class="dot" />
-						Available for new work
-					</span>
-				</div>
-			</div>
+		home ? (
+			<span>Built light, in Dhaka.</span>
 		) : (
-			<div class="wrap foot simple">
-				<span>© {year} {SITE.name}</span>
-				{variant === 'contact' ? (
-					<span>Built light, in Dhaka.</span>
-				) : (
-					<span class="links">
-						<a href={SITE.github}>GitHub</a>
-						<a href={SITE.linkedin}>LinkedIn</a>
-						<a href={SITE.utilyx}>utilyx.dev</a>
-					</span>
-				)}
-			</div>
+			<span class="links">
+				<a href={`mailto:${SITE.email}`} class="navl">Email</a>
+				<a href={SITE.github} class="navl" target="_blank" rel="noopener">GitHub</a>
+				<a href={SITE.linkedin} class="navl" target="_blank" rel="noopener">LinkedIn</a>
+			</span>
 		)
 	}
 </footer>
 
 <style>
-	.site-footer {
-		border-top: 1px solid var(--line);
-	}
-	.simple {
-		padding-top: 32px;
-		padding-bottom: 32px;
+	.foot {
+		margin-top: 96px;
+		padding-top: 28px;
+		padding-bottom: 40px;
 		display: flex;
 		justify-content: space-between;
-		gap: 16px;
+		align-items: center;
+		gap: 12px;
 		flex-wrap: wrap;
 		font-size: 13px;
 		color: var(--mut);
+		border-top: 1px solid var(--line);
+	}
+	.foot.home {
+		margin-top: 40px;
+		padding-top: 32px;
 	}
 	.links {
 		display: flex;
-		gap: 24px;
+		gap: 18px;
 		flex-wrap: wrap;
 	}
-	.full {
-		padding-top: 56px;
-		padding-bottom: 40px;
-		display: flex;
-		flex-direction: column;
-		gap: 48px;
-	}
-	.top {
-		display: flex;
-		justify-content: space-between;
-		gap: 40px;
-		flex-wrap: wrap;
-	}
-	.about {
-		max-width: 300px;
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-	}
-	.name {
-		font-weight: 600;
-		font-size: 15px;
-	}
-	.blurb {
-		color: var(--mut);
-		font-size: 14px;
-		line-height: 1.6;
-	}
-	.cols {
-		display: flex;
-		gap: 64px;
-		flex-wrap: wrap;
-	}
-	.col {
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-	}
-	.head {
-		margin-bottom: 8px;
-	}
-	.bottom {
-		display: flex;
-		justify-content: space-between;
-		gap: 16px;
-		flex-wrap: wrap;
+	.links .navl {
+		padding: 8px 0;
 		font-size: 13px;
-		color: var(--mut);
-		padding-top: 24px;
-		border-top: 1px solid var(--line);
-	}
-	.avail {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
 	}
 </style>

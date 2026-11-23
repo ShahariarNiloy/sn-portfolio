@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Meta from '../../components/Meta.astro';
+import NextCard from '../../components/NextCard.astro';
+---
+
+<Base title="GeoRenus — Shahariar Niloy" description="The hidden mechanics of money, markets & power — both sides of the story." current="/work">
+	<PageHead
+		title="GeoRenus"
+		trail={[{ href: '/work', label: 'Work' }]}
+		lede="The hidden mechanics of money, markets &amp; power — both sides of the story, so you can decide for yourself."
+	/>
+	<Meta
+		items={[
+			['Type', 'Personal product'],
+			['Language', 'Bengali'],
+			['Covers', 'Economics, finance, geopolitics, business'],
+			['Link', '<a href="https://georenus.com/" class="ilink" target="_blank" rel="noopener">georenus.com</a>'],
+		]}
+	/>
+	<section style="padding-top: 64px">
+		<h2 class="lbl">Traction</h2>
+		<div class="stat">
+			<div><span class="n">20K+</span><span class="l">monthly active users</span></div>
+			<div><span class="n">2</span><span class="l">formats: articles and InShorts</span></div>
+		</div>
+		<p class="mono" style="margin: 12px 0 0; color: var(--mut)">As of Sep 2026</p>
+	</section>
+	<section style="padding-top: 64px">
+		<h2 class="lbl">The idea</h2>
+		<div class="prose"><p>Most finance content tells you what happened. GeoRenus explains <strong>why it happened and what it means</strong> for business and everyday decisions — with data, and with the strongest case from each side, so readers can make up their own minds.</p></div>
+	</section>
+	<section style="padding-top: 64px">
+		<h2 class="lbl">What I did</h2>
+		<ul class="bl">
+			<li><span><b>Built the platform</b> and its two formats: long articles and quick InShorts.</span></li>
+			<li><span><b>Write and edit</b> data-backed pieces on money, markets and power.</span></li>
+			<li><span><b>Designing the visual system</b>, including posters with proper Bengali text rendering.</span></li>
+		</ul>
+	</section>
+	<section style="padding-top: 64px">
+		<h2 class="lbl">Screens</h2>
+		<div class="shot"><div><span class="mono" style="color: var(--mut)">[SCREENSHOT — article page]</span></div></div>
+	</section>
+	<NextCard href="/work/repo-galaxy" kicker="Next project" title="Repo Galaxy" />
+</Base>

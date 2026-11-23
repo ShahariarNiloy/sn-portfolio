@@ -1,0 +1,23 @@
+---
+import Highlight from '../../layouts/Highlight.astro';
+---
+
+<Highlight slug="taming-memory" lede="A large Next.js app kept running out of JavaScript heap. Instead of raising the limit, I traced where the memory went and fixed the causes in order of impact.">
+	<section style="padding-top: 64px">
+		<h2 class="lbl">The approach</h2>
+		<ul class="bl">
+			<li><span><b>Rank before fixing.</b> I grouped every suspect into tiers by how likely it was to cause the crashes, and started at the top.</span></li>
+			<li><span><b>Requests that never let go.</b> Long timeouts and retry loops that kept timers and payloads alive far longer than needed.</span></li>
+			<li><span><b>Buffering whole files.</b> Uploads and image processing that held entire files in memory, with no size limits.</span></li>
+			<li><span><b>Copies of copies.</b> Deep-cloning large response objects several times per request.</span></li>
+			<li><span><b>Seeing it coming.</b> Health checks that report real heap usage against the pod's limit, so trouble shows up before a crash.</span></li>
+		</ul>
+	</section>
+	<section style="padding-top: 64px">
+		<h2 class="lbl">Results</h2>
+		<div class="stat">
+			<div><span class="n">[X]%</span><span class="l">[METRIC — e.g. lower peak heap]</span></div>
+			<div><span class="n">[X]</span><span class="l">[METRIC — e.g. fewer restarts per week]</span></div>
+		</div>
+	</section>
+</Highlight>

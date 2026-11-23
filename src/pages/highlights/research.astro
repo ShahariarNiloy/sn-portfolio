@@ -1,0 +1,21 @@
+---
+import Highlight from '../../layouts/Highlight.astro';
+import Meta from '../../components/Meta.astro';
+---
+
+<Highlight slug="research" lede="Before frontend took over, I worked on machine learning. My first-author paper on recognising Bangla handwritten characters was published at IEEE ICIRCA 2022.">
+	<Meta
+		items={[
+			['Venue', 'IEEE ICIRCA 2022'],
+			['Role', 'First author'],
+			['Field', 'Handwritten character recognition'],
+			['Paper', '[ADD LINK]'],
+		]}
+	/>
+	<section style="padding-top: 64px">
+		<h2 class="lbl">In short</h2>
+		<div class="prose">
+			<p>Bangla script has many similar-looking characters, which makes handwriting hard for machines to read. The paper looks at <strong>recognising handwritten Bangla characters</strong> with deep learning. [ADD A ONE-LINE SUMMARY OF YOUR METHOD AND RESULT]</p>
+		</div>
+	</section>
+</Highlight>

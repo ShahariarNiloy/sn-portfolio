@@ -1,0 +1,38 @@
+---
+interface Props {
+	title: string;
+	/** Breadcrumb trail before the current page, e.g. [{ href: '/work', label: 'Work' }]. Home is added. */
+	trail?: { href: string; label: string }[];
+	pill?: string;
+	lede?: string;
+}
+const { title, trail = [], pill, lede } = Astro.props;
+const crumbs = [{ href: '/', label: 'Home' }, ...trail];
+---
+
+<section style="padding-top: 72px">
+	<nav class="crumb rise d1" aria-label="Breadcrumb">
+		{
+			crumbs.map((c) => (
+				<>
+					<a href={c.href}>{c.label}</a>
+					<span aria-hidden="true">/</span>
+				</>
+			))
+		}
+		<span aria-current="page">{title}</span>
+	</nav>
+	<slot name="title">
+		<h1 class="h rise d2 ph">{title}{pill && <> <span class="pill" style="vertical-align: middle">{pill}</span></>}</h1>
+	</slot>
+	{lede && <p class="lede rise d3" set:html={lede} />}
+</section>
+
+<style>
+	.ph {
+		margin: 18px 0 0;
+		font-size: 34px;
+		line-height: 1.15;
+		letter-spacing: -0.035em;
+	}
+</style>

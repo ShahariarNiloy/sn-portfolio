@@ -1,0 +1,284 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+// Serif only loads on this page.
+import '@fontsource/instrument-serif/latin-400.css';
+import '@fontsource/instrument-serif/latin-400-italic.css';
+
+const topics = [
+	['all', 'All'],
+	['self', 'Self'],
+	['people', 'People'],
+	['gratitude', 'Gratitude'],
+	['character', 'Character'],
+];
+---
+
+<Base title="Writing — Shahariar Niloy" description="A mood board of thoughts on the self, people, gratitude and character." current="/writing">
+	<PageHead title="Writing" lede="Away from code. A mood board of the thoughts I write online — on the self, people, gratitude and character. Each one ends the same way: ✌️">
+		<h1 slot="title" class="rise d2 wh">Thoughts, <em>unfinished.</em></h1>
+	</PageHead>
+	<div class="wide breakout">
+		<div class="fbar rise d3" role="group" aria-label="Filter by topic">
+			{topics.map(([k, l]) => <button type="button" class="fchip" data-f={k} aria-pressed={k === 'all' ? 'true' : 'false'}>{l}</button>)}
+		</div>
+		<div class="board" id="board" data-f="all">
+<figure class="mc q big t-self"><span class="qm" aria-hidden="true">“</span><blockquote>What people do is usually a reflection of who they are, not a definition of who we are.</blockquote><div class="mfoot"><span class="mtag">Self</span><span>from “Your story is not about me”</span></div></figure>
+		<article class="mc e t-self"><h3>Your story is not about me</h3><p class="ex">Taking things personally is when we start believing that everything people say or do has something to do with us.</p><details><summary><span class="op">Keep reading</span><span class="cl">Close</span></summary><div class="more"><p>We let their behavior decide how we see ourselves and how much we think we’re worth. And sometimes, when we don’t know how to love ourselves enough, we look to other people to fill that gap. We expect them to give us the validation, care, or reassurance we’re missing.</p><p>But the truth is, people won’t always give us exactly what we want or need.</p><p>What people do is usually a reflection of who they are, not a definition of who we are. And the same goes for us. The way we treat someone comes from who we are, not always from what that person has done.</p><p>Someone being distant doesn’t mean you’re not worth being close to.<br>Someone leaving doesn’t mean you weren’t enough.<br>Someone treating you badly doesn’t mean you deserved it.</p><p>Everyone is living through their own story, carrying their own fears, experiences, and struggles.</p><p>Taking things personally is almost like saying:</p><p>“Your story is about me.”</p><p>But it’s not.</p><p>Sometimes, the healthiest thing we can do is let people be who they are without making their behavior a reflection of our worth.</p><p>And maybe that’s where a little peace begins.</p><p class="sig" aria-label="Signed with a peace sign">✌️</p></div></details><div class="mfoot"><span class="mtag">Self</span><span>1 min read</span></div></article>
+		<figure class="mc i t-people"><p>Choose the person over the problem.</p><div class="mfoot"><span class="mtag">People</span><span>from “Choose the person over the problem”</span></div></figure>
+		<article class="mc e t-people"><h3>Stop pulling the knot</h3><p class="ex">Perhaps the purpose of an argument was never to decide who was right and who won it.</p><details><summary><span class="op">Keep reading</span><span class="cl">Close</span></summary><div class="more"><p>Every win creates a loser, and people rarely accept losing without feeling some sense of shame. That shame often turns into defensiveness, and defensiveness slowly turns a conversation into a battle.</p><p>Sometimes, a conversation is simply a knot, formed by words, emotions, assumptions, and things left unsaid.</p><p>Pull harder, and the knot only tightens. Maybe the wiser approach is to stop pulling.</p><p>Listen. Understand. Find where the knot began, and slowly unravel it together.</p><p>Because when we enter a conversation with something to learn, rather than something to prove, there is no need for anyone to lose.</p><p>And perhaps that is the kind of conversation where both people can walk away with something more valuable than being right: understanding.</p><p class="sig" aria-label="Signed with a peace sign">✌️</p></div></details><div class="mfoot"><span class="mtag">People</span><span>1 min read</span></div></article>
+		<figure class="mc a t-self"><p>Someone being distant doesn’t mean you’re not worth being close to.</p><p>Someone leaving doesn’t mean you weren’t enough.</p><p>Someone treating you badly doesn’t mean you deserved it.</p><div class="mfoot"><span class="mtag">Self</span><span>from “Your story is not about me”</span></div></figure>
+		<article class="mc e t-people"><h3>Choose the person over the problem</h3><p class="ex">Don’t let your anger win.<br>Don’t let your grudges win.<br>Don’t let your ego win.</p><details><summary><span class="op">Keep reading</span><span class="cl">Close</span></summary><div class="more"><p>Life changes in a blink, and decisions have to be made.</p><p>The people you love most, your parents, children, husband or wife, brothers, sisters, friends, the ones closest to your hearts, can leave your lives in ways you never expected. Sometimes distance takes them away. Sometimes life itself does.</p><p>We keep thinking there will always be another meeting, another conversation, another chance to sort things out.</p><p>But what if there isn’t?</p><p>Sometimes the last conversation is an argument. The last meeting feels ordinary. And only later do we realize that we were holding onto something that was never worth losing someone over.</p><p>Life is too uncertain to leave things broken with the people who matter.</p><p>Sort things out while you still can. Talk while there is still someone to talk to. Choose the person over the problem. They are your people, not strangers.</p><p>Because one day, the problem may no longer matter.<br>But the person might.</p><p>And once they are gone, they may be gone for good.</p><p class="sig" aria-label="Signed with a peace sign">✌️</p></div></details><div class="mfoot"><span class="mtag">People</span><span>1 min read</span></div></article>
+		<figure class="mc k t-character"><span class="km" aria-hidden="true">?</span><p>Were you kind?<br>Were you respectful?<br>Did your words bring comfort?<br>Were you someone people felt safe around?</p><div class="mfoot"><span class="mtag">Character</span><span>from “What people remember”</span></div></figure>
+		<article class="mc e t-gratitude"><h3>A different kind of gratitude</h3><p class="ex">I think there is a different kind of gratitude that goes beyond just being thankful for what we have.</p><details><summary><span class="op">Keep reading</span><span class="cl">Close</span></summary><div class="more"><p>It is also about being grateful for the people Allah brings into our lives. Some become close to us, some teach us something, some become good memories, and some leave something behind that stays with us even after they are gone.</p><p>Maybe every person we meet deserves some gratitude. Not always because of what they did for us, but simply because, for some time, Allah chose to make their path cross with ours.</p><p>We may never understand why some people came into our lives, why some had to leave and why some stayed.</p><p>But maybe we don’t always need to understand everything to be grateful for it.</p><p>Some blessings come as things.<br>Some come as moments.<br>Some come as people.</p><p>So be grateful for everything you have, and also for everything you have lost.</p><p>Be grateful for the people who left, the people who stayed and became the reason for your smile, the moments you got to live, and even the things that didn’t work out.</p><p class="sig" aria-label="Signed with a peace sign">✌️</p></div></details><div class="mfoot"><span class="mtag">Gratitude</span><span>1 min read</span></div></article>
+		<figure class="mc q  t-gratitude"><span class="qm" aria-hidden="true">“</span><blockquote>Some blessings come as things.<br>Some come as moments.<br>Some come as people.</blockquote><div class="mfoot"><span class="mtag">Gratitude</span><span>from “A different kind of gratitude”</span></div></figure>
+		<article class="mc e t-character"><h3>What people remember</h3><p class="ex">It’s funny that…</p><details><summary><span class="op">Keep reading</span><span class="cl">Close</span></summary><div class="more"><p>We spend so much time trying to perfect our appearance that we sometimes forget what people actually remember.</p><p>Years from now, no one will remember whether your skin was a few shades darker, whether you had dark circles, or whether your face was perfectly symmetrical. They will remember how you made them feel.</p><p>Were you kind?<br>Were you respectful?<br>Did your words bring comfort?<br>Were you someone people felt safe around?</p><p>There is nothing wrong with taking care of your appearance. Looking your best is a good thing. But appearance should never become the measure of your worth.</p><p>Beauty changes. Hair turns gray, skin wrinkles, and bodies age. A good heart, gentle words, honesty, patience, and good character are the things that grow more valuable with time.</p><p>Don’t spend your whole life chasing perfection in the mirror while neglecting the person looking back at you.</p><p>In the end, people rarely remember the face that impressed them the most. They remember the heart that gave them peace.</p><p class="sig" aria-label="Signed with a peace sign">✌️</p></div></details><div class="mfoot"><span class="mtag">Character</span><span>1 min read</span></div></article>
+		<figure class="mc q  t-people"><span class="qm" aria-hidden="true">“</span><blockquote>Enter a conversation with something to learn, rather than something to prove.</blockquote><div class="mfoot"><span class="mtag">People</span><span>from “Stop pulling the knot”</span></div></figure>
+		<article class="mc e t-character"><h3>Words last</h3><p class="ex">Words can last for a very, very long time.</p><details><summary><span class="op">Keep reading</span><span class="cl">Close</span></summary><div class="more"><p>The things people say to you can stay with you almost forever. A single expression, whether kind or cruel, can leave a lasting mark. The same is true for the words you speak to others.</p><p>Even a brief interaction with a stranger matters. Think about someone working in a cafe. The way you speak to them may influence how they feel for the rest of the day, and that feeling can ripple into how they treat their loved ones when they get home. If you make someone’s day harder, there’s a chance that frustration will be passed on in one way or another. Likewise, a small act of kindness can spread just as far.</p><p>Words have power. They can encourage, heal, inspire, or they can wound and discourage. That’s why we all should choose our words wisely and speak with kindness. Let neither our words nor our tone become the reason for our own unhappiness or someone else’s.</p><p class="sig" aria-label="Signed with a peace sign">✌️</p></div></details><div class="mfoot"><span class="mtag">Character</span><span>1 min read</span></div></article>
+		<figure class="mc i t-character"><p>Words have power.</p><div class="mfoot"><span class="mtag">Character</span><span>from “Words last”</span></div></figure>
+		</div>
+	</div>
+</Base>
+
+<style>
+	.wh {
+		margin: 18px 0 0;
+		font-size: 44px;
+		line-height: 1.08;
+		letter-spacing: -0.04em;
+		font-weight: 600;
+	}
+	.wh em {
+		font-family: var(--serif);
+		font-style: italic;
+		font-weight: 400;
+		letter-spacing: -0.01em;
+		color: var(--mut);
+	}
+	.fbar {
+		display: flex;
+		gap: 6px;
+		flex-wrap: wrap;
+		margin-bottom: 20px;
+	}
+	.fchip {
+		font-family: var(--mono);
+		font-size: 12px;
+		color: var(--mut);
+		background: transparent;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		padding: 9px 14px;
+		cursor: pointer;
+		transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+	}
+	.fchip:hover {
+		color: var(--fg);
+		border-color: var(--line2);
+	}
+	.fchip[aria-pressed='true'] {
+		color: var(--bg);
+		background: var(--fg);
+		border-color: var(--fg);
+	}
+	.board {
+		columns: 3 300px;
+		column-gap: 14px;
+	}
+	.board[data-f='self'] .mc:not(.t-self),
+	.board[data-f='people'] .mc:not(.t-people),
+	.board[data-f='gratitude'] .mc:not(.t-gratitude),
+	.board[data-f='character'] .mc:not(.t-character) {
+		display: none;
+	}
+	.mc {
+		break-inside: avoid;
+		display: block;
+		margin: 0 0 14px;
+		padding: 22px;
+		border: 1px solid var(--line);
+		border-radius: 16px;
+		background: var(--card);
+		color: var(--fg);
+		position: relative;
+		transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.25s;
+		animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	}
+	.mc:hover {
+		transform: translateY(-3px);
+		border-color: var(--line2);
+	}
+	.mc p {
+		margin: 0;
+	}
+	.mfoot {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 12px;
+		margin-top: 22px;
+		font-family: var(--mono);
+		font-size: 11px;
+		color: var(--mut);
+	}
+	.mtag::before {
+		content: '';
+		display: inline-block;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--acc);
+		margin-right: 7px;
+		vertical-align: 1px;
+	}
+	/* quote */
+	.qm {
+		display: block;
+		font-family: var(--serif);
+		font-size: 56px;
+		line-height: 0.6;
+		color: var(--acc);
+		height: 26px;
+	}
+	.q blockquote {
+		margin: 0;
+		font-family: var(--serif);
+		font-size: 26px;
+		line-height: 1.25;
+		letter-spacing: -0.005em;
+	}
+	.q.big {
+		padding: 30px 26px;
+		background: linear-gradient(160deg, color-mix(in srgb, var(--acc) 12%, var(--card)), var(--card) 65%);
+	}
+	.q.big blockquote {
+		font-size: 36px;
+		line-height: 1.15;
+	}
+	/* inverted */
+	.i {
+		background: var(--fg);
+		border-color: var(--fg);
+	}
+	.i p {
+		color: var(--bg);
+		font-size: 19px;
+		line-height: 1.45;
+		font-weight: 500;
+		letter-spacing: -0.015em;
+	}
+	.i .mfoot {
+		color: color-mix(in srgb, var(--bg) 60%, transparent);
+	}
+	/* accent lines */
+	.a p {
+		font-size: 17px;
+		line-height: 1.5;
+		letter-spacing: -0.01em;
+		padding-left: 14px;
+		border-left: 1px solid var(--acc);
+		margin: 0 0 12px;
+	}
+	.a p:last-of-type {
+		margin-bottom: 0;
+	}
+	/* questions */
+	.k {
+		background: transparent;
+		border-style: dashed;
+		border-color: var(--line2);
+	}
+	.km {
+		font-family: var(--serif);
+		font-style: italic;
+		font-size: 64px;
+		line-height: 0.8;
+		color: var(--line2);
+		position: absolute;
+		right: 20px;
+		top: 16px;
+	}
+	.k p {
+		font-family: var(--serif);
+		font-style: italic;
+		font-size: 22px;
+		line-height: 1.3;
+		padding-right: 36px;
+	}
+	/* essay */
+	.e h3 {
+		margin: 0 0 10px;
+		font-family: var(--serif);
+		font-weight: 400;
+		font-size: 28px;
+		letter-spacing: -0.01em;
+		line-height: 1.15;
+	}
+	.e .ex {
+		color: var(--mut);
+		font-size: 15px;
+		line-height: 1.65;
+	}
+	.e details {
+		margin-top: 14px;
+	}
+	.e summary {
+		list-style: none;
+		cursor: pointer;
+		font-size: 14px;
+		color: var(--acc);
+		padding: 6px 0;
+		display: inline-block;
+	}
+	.e summary::-webkit-details-marker {
+		display: none;
+	}
+	.e summary .cl,
+	.e details[open] summary .op {
+		display: none;
+	}
+	.e details[open] summary .cl {
+		display: inline;
+	}
+	.e .more {
+		padding-top: 6px;
+	}
+	.e details[open] .more {
+		animation: rise 0.5s ease both;
+	}
+	.e .more p {
+		color: #c9cbd1;
+		font-size: 15px;
+		line-height: 1.75;
+		margin: 0 0 14px;
+	}
+	.e .sig {
+		font-size: 18px;
+		margin: 18px 0 0;
+	}
+	@media (max-width: 700px) {
+		.wh {
+			font-size: 36px;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.mc {
+			animation: none;
+			transition: none;
+		}
+		.mc:hover {
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	const board = document.getElementById('board');
+	const chips = document.querySelectorAll<HTMLButtonElement>('.fchip');
+	chips.forEach((btn) =>
+		btn.addEventListener('click', () => {
+			board?.setAttribute('data-f', btn.dataset.f || 'all');
+			chips.forEach((c) => c.setAttribute('aria-pressed', String(c === btn)));
+		}),
+	);
+</script>

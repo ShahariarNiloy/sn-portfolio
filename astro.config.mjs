@@ -7,4 +7,9 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
 	site: "https://shahariarniloy.com",
 	integrations: [sitemap()],
+	// v1 pages that moved in the v2 redesign.
+	redirects: {
+		"/about": "/experience",
+		"/contact": "/#contact",
+	},
 });
