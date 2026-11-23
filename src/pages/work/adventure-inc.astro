@@ -1,0 +1,302 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const sections = [
+	{ id: 'context', h: 'Context', toc: 'Context', p: "Adventure Inc runs a large booking platform where search, listing and detail pages all live in one Next.js codebase. As features piled up, memory use, bundle size and duplicated code became the real limits on how fast the team could ship. It's a team effort; this page covers the parts I owned or drove: keeping the product fast as it grows." },
+	{ id: 'memory', h: 'Taming memory', toc: 'Taming memory', p: 'Builds and servers were hitting JavaScript heap out-of-memory errors. I ran a prioritized audit of the causes, then fixed them in order of impact, so the biggest wins landed first.', result: '[ADD RESULT — e.g. peak build memory before → after]' },
+	{ id: 'property', h: 'One property module', toc: 'One property module', p: 'Hotels and vacation rentals had drifted into two parallel code paths. I consolidated them into a single property module, so a fix or feature now lands once instead of twice.', result: '[ADD RESULT — e.g. lines removed, duplicate components merged]' },
+	{ id: 'search', h: 'Search', toc: 'Search', p: 'I rebuilt the search results with infinite scroll, list virtualization, map markers and new mobile filters, so long result lists stay smooth even on low-end phones.', result: '[ADD RESULT — e.g. INP or scroll performance on mobile]' },
+	{ id: 'seo', h: 'Being found', toc: 'Being found', p: 'Across the platform I shipped sitemaps, hreflang and structured data, so every language version is indexed properly and listings show rich results.', result: '[ADD RESULT — e.g. indexed pages or organic traffic]' },
+];
+const facts = [
+	['Role', 'Senior Software Engineer'],
+	['Type', 'Company project'],
+	['Stack', 'Next.js · React · TypeScript'],
+	['Timeline', 'Oct 2023 — present'],
+];
+const stats = [
+	['[X]%', '[METRIC]'],
+	['[X]s', '[METRIC]'],
+	['2×', 'Best Employee of the Year'],
+];
+---
+
+<Base
+	title="Case study: Adventure Inc — Shahariar Niloy"
+	description="Keeping a large Next.js travel booking platform fast as it grows: memory, search, SEO and a unified property module."
+	current="/work"
+>
+	<main>
+		<section class="page-hero">
+			<div class="gridbg" aria-hidden="true"></div>
+			<div class="spot" aria-hidden="true"></div>
+			<div class="wrap hero-in">
+				<nav aria-label="Breadcrumb" class="mono rise d1 crumbs"><a href="/work">Work</a><span aria-hidden="true">/</span><span style="color: var(--fg)" aria-current="page">Adventure Inc</span></nav>
+				<span class="tag rise d1">Case study · Company project</span>
+				<h1 class="h grad hx rise d2" style="margin: 18px 0 0; font-size: 64px; line-height: 1.04; max-width: 860px">Keeping a large travel platform fast as it grows.</h1>
+				<p class="rise d3" style="margin: 20px 0 0; font-size: 19px; line-height: 1.6; max-width: 640px; color: var(--mut)">Adventure Inc's booking platform for flights, hotels and tours in Japan is my employer's product, built by a whole team. I'm one of the main engineers on its frontend, and most of my time goes into making a big Next.js codebase lighter.</p>
+				<dl class="card rise d4 facts">
+					{
+						facts.map(([k, v]) => (
+							<div class="fact">
+								<dt class="mono">{k}</dt>
+								<dd>{v}</dd>
+							</div>
+						))
+					}
+				</dl>
+			</div>
+		</section>
+
+		<section class="wrap" aria-label="Product screenshot" style="padding-bottom: 96px">
+			<div class="card shot">
+				<div class="chrome" aria-hidden="true"><span></span><span></span><span></span><span class="mono url">adventure.inc</span></div>
+				<div class="shot-body" role="img" aria-label="Screenshot placeholder"><span class="mono">[SCREENSHOT — search results with map]</span></div>
+			</div>
+		</section>
+
+		<section class="wrap body">
+			<aside class="hide-m toc-col">
+				<p class="mono" style="margin: 0 0 14px; color: var(--mut)">On this page</p>
+				<nav class="toc" aria-label="On this page">
+					{sections.map((s) => <a href={`#${s.id}`}>{s.toc}</a>)}
+					<a href="#results">Results</a>
+				</nav>
+			</aside>
+			<article class="art">
+				{
+					sections.map((s) => (
+						<section id={s.id}>
+							<h2>{s.h}</h2>
+							<p>{s.p}</p>
+							{s.result && (
+								<div class="note">
+									<span class="tag">Result</span>
+									<span>{s.result}</span>
+								</div>
+							)}
+						</section>
+					))
+				}
+				<section id="results" style="padding-bottom: 0">
+					<h2>Results</h2>
+					<div class="stats">
+						{
+							stats.map(([v, l]) => (
+								<div class="card stat">
+									<p class="sv">{v}</p>
+									<p class="mono sl">{l}</p>
+								</div>
+							))
+						}
+					</div>
+				</section>
+			</article>
+		</section>
+
+		<section class="wrap" style="padding-bottom: 120px">
+			<a href="https://utilyx.dev" class="card nx" target="_blank" rel="noopener">
+				<div>
+					<p class="mono" style="margin: 0 0 8px; color: var(--mut)">Next project</p>
+					<p class="h" style="margin: 0; font-size: 32px">utilyx.dev</p>
+					<p style="margin: 6px 0 0; font-size: 15px; color: var(--mut)">50+ developer tools, zero servers.</p>
+				</div>
+				<span class="arr" style="color: var(--mut)"><svg width="28" height="28" viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+			</a>
+		</section>
+	</main>
+</Base>
+
+<style>
+	@media (prefers-reduced-motion: no-preference) {
+		:global(html) {
+			scroll-behavior: smooth;
+		}
+	}
+	.page-hero {
+		position: relative;
+		overflow: hidden;
+	}
+	.hero-in {
+		position: relative;
+		padding-top: 72px;
+		padding-bottom: 56px;
+	}
+	.crumbs {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		color: var(--mut);
+		margin-bottom: 28px;
+	}
+	.crumbs a {
+		text-decoration: none;
+		padding: 12px 0;
+	}
+	.crumbs a:hover {
+		color: var(--fg);
+	}
+	.facts {
+		margin: 40px 0 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	}
+	.fact {
+		padding: 18px 22px;
+		border-right: 1px solid var(--line);
+	}
+	.fact:last-child {
+		border-right: none;
+	}
+	.fact dt {
+		margin: 0 0 6px;
+		color: var(--mut);
+	}
+	.fact dd {
+		margin: 0;
+		font-size: 15px;
+		font-weight: 500;
+	}
+	.shot {
+		overflow: hidden;
+		box-shadow: 0 50px 140px -50px var(--glow);
+	}
+	.chrome {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 12px 16px;
+		border-bottom: 1px solid var(--line);
+	}
+	.chrome > span:not(.url) {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: var(--line2);
+	}
+	.url {
+		margin: 0 auto;
+		padding: 4px 40px;
+		border-radius: 6px;
+		background: var(--card2);
+		color: var(--mut);
+	}
+	.shot-body {
+		aspect-ratio: 16 / 8;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--card2);
+		background-image: radial-gradient(var(--line2) 1px, transparent 1px);
+		background-size: 18px 18px;
+	}
+	.shot-body span {
+		padding: 8px 14px;
+		border-radius: 8px;
+		background: var(--card);
+		border: 1px solid var(--line);
+		color: var(--mut);
+	}
+	.body {
+		padding-bottom: 72px;
+		display: flex;
+		gap: 64px;
+		flex-wrap: wrap;
+		align-items: flex-start;
+	}
+	.toc-col {
+		flex: 0 0 200px;
+		position: sticky;
+		top: 24px;
+	}
+	.toc a {
+		display: block;
+		text-decoration: none;
+		color: var(--mut);
+		font-size: 14px;
+		padding: 8px 0 8px 14px;
+		border-left: 1px solid var(--line);
+		transition: color 0.2s, border-color 0.2s;
+	}
+	.toc a:hover {
+		color: var(--fg);
+		border-left-color: var(--fg);
+	}
+	.art {
+		flex: 999 1 560px;
+		min-width: 0;
+		max-width: 700px;
+	}
+	.art h2 {
+		margin: 0 0 12px;
+		font-size: 26px;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+	}
+	.art p {
+		margin: 0;
+		font-size: 17px;
+		line-height: 1.75;
+		color: var(--mut);
+	}
+	.art section {
+		padding-bottom: 56px;
+		scroll-margin-top: 24px;
+	}
+	.note {
+		display: flex;
+		gap: 12px;
+		align-items: flex-start;
+		margin-top: 20px;
+		padding: 14px 16px;
+		border-radius: 12px;
+		border: 1px dashed var(--line2);
+		font-size: 14px;
+		color: var(--mut);
+	}
+	.stats {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+		gap: 12px;
+		margin-top: 20px;
+	}
+	.stat {
+		padding: 22px;
+	}
+	.art .sv {
+		margin: 0;
+		font-size: 36px;
+		font-weight: 600;
+		letter-spacing: -0.04em;
+		color: var(--fg);
+		line-height: 1.2;
+	}
+	.art .sl {
+		margin: 8px 0 0;
+		color: var(--mut);
+		font-size: 12px;
+		line-height: 1.4;
+	}
+	.nx {
+		padding: 32px;
+		display: flex !important;
+		justify-content: space-between;
+		align-items: center;
+		gap: 24px;
+	}
+	.nx .arr {
+		transition: transform 0.3s;
+	}
+	.nx:hover .arr {
+		transform: translateX(6px);
+	}
+	@media (max-width: 860px) {
+		.fact {
+			border-right: none;
+			border-bottom: 1px solid var(--line);
+		}
+		.fact:last-child {
+			border-bottom: none;
+		}
+	}
+</style>

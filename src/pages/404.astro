@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page not found — Shahariar Niloy" description="This page doesn't exist." current="">
+	<main class="nf">
+		<div class="gridbg" aria-hidden="true"></div>
+		<div class="spot" aria-hidden="true"></div>
+		<div class="wrap inner">
+			<p class="mono rise d1" style="margin: 0; color: var(--acc)">404</p>
+			<h1 class="h grad hx rise d2" style="margin: 0; font-size: 68px; line-height: 1.02">Nothing to load here.</h1>
+			<p class="rise d3" style="margin: 0; font-size: 18px; line-height: 1.6; max-width: 480px; color: var(--mut)">The lightest page is the one that doesn't exist. This one took it a bit too far.</p>
+			<div class="rise d4" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center"><a href="/" class="btn">Back home</a><a href="/work" class="btn2">See my work</a></div>
+		</div>
+	</main>
+</Base>
+
+<style>
+	.nf {
+		position: relative;
+		overflow: hidden;
+	}
+	.inner {
+		position: relative;
+		padding-top: 140px;
+		padding-bottom: 160px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 20px;
+	}
+</style>

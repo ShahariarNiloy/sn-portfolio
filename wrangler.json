@@ -1,14 +1,14 @@
 {
-	"name": "astro-blog-starter-template",
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "shahariarniloy",
 	"compatibility_date": "2025-10-08",
-	"compatibility_flags": ["nodejs_compat"],
-	"main": "./dist/_worker.js/index.js",
 	"assets": {
 		"directory": "./dist",
-		"binding": "ASSETS"
+		"html_handling": "drop-trailing-slash",
+		"not_found_handling": "404-page"
 	},
-	"observability": {
-		"enabled": true
-	},
-	"upload_source_maps": true
+	"routes": [
+		{ "pattern": "shahariarniloy.com", "custom_domain": true },
+		{ "pattern": "www.shahariarniloy.com", "custom_domain": true }
+	]
 }
