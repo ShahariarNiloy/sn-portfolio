@@ -32,6 +32,18 @@ import NextCard from '../../components/NextCard.astro';
 		</ul>
 	</section>
 	<section style="padding-top: 64px">
+		<h2 class="lbl">Try one here</h2>
+		<div class="tryit">
+			<div class="tryh"><span class="mono">JSON formatter</span><span class="mono">Edit the left side</span></div>
+			<div class="tryg">
+				<textarea class="jin" spellcheck="false" aria-label="JSON to format">{'{"name": "utilyx.dev", "tools": "50+", "servers": 0, "uploads": [], "private": true}'}</textarea>
+				<div class="jout" aria-live="polite"><pre></pre><span class="jerr"></span></div>
+			</div>
+			<div class="tryf mono"><span>Formatted in <span class="jms">0.00</span> ms</span><span>Nothing left your browser</span></div>
+		</div>
+		<p style="margin: 12px 0 0; color: var(--mut); font-size: 14px">This runs the same way every utilyx tool does: entirely on your device. <a href="https://utilyx.dev" class="ilink" target="_blank" rel="noopener">Try the rest on utilyx.dev</a></p>
+	</section>
+	<section style="padding-top: 64px">
 		<h2 class="lbl">Now</h2>
 		<ul class="bl">
 			<li><span>Redesigning the landing page, catalogue and tool pages.</span></li>
@@ -44,3 +56,98 @@ import NextCard from '../../components/NextCard.astro';
 	</section>
 	<NextCard href="/work/truly-remote-work" kicker="Next project" title="Truly Remote Work" />
 </Base>
+
+<script>
+	const box = document.querySelector('.tryit')!;
+	const inp = box.querySelector<HTMLTextAreaElement>('.jin')!;
+	const pre = box.querySelector('pre')!;
+	const err = box.querySelector<HTMLElement>('.jerr')!;
+	const ms = box.querySelector('.jms')!;
+	function run() {
+		const t0 = performance.now();
+		try {
+			pre.textContent = JSON.stringify(JSON.parse(inp.value), null, 2);
+			err.textContent = '';
+		} catch (e) {
+			pre.textContent = '';
+			err.textContent = (e as Error).message;
+		}
+		ms.textContent = (performance.now() - t0).toFixed(2);
+	}
+	inp.addEventListener('input', run);
+	run();
+</script>
+
+<style>
+	.tryit {
+		border: 1px solid var(--line2);
+		border-radius: 14px;
+		background: var(--card);
+		overflow: hidden;
+	}
+	.tryh,
+	.tryf {
+		display: flex;
+		justify-content: space-between;
+		gap: 12px;
+		padding: 10px 14px;
+		color: var(--mut);
+	}
+	.tryh {
+		border-bottom: 1px solid var(--line);
+	}
+	.tryf {
+		border-top: 1px solid var(--line);
+		font-size: 11.5px;
+	}
+	.tryf span:first-child {
+		color: #3fb950;
+	}
+	.tryg {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		min-height: 220px;
+	}
+	.jin {
+		border: 0;
+		border-right: 1px solid var(--line);
+		background: transparent;
+		color: var(--fg);
+		font-family: var(--mono);
+		font-size: 12.5px;
+		line-height: 1.7;
+		padding: 14px;
+		resize: vertical;
+		outline: none;
+		min-height: 220px;
+	}
+	.jin:focus {
+		background: rgba(255, 255, 255, 0.02);
+	}
+	.jout {
+		padding: 14px;
+		overflow: auto;
+	}
+	.jout pre {
+		margin: 0;
+		font-family: var(--mono);
+		font-size: 12.5px;
+		line-height: 1.7;
+		color: #c9cbd1;
+		white-space: pre-wrap;
+	}
+	.jerr {
+		font-family: var(--mono);
+		font-size: 12.5px;
+		color: #ff7a66;
+	}
+	@media (max-width: 640px) {
+		.tryg {
+			grid-template-columns: 1fr;
+		}
+		.jin {
+			border-right: 0;
+			border-bottom: 1px solid var(--line);
+		}
+	}
+</style>

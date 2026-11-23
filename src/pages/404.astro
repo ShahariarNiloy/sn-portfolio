@@ -3,16 +3,13 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base title="Page not found — Shahariar Niloy" description="This page doesn't exist.">
-	<section class="nf">
-		<p class="mono rise d1" style="margin: 0; color: var(--acc)">404</p>
-		<h1 class="h rise d2" style="margin: 12px 0 0; font-size: 34px; line-height: 1.15; letter-spacing: -0.035em">Nothing to load here.</h1>
-		<p class="lede rise d3">The lightest page is the one that doesn't exist. This one took it a bit too far.</p>
-		<div class="rise d4" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px"><a href="/" class="btn">Back home</a><a href="/work" class="btn2">See my work</a></div>
+	<section style="padding-top: 120px; padding-bottom: 40px">
+		<div class="mono rise d1" style="color: var(--mut)">404 · 0 KB of content</div>
+		<h1 class="h rise d2" style="margin: 18px 0 0; font-size: 40px; line-height: 1.1; letter-spacing: -0.04em">Nothing here.<br /><span style="color: var(--mut)">The lightest page on the site.</span></h1>
+		<p class="lede rise d3" style="margin-top: 20px">This page doesn't exist, or it moved. Press <kbd class="mono" style="border: 1px solid var(--line2); border-radius: 6px; padding: 2px 6px">⌘K</kbd> to jump anywhere, or start from home.</p>
+		<div class="rise d3" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px">
+			<a href="/" class="cvbtn">Go home</a>
+			<button type="button" class="cvbtn" data-openk>Open the page menu</button>
+		</div>
 	</section>
 </Base>
-
-<style>
-	.nf {
-		padding-top: 120px;
-	}
-</style>

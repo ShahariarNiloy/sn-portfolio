@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+
+const rows: [string, string][] = [
+	['Work', '<b>Senior Software Engineer at Adventure Dhaka Limited</b>, leading the frontend department on <a href="/work/adventure-inc" class="ilink">adventure.inc</a>.'],
+	['Building', '<b><a href="/work/repo-galaxy" class="ilink">Repo Galaxy</a></b> — codebases as a 3D star map. And a redesign of <a href="/work/utilyx" class="ilink">utilyx.dev</a>, with a new set of SEO tools.'],
+	['Learning', '<b>Rust and Go</b>, for speed beyond the browser. And IT and Business Systems at KCGI.'],
+	['Writing', 'Short notes on people and the self, <a href="/writing" class="ilink">off the clock</a>.'],
+	['Reading', "[WHAT YOU'RE READING RIGHT NOW]"],
+	['Life', '[ONE LINE ABOUT LIFE OUTSIDE WORK RIGHT NOW]'],
+];
+---
+
+<Base title="Now — Shahariar Niloy" description="What Shahariar Niloy is focused on right now: work, building, learning and life." current="/now">
+	<PageHead title="Now" lede="What I'm focused on at this point in my life. If we haven't talked in a while, start here." />
+	<span class="ustamp">Updated 23 Nov 2026 · Dhaka</span>
+	<section style="padding-top: 48px">
+		<dl class="nrows">
+			{
+				rows.map(([k, v]) => (
+					<div class="nrow">
+						<dt class="nk">{k}</dt>
+						<dd class="nv" set:html={v} />
+					</div>
+				))
+			}
+		</dl>
+	</section>
+	<p class="mono" style="margin: 32px 0 0; color: var(--mut)">A <a href="https://nownownow.com/about" class="ilink" target="_blank" rel="noopener">now page</a>, an idea from Derek Sivers.</p>
+</Base>

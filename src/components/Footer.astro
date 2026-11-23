@@ -9,19 +9,43 @@ const year = new Date().getFullYear();
 ---
 
 <footer class:list={['col', 'foot', { home }]}>
-	<span>© {year} {SITE.name}</span>
-	{
-		home ? (
-			<span>Built light, in Dhaka.</span>
-		) : (
-			<span class="links">
-				<a href={`mailto:${SITE.email}`} class="navl">Email</a>
-				<a href={SITE.github} class="navl" target="_blank" rel="noopener">GitHub</a>
-				<a href={SITE.linkedin} class="navl" target="_blank" rel="noopener">LinkedIn</a>
-			</span>
-		)
-	}
+	<span class="left">
+		<span>© {year} {SITE.name}{home && ' · Built light, in Dhaka.'}</span>
+		<span class="pw" title="Measured in your browser when this page loaded">This page: <span data-pw>measuring…</span></span>
+	</span>
+	<span class="links">
+		<a href="/now" class="navl">Now</a>
+		<a href="/uses" class="navl">Uses</a>
+		{
+			!home && (
+				<>
+					<a href={`mailto:${SITE.email}`} class="navl">Email</a>
+					<a href={SITE.github} class="navl" target="_blank" rel="noopener">GitHub</a>
+					<a href={SITE.linkedin} class="navl" target="_blank" rel="noopener">LinkedIn</a>
+				</>
+			)
+		}
+	</span>
 </footer>
+
+<script>
+	// Page weight, measured in the visitor's browser once the page has loaded.
+	const out = document.querySelector('[data-pw]');
+	function measure() {
+		if (!out) return;
+		try {
+			const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+			let bytes = nav ? nav.transferSize || nav.encodedBodySize || 0 : 0;
+			for (const r of performance.getEntriesByType('resource') as PerformanceResourceTiming[]) bytes += r.transferSize || r.encodedBodySize || 0;
+			const t = nav && nav.loadEventEnd ? nav.loadEventEnd : performance.now();
+			out.textContent = (bytes ? `${Math.round(bytes / 1024)} KB · ` : '') + `${(t / 1000).toFixed(2)}s to load`;
+		} catch {
+			out.textContent = 'not measurable here';
+		}
+	}
+	if (document.readyState === 'complete') setTimeout(measure, 1200);
+	else addEventListener('load', () => setTimeout(measure, 1200));
+</script>
 
 <style>
 	.foot {
@@ -30,7 +54,6 @@ const year = new Date().getFullYear();
 		padding-bottom: 40px;
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
 		gap: 12px;
 		flex-wrap: wrap;
 		font-size: 13px;
@@ -41,10 +64,31 @@ const year = new Date().getFullYear();
 		margin-top: 40px;
 		padding-top: 32px;
 	}
+	.left {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+	.pw {
+		font-family: var(--mono);
+		font-size: 11.5px;
+		color: var(--mut);
+	}
+	.pw::before {
+		content: '';
+		display: inline-block;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: #3fb950;
+		margin-right: 8px;
+		vertical-align: 1px;
+	}
 	.links {
 		display: flex;
 		gap: 18px;
 		flex-wrap: wrap;
+		align-items: flex-start;
 	}
 	.links .navl {
 		padding: 8px 0;

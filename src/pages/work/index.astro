@@ -1,7 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
-import { PROJECTS } from '../../data/site';
+import { PROJECTS, REPOS, SITE } from '../../data/site';
+
+const LANG: Record<string, string> = { TypeScript: '#5B9BEA', JavaScript: '#E8CB3A' };
 
 const groups = ['Company', 'Products', 'Building'] as const;
 ---
@@ -26,4 +28,74 @@ const groups = ['Company', 'Products', 'Building'] as const;
 			</section>
 		))
 	}
+	<section style="padding-top: 48px">
+		<h2 class="lbl">Open source</h2>
+		<div class="repos">
+			{
+				REPOS.map((r) => (
+					<a href={`${SITE.github}/${r.name}`} class="repo" target="_blank" rel="noopener">
+						<span class="mono" style="color: var(--mut)">ShahariarNiloy /</span>
+						<span class="rn">{r.name}</span>
+						{r.desc && <span class="rd">{r.desc}</span>}
+						<span class="rm mono">
+							<span><i class="rdot" style={`background:${LANG[r.lang] ?? 'var(--mut)'}`} />{r.lang}</span>
+							<span>★ {r.stars}</span>
+						</span>
+					</a>
+				))
+			}
+		</div>
+		<a href={SITE.github} class="ilink more-link" style="margin-top: 16px" target="_blank" rel="noopener">Everything else on GitHub ↗</a>
+	</section>
 </Base>
+
+<style>
+	.repos {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 12px;
+	}
+	.repo {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: 18px;
+		border: 1px solid var(--line);
+		border-radius: 14px;
+		background: var(--card);
+		text-decoration: none;
+		transition: border-color 0.25s;
+	}
+	.repo:hover {
+		border-color: var(--line2);
+	}
+	.rn {
+		color: var(--fg);
+		font-weight: 500;
+		overflow-wrap: anywhere;
+	}
+	.rd {
+		color: var(--mut);
+		font-size: 14px;
+		line-height: 1.5;
+	}
+	.rm {
+		display: flex;
+		gap: 16px;
+		color: var(--mut);
+		margin-top: auto;
+		padding-top: 6px;
+	}
+	.rdot {
+		display: inline-block;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		margin-right: 6px;
+	}
+	@media (max-width: 640px) {
+		.repos {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

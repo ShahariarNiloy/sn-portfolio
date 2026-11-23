@@ -11,10 +11,12 @@ export const SITE = {
 export const NAV = [
 	{ href: '/work', label: 'Work' },
 	{ href: '/stack', label: 'Stack' },
-	{ href: '/writing', label: 'Writing' },
 	{ href: '/experience', label: 'Experience' },
 	{ href: '/#contact', label: 'Contact' },
 ];
+
+/** The personal page, set apart in the nav. */
+export const OFF_THE_CLOCK = { href: '/writing', label: 'Off the clock' };
 
 export type Project = {
 	slug: string;
@@ -83,7 +85,7 @@ export const HIGHLIGHTS = [
 export const STACK_GRID: Record<string, [string, string, string, string, boolean?]> = {
 	'2,0': ['Js', 'JavaScript', '#E8CB3A', 'lang'],
 	'4,0': ['No', 'Node.js', '#6CC24A', 'runtime'],
-	'6,0': ['S3', 'AWS S3', '#F29D38', 'cloud'],
+	'6,0': ['S3', 'AWS S3', '#F29D38', 'storage'],
 	'1,1': ['Rs', 'Rust', '#DEA584', 'learning', true],
 	'3,1': ['Re', 'React', '#61DAFB', 'library'],
 	'5,1': ['Nx', 'Next.js', 'var(--fg)', 'framework'],
@@ -98,4 +100,14 @@ export const STACK_GRID: Record<string, [string, string, string, string, boolean
 	'5,3': ['Tw', 'Tailwind CSS', '#38BDF8', 'css'],
 	'7,3': ['Lh', 'Lighthouse', '#FF7A66', 'audit'],
 	'4,4': ['Rd', 'Redis', '#FF4D4D', 'cache'],
+	'8,1': ['Vc', 'Vercel', 'var(--fg)', 'deploy'],
+	'1,4': ['Cf', 'Cloudflare', '#F38020', 'edge'],
 };
+
+/** Open-source repos shown on /work. Swap these for the ones you want to feature. */
+export const REPOS: { name: string; desc?: string; lang: string; stars: number }[] = [
+	{ name: 'MERN-Workout-app', desc: 'A MERN-stack workout list with JWT authentication.', lang: 'JavaScript', stars: 2 },
+	{ name: 'DataTable-AntD-Typescript', desc: 'A custom data table built with Ant Design and Axios.', lang: 'TypeScript', stars: 1 },
+	{ name: 'Ecommerce-Admin-NextJS', lang: 'TypeScript', stars: 1 },
+	{ name: 'Chat-App', lang: 'TypeScript', stars: 1 },
+];

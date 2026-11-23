@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+
+const groups: { title: string; rows: [string, string][] }[] = [
+	{
+		title: 'Hardware',
+		rows: [
+			['Computer', '[LAPTOP OR DESKTOP]'],
+			['Display', '[MONITOR]'],
+			['Keyboard', '[KEYBOARD]'],
+			['Mouse', '[MOUSE OR TRACKPAD]'],
+			['Audio', '[HEADPHONES]'],
+		],
+	},
+	{
+		title: 'Editor & terminal',
+		rows: [
+			['Editor', '[EDITOR]'],
+			['Theme', '[THEME]'],
+			['Font', '[FONT]'],
+			['Terminal', '[TERMINAL AND SHELL]'],
+			['AI', '[AI TOOLS YOU USE]'],
+		],
+	},
+	{
+		title: 'Development',
+		rows: [
+			['Browser', '[BROWSER]'],
+			['Performance', 'Lighthouse and Chrome DevTools'],
+			['Everyday tools', '<a href="https://utilyx.dev" class="ilink" target="_blank" rel="noopener">utilyx.dev</a> — my own, so I use it the most'],
+			['API client', '[API CLIENT]'],
+		],
+	},
+	{
+		title: 'Everything else',
+		rows: [
+			['Notes', '[NOTES APP]'],
+			['Design', '[DESIGN TOOL]'],
+			['Desk', '[ANYTHING ELSE WORTH MENTIONING]'],
+		],
+	},
+];
+---
+
+<Base title="Uses — Shahariar Niloy" description="The hardware, software and small tools Shahariar Niloy uses every day." current="/uses">
+	<PageHead title="Uses" lede="The hardware, software and small tools I use every day. People ask; this is the list." />
+	<span class="ustamp">Updated 23 Nov 2026</span>
+	{
+		groups.map((g, i) => (
+			<section style={`padding-top:${i === 0 ? 48 : 56}px`}>
+				<h2 class="lbl">{g.title}</h2>
+				<dl class="nrows">
+					{g.rows.map(([k, v]) => (
+						<div class="nrow">
+							<dt class="nk">{k}</dt>
+							<dd class="nv" set:html={v} />
+						</div>
+					))}
+				</dl>
+			</section>
+		))
+	}
+</Base>

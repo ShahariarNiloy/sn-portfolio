@@ -1,0 +1,176 @@
+---
+import { PROJECTS, HIGHLIGHTS, SITE } from '../data/site';
+
+// [label, href, group]
+const items: [string, string, string][] = [
+	['Home', '/', 'Page'],
+	['Work', '/work', 'Page'],
+	['Stack', '/stack', 'Page'],
+	['Experience', '/experience', 'Page'],
+	['Now', '/now', 'Page'],
+	['Uses', '/uses', 'Page'],
+	['Off the clock — notes and wall', '/writing', 'Personal'],
+	...PROJECTS.map((p) => [p.name, `/work/${p.slug}`, 'Project'] as [string, string, string]),
+	...HIGHLIGHTS.map((h) => [h.title, `/highlights/${h.slug}`, 'Highlight'] as [string, string, string]),
+	['Email me', `mailto:${SITE.email}`, 'Contact'],
+	['GitHub', SITE.github, 'Contact'],
+	['LinkedIn', SITE.linkedin, 'Contact'],
+];
+---
+
+<div class="kov" hidden data-k={JSON.stringify(items)}>
+	<div class="kbox" role="dialog" aria-modal="true" aria-label="Jump to a page">
+		<input class="kin" type="text" placeholder="Jump to a page…" aria-label="Search pages" autocomplete="off" />
+		<ul class="klist" role="listbox" aria-label="Pages"></ul>
+		<div class="kft"><span>↑ ↓ move</span><span>↵ open</span><span>esc close</span></div>
+	</div>
+</div>
+
+<script>
+	const ov = document.querySelector<HTMLElement>('.kov')!;
+	const inp = ov.querySelector<HTMLInputElement>('.kin')!;
+	const ul = ov.querySelector<HTMLUListElement>('.klist')!;
+	const K: [string, string, string][] = JSON.parse(ov.dataset.k || '[]');
+	let sel = 0;
+	let shown = K;
+	let last: Element | null = null;
+
+	const esc = (t: string) => t.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
+	function draw() {
+		const q = inp.value.toLowerCase();
+		shown = K.filter((k) => `${k[0]} ${k[2]}`.toLowerCase().includes(q));
+		if (sel >= shown.length) sel = 0;
+		ul.innerHTML =
+			shown.map((k, i) => `<li role="option" aria-selected="${i === sel}" data-i="${i}"><span>${esc(k[0])}</span><span class="kg">${k[2]}</span></li>`).join('') ||
+			'<li class="kno">No page matches</li>';
+		ul.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest' });
+	}
+	function open() {
+		last = document.activeElement;
+		ov.hidden = false;
+		inp.value = '';
+		sel = 0;
+		draw();
+		inp.focus();
+	}
+	function close() {
+		ov.hidden = true;
+		(last as HTMLElement | null)?.focus?.();
+	}
+	function go(i: number) {
+		const k = shown[i];
+		if (!k) return;
+		close();
+		if (/^https?:/.test(k[1])) window.open(k[1], '_blank', 'noopener');
+		else location.href = k[1];
+	}
+
+	inp.addEventListener('input', () => {
+		sel = 0;
+		draw();
+	});
+	inp.addEventListener('keydown', (e) => {
+		if (e.key === 'ArrowDown') {
+			sel = Math.min(sel + 1, shown.length - 1);
+			draw();
+			e.preventDefault();
+		} else if (e.key === 'ArrowUp') {
+			sel = Math.max(sel - 1, 0);
+			draw();
+			e.preventDefault();
+		} else if (e.key === 'Enter') go(sel);
+		else if (e.key === 'Tab') e.preventDefault();
+	});
+	ul.addEventListener('click', (e) => {
+		const li = (e.target as Element).closest('li[data-i]');
+		if (li) go(Number(li.getAttribute('data-i')));
+	});
+	ov.addEventListener('mousedown', (e) => {
+		if (e.target === ov) close();
+	});
+	window.addEventListener('keydown', (e) => {
+		if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+			e.preventDefault();
+			ov.hidden ? open() : close();
+		} else if (e.key === 'Escape' && !ov.hidden) close();
+	});
+	document.querySelectorAll('[data-openk]').forEach((b) => b.addEventListener('click', open));
+</script>
+
+<style is:global>
+	.kov {
+		position: fixed;
+		inset: 0;
+		z-index: 100;
+		background: rgba(5, 6, 8, 0.6);
+		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(6px);
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		padding: 14vh 16px 0;
+	}
+	.kov[hidden] {
+		display: none;
+	}
+	.kbox {
+		width: min(560px, 100%);
+		background: #0f1013;
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		border-radius: 16px;
+		box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+		overflow: hidden;
+		animation: rise 0.25s ease both;
+	}
+	.kin {
+		width: 100%;
+		box-sizing: border-box;
+		border: 0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+		background: transparent;
+		color: #edeef0;
+		font: inherit;
+		font-size: 16px;
+		padding: 18px 20px;
+		outline: none;
+	}
+	.klist {
+		list-style: none;
+		margin: 0;
+		padding: 6px;
+		max-height: 340px;
+		overflow: auto;
+	}
+	.klist li {
+		display: flex;
+		justify-content: space-between;
+		gap: 12px;
+		padding: 11px 14px;
+		border-radius: 9px;
+		color: #c9cbd1;
+		font-size: 14px;
+		cursor: pointer;
+	}
+	.klist li[aria-selected='true'] {
+		background: rgba(255, 255, 255, 0.06);
+		color: #edeef0;
+	}
+	.klist .kg {
+		font-family: var(--mono);
+		font-size: 11px;
+		color: #8a8f98;
+	}
+	.klist .kno {
+		color: #8a8f98;
+		cursor: default;
+	}
+	.kft {
+		display: flex;
+		gap: 16px;
+		padding: 10px 20px;
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+		font-family: var(--mono);
+		font-size: 11px;
+		color: #8a8f98;
+	}
+</style>

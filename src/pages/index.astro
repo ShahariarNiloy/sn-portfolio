@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Illustration from '../components/Illustration.astro';
-import StackGrid from '../components/StackGrid.astro';
+import StackSentence from '../components/StackSentence.astro';
 import { Image } from 'astro:assets';
 import { SITE, PROJECTS, HIGHLIGHTS } from '../data/site';
 import { ILL } from '../lib/illustrations';
@@ -54,7 +54,7 @@ import avatar from '../assets/avatar.png';
 			<li><span>→</span><span>Redesigning <b>utilyx.dev</b> and adding a set of SEO tools.</span></li>
 			<li><span>→</span><span>Learning <b>Rust</b> and <b>Go</b> for even lighter tools.</span></li>
 		</ul>
-		<p class="mono" style="margin: 14px 0 0; color: var(--mut)">Updated Nov 2026</p>
+		<p class="mono" style="margin: 14px 0 0; color: var(--mut)">Updated Nov 2026 · <a href="/now" class="ilink">More on the Now page →</a></p>
 	</section>
 
 	<section id="highlights" class="cap" aria-labelledby="cap">
@@ -93,9 +93,8 @@ import avatar from '../assets/avatar.png';
 
 	<section id="stack" aria-labelledby="s-h">
 		<h2 id="s-h" class="lbl">Stack</h2>
-		<p class="sr">Technologies I work with: React, Next.js, TypeScript, JavaScript, Node.js, PostgreSQL, Drizzle, Zustand, React Query, AWS S3, Vite, Tailwind CSS, Lighthouse and Redis; while learning, Go, Rust and WebAssembly.</p>
-		<StackGrid />
-		<div style="text-align: center"><a href="/stack" class="ilink more-link">Full stack →</a></div>
+		<StackSentence />
+		<a href="/stack" class="ilink more-link" style="margin-top: 22px">See the full stack →</a>
 	</section>
 
 	<section aria-labelledby="a-h">
@@ -117,6 +116,7 @@ import avatar from '../assets/avatar.png';
 		<p style="margin: 0; color: var(--mut); font-size: 16px">
 			Have something that should be faster? Write to <a href={`mailto:${SITE.email}`} class="ilink">{SITE.email}</a>, or find me on <a href={SITE.github} class="ilink" target="_blank" rel="noopener">GitHub</a> and <a href={SITE.linkedin} class="ilink" target="_blank" rel="noopener">LinkedIn</a>.
 		</p>
+		<p style="margin: 40px 0 0; color: var(--mut); font-size: 15px">Off the clock, I write about people and the self. <a href="/writing" class="ilink serif" style="font-style: italic; font-size: 17px">Read the notes →</a></p>
 	</section>
 </Base>
 
