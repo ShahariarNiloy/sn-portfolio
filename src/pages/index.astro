@@ -103,10 +103,7 @@ const more = 'inline-block mt-5 py-1.5';
 		<SectionLabel id="contact-h">Contact</SectionLabel>
 		<ContactLine sentence={home.contact} email={site.email} github={site.github} linkedin={site.linkedin} />
 		<p class="mt-10 mb-0 text-sm text-mut">
-			{home.offTheClock}{' '}
-			<Link href="/off-the-clock" class="font-serif text-base italic">
-				Read the notes →
-			</Link>
+			{home.offTheClock} <Link href="/off-the-clock">Read the notes →</Link>
 		</p>
 	</section>
 </BaseLayout>

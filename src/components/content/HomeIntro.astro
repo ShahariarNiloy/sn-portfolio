@@ -1,9 +1,9 @@
 ---
 /**
  * HomeIntro — Home's hero: the title, the round avatar the intro text wraps
- * around, and the facts row. The only animated block on Home. The avatar is
- * served whole at its native size as AVIF: WebP halves colour resolution, which
- * smears the glasses, and pre-shrunk copies lose detail under the 150% zoom.
+ * around, and the facts row. The only animated block on Home. The avatar
+ * file is cropped to what the circle shows and served at its native 258 px (2.7×)
+ * as AVIF: WebP halves colour resolution, which smears the glasses.
  */
 import { Image } from 'astro:assets';
 
@@ -35,7 +35,7 @@ const { title, intro, facts, name } = Astro.props;
 				quality={90}
 				loading="eager"
 				fetchpriority="high"
-				class="block size-24 origin-top scale-150 object-cover object-top"
+				class="block size-24"
 			/>
 		</span>
 		<p class="m-0 text-base leading-relaxed text-mut">
