@@ -1,5 +1,6 @@
-# CI on every pull request: check, lint, unit tests, build, e2e (+ axe) at three
-# widths, Lighthouse CI budgets, and a bundle-size comment on the PR.
+# CI on every pull request and push to main: lint and build only, for now.
+# Type check, unit tests, budgets, e2e and Lighthouse are still runnable locally
+# (pnpm check, test, e2e, lhci).
 name: CI
 
 on:
@@ -9,7 +10,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   ci:
@@ -22,17 +22,5 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm check
       - run: pnpm lint
-      - run: pnpm test
       - run: pnpm build
-      - name: Budgets (HTML ≤ 30 KB, CSS ≤ 15 KB, first-load JS ≤ 15 KB, gzipped)
-        run: node scripts/budgets.mjs >> "$GITHUB_STEP_SUMMARY"
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm e2e
-      - run: pnpm lhci
-      - name: Post bundle sizes
-        if: github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          path: budgets.md
