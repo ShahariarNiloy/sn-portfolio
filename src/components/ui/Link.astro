@@ -1,0 +1,46 @@
+---
+/**
+ * Link — every text link. `inline` links get the hairline underline used in prose;
+ * external links open in a new tab, say so to screen readers and show an ↗ icon.
+ */
+import { cx } from '@/lib/cx';
+import { isExternalHref } from '@/lib/format';
+
+import Icon from './Icon.astro';
+
+export interface Props {
+	href: string;
+	/** Forces external treatment; defaults to true for http(s) URLs. */
+	external?: boolean | undefined;
+	/** `inline` for links inside text, `plain` when the parent styles it. */
+	variant?: 'inline' | 'plain' | 'muted' | undefined;
+	/** Text for the link when no slot is given. */
+	text?: string | undefined;
+	class?: string | undefined;
+}
+
+const { href, external = isExternalHref(href), variant = 'inline', text, class: className } = Astro.props;
+const slotText = Astro.slots.has('default') ? await Astro.slots.render('default') : (text ?? '');
+// Copy that already ends with ↗ keeps its own arrow.
+const showArrow = external && !slotText.trim().endsWith('↗');
+// "Read more" alone doesn't say where it goes; screen readers and search engines get the destination too.
+const isGeneric = /^read more$/i.test(slotText.trim());
+const destination = href.split(/[/#]/).filter(Boolean).at(-1)?.replace(/-/g, ' ');
+---
+
+<a
+	href={href}
+	class={cx(
+		variant === 'inline' && 'link-inline',
+		variant === 'muted' && 'text-mut no-underline transition-colors duration-200 hover:text-fg',
+		variant === 'plain' && 'no-underline',
+		className,
+	)}
+	target={external ? '_blank' : undefined}
+	rel={external ? 'noopener noreferrer' : undefined}
+>
+	<Fragment set:html={slotText} />
+	{showArrow && <Icon name="arrow-up-right" size={14} class="ml-0.5 inline-block align-baseline opacity-80" />}
+	{isGeneric && destination && <span class="sr-only"> about {destination}</span>}
+	{external && <span class="sr-only"> (opens in a new tab)</span>}
+</a>

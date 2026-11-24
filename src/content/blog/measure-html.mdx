@@ -1,0 +1,33 @@
+---
+title: 'Measure the HTML, not just the bundle'
+summary: 'What I learned from sending each page only the translations it actually uses.'
+topic: performance
+status: published
+# TODO(owner): confirm the publish date (the mockup has none; set to launch day).
+publishedOn: 2026-11-24
+illustration: measure-html
+related:
+  href: '/highlights/localization'
+  label: 'Case study: Only the words a page needs'
+# TODO(owner): approve — `order` (not in the PRD schema) keeps the mockup order for lists and "Next post".
+order: 4
+---
+
+We all watch JavaScript bundle size. Far fewer people watch what’s embedded **inside the HTML** — and that’s often what arrives before the page can render.
+
+## The hidden cost
+
+In a multilingual app, interactive components need their text on the very first render. The easy fix is to embed the whole translation dictionary in every page. It works, and it quietly puts tens of kilobytes of compressed text into every response — to show a few hundred strings.
+
+## Send only what the page uses
+
+- **Find the words at build time** by reading the code with the TypeScript compiler and following every import.
+- **Pick them per request**, keeping only the keys that exist in that language.
+- **Inherit instead of copying**: nested providers link to their parent through the prototype chain.
+- **Send the rest later**, after load and at idle, from a content-hashed URL browsers can cache for a year.
+
+## The mistake
+
+My first version _preloaded_ the full dictionary at low priority. On a throttled phone it still competed with the largest image and pushed Largest Contentful Paint back by more than a second and a half. After load, at idle, the cost disappeared.
+
+> The bytes that arrive before the page can render matter most — and they’re the easiest to forget.

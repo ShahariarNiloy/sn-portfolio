@@ -1,0 +1,32 @@
+---
+/**
+ * Steps — a numbered list of cards ("01 Find the words at build time …"),
+ * used in case studies. Titles and bodies accept inline Markdown.
+ */
+import Inline from '@/components/ui/Inline.astro';
+import { padIndex } from '@/lib/format';
+
+export interface Props {
+	items: { title: string; body: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="m-0 flex list-none flex-col gap-3 p-0">
+	{items.map((step, i) => (
+		<li class="grid grid-cols-icon gap-3 rounded-xl border border-line bg-card p-4">
+			<span class="pt-0.5 font-mono text-xs text-acc" aria-hidden="true">
+				{padIndex(i + 1)}
+			</span>
+			<div>
+				<b class="mb-1 block font-semibold tracking-tight text-head">
+					<Inline text={step.title} />
+				</b>
+				<span class="text-sm leading-relaxed text-mut">
+					<Inline text={step.body} />
+				</span>
+			</div>
+		</li>
+	))}
+</ol>

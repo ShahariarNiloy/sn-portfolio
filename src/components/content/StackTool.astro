@@ -1,0 +1,32 @@
+---
+/**
+ * StackTool — one technology inline in Home's stack sentences: its brand logo
+ * (16 px, brand colour) and its name. Any punctuation that follows is passed in
+ * and kept on the same line, so a comma never starts a new line.
+ */
+import type { CollectionEntry } from 'astro:content';
+
+import Icon from '@/components/ui/Icon.astro';
+import type { IconName } from '@/components/ui/icons';
+
+export interface Props {
+	item: CollectionEntry<'stack'>;
+	/** Display text when it differs from the item name ("Tailwind"). */
+	text?: string | undefined;
+	/** Punctuation right after the name (",", "'s", "."), kept on the same line. */
+	trailing?: string | undefined;
+}
+
+const { item, text, trailing = '' } = Astro.props;
+---
+
+<span class="mx-1 inline-flex items-baseline gap-2 whitespace-nowrap">
+	{/* self-center keeps the logo in the middle of the line; the name alone sets the baseline. */}
+	<span class="stack-logo self-center" style={`--h: ${item.data.logoColour}`}>
+		<Icon name={item.data.icon as IconName} />
+	</span>
+	<span>
+		<span class="font-medium text-fg">{text ?? item.data.name}</span>
+		{trailing}
+	</span>
+</span>

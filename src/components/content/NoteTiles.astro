@@ -1,0 +1,29 @@
+---
+/**
+ * NoteTiles — visitors' notes as bento tiles on /guestbook, in rows of two:
+ * half + half, then narrow + wide. A note left alone in the last row fills it.
+ * Notes render as plain text, never HTML.
+ */
+import { cx } from '@/lib/cx';
+import { parseUtcTimestamp } from '@/lib/format';
+import type { Note } from '@/lib/guestbook/db';
+
+import NoteByline from './NoteByline.astro';
+
+export interface Props {
+	/** Newest first. */
+	notes: Note[];
+}
+
+const { notes } = Astro.props;
+const SPANS = ['sm:col-span-3', 'sm:col-span-3', 'sm:col-span-2', 'sm:col-span-4'] as const;
+const isAlone = (i: number): boolean => i === notes.length - 1 && i % 2 === 0;
+const isWide = (i: number): boolean => i % 4 === 3 || isAlone(i);
+---
+
+{notes.map((note, i) => (
+	<figure class={cx('m-0 flex min-w-0 flex-col justify-between gap-4 rounded-xl border border-line bg-card p-5', isAlone(i) ? 'sm:col-span-6' : SPANS[i % 4])}>
+		<p class={cx('m-0 leading-relaxed wrap-anywhere text-fg', isWide(i) ? 'text-lg' : 'text-base')}>{note.body}</p>
+		<NoteByline githubId={note.githubId} name={note.githubName} date={parseUtcTimestamp(note.createdAt)} />
+	</figure>
+))}

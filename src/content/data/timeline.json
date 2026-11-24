@@ -1,0 +1,128 @@
+[
+	{
+		"id": "01",
+		"year": "1998 – 2017",
+		"title": "Childhood and school",
+		"kind": "life",
+		"body": "Learned to walk early and never really stopped. Long walks are still where most of my ideas show up, usually right after I've left my notebook at home."
+	},
+	{
+		"id": "02",
+		"year": "1998 – 2017",
+		"month": "Sep",
+		"title": "Started a BSc at East West University",
+		"kind": "education",
+		"body": "Computer Science & Engineering, in Dhaka."
+	},
+	{
+		"id": "03",
+		"year": "2022",
+		"month": "Feb",
+		"title": "BSc in Computer Science & Engineering · East West University",
+		"kind": "education",
+		"body": "Graduated, majoring in software engineering, with research in machine learning."
+	},
+	{
+		"id": "04",
+		"year": "2022",
+		"month": "Feb",
+		"title": "Software Engineering Intern · Sheba Technologies",
+		"kind": "role",
+		"body": ""
+	},
+	{
+		"id": "05",
+		"year": "2022",
+		"month": "May",
+		"title": "Junior Software Engineer · Sheba Technologies",
+		"kind": "role",
+		"body": "Built the learning platforms for BRAC, one of the world's largest NGOs: BRAC Career Hub, Shikkhasheba, the BRAC Institute of Skills Development and the BRAC Educational Platform. Built a touchless attendance system's admin panel from scratch, and introduced TypeScript across the codebase."
+	},
+	{
+		"id": "06",
+		"year": "2022",
+		"month": "Sep",
+		"title": "Paper presented · IEEE ICIRCA 2022",
+		"kind": "research",
+		"body": "First author, on recognising Bangla handwritten characters. Presented in Coimbatore, India."
+	},
+	{
+		"id": "07",
+		"year": "2022",
+		"month": "Dec",
+		"title": "Paper published on IEEE Xplore",
+		"kind": "research",
+		"body": "99.06% accuracy on Bangla letters. [Read more](/highlights/research)"
+	},
+	{
+		"id": "08",
+		"year": "2023",
+		"month": "Mar",
+		"title": "IBM — Developing Front-End Apps with React",
+		"kind": "certificate",
+		"body": ""
+	},
+	{
+		"id": "09",
+		"year": "2023",
+		"month": "Aug",
+		"title": "Meta Front-End Developer certificate",
+		"kind": "certificate",
+		"body": ""
+	},
+	{
+		"id": "10",
+		"year": "2023",
+		"month": "Oct",
+		"title": "Junior Software Engineer · Adventure Dhaka Limited",
+		"kind": "role",
+		"body": "Joined the team behind [adventure.inc](/work/adventure-inc), a travel booking platform in 26 languages."
+	},
+	{
+		"id": "11",
+		"year": "2024",
+		"month": "Jul",
+		"title": "Best Employee of the Year · FY 2023–24",
+		"kind": "award",
+		"body": "Adventure Dhaka Limited"
+	},
+	{
+		"id": "12",
+		"year": "2024",
+		"month": "Oct",
+		"title": "Software Engineer · Adventure Dhaka Limited",
+		"kind": "role",
+		"body": "Search module, the unified property module and [performance work](/highlights/performance)."
+	},
+	{
+		"id": "13",
+		"year": "2025",
+		"month": "Jan",
+		"title": "Best Flexible Employee · FY 2024–25",
+		"kind": "award",
+		"body": "Adventure Dhaka Limited"
+	},
+	{
+		"id": "14",
+		"year": "2025",
+		"month": "Oct",
+		"title": "Senior Software Engineer · Adventure Dhaka Limited",
+		"kind": "role",
+		"body": "Head of the frontend department. [Memory audit](/highlights/taming-memory), [SEO across 26 languages](/highlights/seo) and flight search."
+	},
+	{
+		"id": "15",
+		"year": "2026",
+		"month": "Jan",
+		"title": "Best Employee of the Year · FY 2025–26",
+		"kind": "award",
+		"body": "Adventure Dhaka Limited, for the second time."
+	},
+	{
+		"id": "16",
+		"year": "2026",
+		"title": "Building and learning",
+		"kind": "now",
+		"body": "Senior Software Engineer at Adventure Dhaka Limited, building [Repo Galaxy](/work/repo-galaxy), and learning Rust and Go."
+	}
+]

@@ -1,0 +1,66 @@
+---
+/**
+ * ModerationList — one section of /guestbook/admin: notes in one state, each with
+ * the decisions that state allows. Plain form POSTs to /api/guestbook/moderate.
+ * Deleting hides behind a <details>, so it always takes a second, deliberate step.
+ */
+import Button from '@/components/ui/Button.astro';
+import SectionLabel from '@/components/ui/SectionLabel.astro';
+import { formatDay, parseUtcTimestamp } from '@/lib/format';
+import type { Note } from '@/lib/guestbook/db';
+import type { ModerationDecision, NoteStatus } from '@/lib/guestbook/schema';
+
+export interface Props {
+	title: string;
+	status: NoteStatus;
+	notes: Note[];
+}
+
+const { title, status, notes } = Astro.props;
+const DECISIONS: Record<NoteStatus, { label: string; value: ModerationDecision; isPrimary: boolean }[]> = {
+	pending: [
+		{ label: 'Approve', value: 'approved', isPrimary: true },
+		{ label: 'Reject', value: 'rejected', isPrimary: false },
+	],
+	approved: [{ label: 'Remove from wall', value: 'rejected', isPrimary: false }],
+	rejected: [{ label: 'Put on the wall', value: 'approved', isPrimary: false }],
+};
+---
+
+<section class="pt-12">
+	<SectionLabel>
+		{title} · {notes.length}
+	</SectionLabel>
+	{notes.length === 0 && <p class="m-0 text-mut">None.</p>}
+	<ul class="m-0 flex list-none flex-col gap-3 p-0">
+		{notes.map((note) => (
+			<li class="rounded-xl border border-line bg-card p-4">
+				<p class="m-0 wrap-anywhere text-fg">{note.body}</p>
+				<p class="mt-2 mb-3 font-mono text-xs text-mut">
+					{note.githubName} · {formatDay(parseUtcTimestamp(note.createdAt))}
+				</p>
+				<form method="post" action="/api/guestbook/moderate" class="flex flex-wrap items-start gap-2">
+					<input type="hidden" name="id" value={note.id} />
+					{DECISIONS[status].map((d) => (
+						<Button type="submit" variant={d.isPrimary ? 'primary' : 'ghost'} name="status" value={d.value}>
+							{d.label}
+						</Button>
+					))}
+					{status === 'rejected' && (
+						<details>
+							<summary class="inline-flex min-h-11 cursor-pointer list-none items-center px-4 text-sm text-mut transition-colors duration-200 ease-out hover:text-fg">
+								Delete…
+							</summary>
+							<div class="flex flex-wrap items-center gap-3 px-4">
+								<span class="text-sm text-bad">This can't be undone.</span>
+								<Button type="submit" name="status" value="deleted">
+									Delete permanently
+								</Button>
+							</div>
+						</details>
+					)}
+				</form>
+			</li>
+		))}
+	</ul>
+</section>

@@ -1,0 +1,32 @@
+---
+title: 'Motion with manners'
+summary: 'A calm motion system: short transitions, no bounce, and reduced motion respected everywhere.'
+topic: lighter-ui
+status: published
+# TODO(owner): confirm the publish date (the mockup has none; set to launch day).
+publishedOn: 2026-11-24
+illustration: motion-with-manners
+related:
+  href: '/highlights/design-system'
+  label: 'Case study: A lighter design system'
+# TODO(owner): approve — `order` (not in the PRD schema) keeps the mockup order for lists and "Next post".
+order: 7
+---
+
+Good motion explains a change — where a surface came from, what was selected, what was added. Bad motion just makes people wait.
+
+## Principles
+
+- **Purposeful.** Nothing animates for decoration.
+- **Brief.** Every component transition is 300 ms or less, and exits are faster than entrances.
+- **Never in the way.** Controls work during transitions, and surfaces can reverse mid-flight.
+- **Spatially consistent.** Menus grow from their trigger; sheets slide in from their edge and leave the same way.
+- **Never bouncy.** Curves decelerate into place without overshoot.
+
+## Tokens, not magic numbers
+
+Durations, easings and distances live in tokens. Components pick a role — popover, dialog, sheet — instead of raw values, so every surface of a kind moves the same way.
+
+## Reduced motion
+
+When someone asks for reduced motion, movement and scaling become fades while timing stays the same, so callbacks and timers still line up. Autoplay and shimmer stop; drags still follow the pointer.

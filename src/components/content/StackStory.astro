@@ -1,0 +1,48 @@
+---
+/**
+ * StackStory — Home's stack, written as short paragraphs with `{id}` tokens that
+ * render as a brand logo and the tool's name.
+ */
+import type { CollectionEntry } from 'astro:content';
+
+import StackTool from './StackTool.astro';
+
+export interface Props {
+	paragraphs: string[];
+	items: CollectionEntry<'stack'>[];
+}
+
+const { paragraphs, items } = Astro.props;
+// The sentence uses a shorter name than the stack row in one place.
+const TOOL_TEXT: Record<string, string> = { 'tailwind-css': 'Tailwind' };
+// Punctuation that must stay on the tool's line: , . ; : and a possessive 's.
+const TRAILING = /^(?:[,.;:!?]|['’]s)+/;
+
+type Piece = { text: string } | { item: CollectionEntry<'stack'>; text: string | undefined; trailing: string };
+
+const pieces = paragraphs.map((p) => {
+	const out: Piece[] = [];
+	for (const part of p.split(/(\{[a-z0-9-]+\})/)) {
+		const id = /^\{([a-z0-9-]+)\}$/.exec(part)?.[1];
+		if (!id) {
+			const last = out.at(-1);
+			const trailing = last && 'item' in last ? (TRAILING.exec(part)?.[0] ?? '') : '';
+			if (last && 'item' in last) last.trailing = trailing;
+			out.push({ text: part.slice(trailing.length) });
+			continue;
+		}
+		const item = items.find((i) => i.id === id);
+		if (!item) throw new Error(`Stack story mentions unknown item: ${id}`);
+		out.push({ item, text: TOOL_TEXT[id], trailing: '' });
+	}
+	return out;
+});
+---
+
+<div class="text-base leading-loose text-mut">
+	{pieces.map((parts, i) => (
+		<p class={i === 0 ? 'm-0' : 'mt-6 mb-0'}>
+			{parts.map((part) => ('item' in part ? <StackTool item={part.item} text={part.text} trailing={part.trailing} /> : part.text))}
+		</p>
+	))}
+</div>

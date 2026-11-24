@@ -1,0 +1,24 @@
+---
+/**
+ * KeyValueRows — "label · value" rows used on /now and /uses. Values accept
+ * inline Markdown; **bold** is medium weight.
+ */
+import Inline from '@/components/ui/Inline.astro';
+
+export interface Props {
+	rows: { label: string; value: string }[];
+}
+
+const { rows } = Astro.props;
+---
+
+<dl class="m-0 border-b border-line">
+	{rows.map((r) => (
+		<div class="grid grid-cols-1 gap-1 border-t border-line py-4 sm:grid-cols-label sm:gap-4">
+			<dt class="pt-0.5 font-mono text-xs text-mut">{r.label}</dt>
+			<dd class="m-0 leading-relaxed text-mut">
+				<Inline text={r.value} />
+			</dd>
+		</div>
+	))}
+</dl>

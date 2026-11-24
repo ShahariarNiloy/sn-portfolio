@@ -1,0 +1,72 @@
+---
+/**
+ * PageLayout — an inner page: breadcrumb, title (or a custom `title` slot),
+ * optional badge and lede, then the page's sections in the content column.
+ * The title block is the only part that animates in.
+ */
+import Breadcrumb from '@/components/layout/Breadcrumb.astro';
+import type { NavSection } from '@/components/layout/Nav.astro';
+import Inline from '@/components/ui/Inline.astro';
+import Pill from '@/components/ui/Pill.astro';
+import { stripInline, type Crumb } from '@/lib/seo';
+
+import BaseLayout from './BaseLayout.astro';
+
+export interface Props {
+	/** Visible h1 text, also the page's <title> unless `seoTitle` is set. */
+	title: string;
+	seoTitle?: string | undefined;
+	/** Lede under the title; inline Markdown allowed. */
+	lede?: string | undefined;
+	/** Meta description; defaults to the lede. */
+	description?: string | undefined;
+	/** Trail between Home and this page, e.g. [{ label: 'Work', href: '/work' }]. */
+	trail?: Crumb[] | undefined;
+	/** Last breadcrumb label when it isn't the title (a post shows its topic). */
+	crumbLabel?: string | undefined;
+	badge?: string | undefined;
+	/** Adds a dashed Draft pill after the title (dev builds only). */
+	isDraft?: boolean | undefined;
+	active?: NavSection | undefined;
+	jsonLd?: Record<string, unknown>[] | undefined;
+	ogType?: 'website' | 'article' | undefined;
+	noindex?: boolean | undefined;
+}
+
+const { title, seoTitle, lede, description, trail = [], crumbLabel, badge, isDraft = false, active, jsonLd, ogType, noindex } = Astro.props;
+const crumbs: Crumb[] = [{ label: 'Home', href: '/' }, ...trail, { label: crumbLabel ?? title }];
+---
+
+<BaseLayout
+	title={seoTitle ?? title}
+	description={description ?? (lede ? stripInline(lede) : undefined)}
+	active={active}
+	crumbs={crumbs}
+	jsonLd={jsonLd}
+	ogType={ogType}
+	noindex={noindex}
+>
+	<section class="pt-12 motion-safe:animate-rise sm:pt-16">
+		<Breadcrumb items={crumbs} />
+		{Astro.slots.has('title') ? (
+			<slot name="title" />
+		) : (
+			<h1 class="mt-4 mb-0 text-3xl leading-tight font-semibold tracking-tight text-head sm:text-4xl">
+				{title}
+				{badge && <Pill class="ml-1">{badge}</Pill>}
+				{isDraft && (
+					<Pill dashed class="ml-2">
+						Draft
+					</Pill>
+				)}
+			</h1>
+		)}
+		{lede && (
+			<p class="mt-4 mb-0 text-base leading-relaxed text-mut">
+				<Inline text={lede} />
+			</p>
+		)}
+		<slot name="after-lede" />
+	</section>
+	<slot />
+</BaseLayout>

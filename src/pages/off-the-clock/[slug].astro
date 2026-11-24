@@ -1,0 +1,36 @@
+---
+/**
+ * /off-the-clock/[slug] — one essay on its own page, serif title, for sharing.
+ * Not in the mockup; follows the post layout without an illustration.
+ */
+import { render } from 'astro:content';
+
+import NextLink from '@/components/content/NextLink.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getEssays, getNext } from '@/lib/content';
+
+export async function getStaticPaths() {
+	const essays = await getEssays();
+	return essays.map((essay) => ({ params: { slug: essay.id }, props: { essay, next: getNext(essays, essay.id) } }));
+}
+
+const { essay, next } = Astro.props;
+const { Content } = await render(essay);
+---
+
+<PageLayout title={essay.data.title} description={essay.data.excerpt} trail={[{ label: 'Off the clock', href: '/off-the-clock' }]} ogType="article">
+	<h1 slot="title" class="mt-4 mb-0 font-serif text-4xl leading-tight font-normal text-head sm:text-5xl">
+		{essay.data.title}
+	</h1>
+	<article class="essay pt-12">
+		<Content />
+		<p class="mt-5 text-lg" aria-label="Signed with a peace sign">
+			✌️
+		</p>
+	</article>
+	{next && (
+		<section class="pt-16">
+			<NextLink href={`/off-the-clock/${next.id}`} kicker="Next essay" title={next.data.title} />
+		</section>
+	)}
+</PageLayout>

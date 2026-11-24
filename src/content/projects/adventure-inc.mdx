@@ -1,0 +1,73 @@
+---
+name: 'Adventure Inc'
+group: company
+lede: "A travel booking platform for flights, hotels, vacation rentals and tours in Japan, available in 26 languages. It's my employer's product, built by a whole team. This page covers the parts I owned or drove."
+url: 'https://adventure.inc'
+meta:
+  - label: 'Company'
+    value: 'Adventure Dhaka Limited'
+  - label: 'Role'
+    value: 'Senior Software Engineer'
+  - label: 'Period'
+    value: 'Oct 2023 – Present'
+  - label: 'Link'
+    value: '[adventure.inc](https://adventure.inc)'
+order: 1
+# TODO(owner): approve — the fields below are not in the PRD schema but the mockup needs them.
+badge: 'Company project'
+summary: "My employer's travel booking platform. I work on its frontend: performance, search and SEO."
+period: '2023 –'
+---
+
+import adventureHome from '@/assets/work/adventure-home.webp';
+import adventureFlights from '@/assets/work/adventure-flights.webp';
+import adventureHotels from '@/assets/work/adventure-hotels.webp';
+import adventureVacationRentals from '@/assets/work/adventure-vacation-rentals.webp';
+import adventureActivities from '@/assets/work/adventure-activities.webp';
+import adventureInsurance from '@/assets/work/adventure-insurance.webp';
+
+## Stack
+
+Next.js, React, TypeScript, tRPC, TanStack Query, Zustand and Tailwind CSS, on AWS behind a CDN.
+
+## What I worked on
+
+- **Memory and stability.** A prioritized audit of JavaScript heap out-of-memory crashes, ranked by impact, with a memory-aware health check shipped. [Read more](/highlights/taming-memory)
+- **Performance.** Lighthouse audits, lower Total Blocking Time and better Core Web Vitals. [Read more](/highlights/performance)
+- **SEO across 26 languages.** Sitemaps, hreflang and structured data. [Read more](/highlights/seo)
+- **Search.** A shared search module with per-product adapters: infinite scroll, list virtualization, map markers and batched mobile filters.
+- **One property module.** Merged separate hotel and vacation-rental code paths into a single property module.
+- **Flights.** URL architecture for one-way and round-trip routes, and constant-time filter indexing on results.
+- **A design system of my own.** Built the platform's design system from scratch, replacing a heavy component library with about half the JavaScript. Now the standard for all new UI. [Read more](/highlights/design-system)
+- **A type-safe backend-for-frontend layer** with tRPC, React Query and Zustand.
+- **Tests that hold.** 80%+ coverage with Vitest and React Testing Library.
+
+## Screens
+
+<Shot
+	src={adventureHome}
+	alt="adventure.inc homepage: a search form over a coastal photo, with tabs for flights, hotels, activities, vacation rentals and insurance"
+	caption="Home"
+/>
+
+<ShotGrid
+	items={[
+		{ src: adventureFlights, alt: 'Flight search on adventure.inc: one-way or round trip, origin, destination, dates and travellers', caption: 'Flights' },
+		{ src: adventureHotels, alt: 'Hotel search on adventure.inc: destination, check-in and check-out dates and guests', caption: 'Hotels' },
+		{ src: adventureVacationRentals, alt: 'Vacation rental search on adventure.inc: destination, dates and guests', caption: 'Vacation rentals' },
+		{ src: adventureActivities, alt: 'Activity search on adventure.inc: activity or destination and an optional date', caption: 'Activities' },
+		{ src: adventureInsurance, alt: 'Travel insurance search on adventure.inc: destination, travel dates and travellers', caption: 'Insurance' },
+	]}
+/>
+
+## By the numbers
+
+<StatGrid
+	items={[
+		{ value: 'Millions', label: 'of monthly users' },
+		{ value: '26', label: 'languages' },
+		{ value: '−20%', label: 'page load time' },
+		{ value: '95+', label: 'Lighthouse score' },
+		{ value: '80%+', label: 'test coverage' },
+	]}
+/>

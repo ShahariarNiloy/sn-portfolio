@@ -1,0 +1,34 @@
+---
+/**
+ * /work/[slug] — one project: title and lede, meta list, the MDX body (with
+ * Lighthouse rings where measured) and the next project.
+ */
+import { render } from 'astro:content';
+
+import MetaList from '@/components/content/MetaList.astro';
+import NextLink from '@/components/content/NextLink.astro';
+import { MDX_COMPONENTS } from '@/components/content/mdx';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getNext, getProjects } from '@/lib/content';
+
+export async function getStaticPaths() {
+	const projects = await getProjects();
+	return projects.map((project) => ({ params: { slug: project.id }, props: { project, next: getNext(projects, project.id) } }));
+}
+
+const { project, next } = Astro.props;
+const { Content } = await render(project);
+const isFirst = next?.data.order === 1;
+---
+
+<PageLayout title={project.data.name} lede={project.data.lede} badge={project.data.badge} trail={[{ label: 'Work', href: '/work' }]} active="work">
+	<MetaList items={project.data.meta} />
+	<div class="case">
+		<Content components={MDX_COMPONENTS} />
+	</div>
+	{next && (
+		<section class="pt-16">
+			<NextLink href={`/work/${next.id}`} kicker={isFirst ? 'Back to the start' : 'Next project'} title={next.data.name} />
+		</section>
+	)}
+</PageLayout>

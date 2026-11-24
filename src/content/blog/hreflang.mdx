@@ -1,0 +1,33 @@
+---
+title: 'hreflang without tears'
+summary: 'Dozens of languages, one URL per page, and every version pointing to its siblings.'
+topic: seo
+status: published
+# TODO(owner): confirm the publish date (the mockup has none; set to launch day).
+publishedOn: 2026-11-24
+illustration: hreflang
+related:
+  href: '/highlights/seo'
+  label: 'Case study: Found in every language'
+# TODO(owner): approve — `order` (not in the PRD schema) keeps the mockup order for lists and "Next post".
+order: 11
+---
+
+hreflang tells search engines which language version of a page to show to whom. When it’s wrong, versions compete with each other instead of pointing to each other.
+
+## The rules that matter
+
+- **One URL per page, per language** — with the locale in the URL so every version is indexable and shareable.
+- **Every version lists every sibling**, including itself. Links must be reciprocal.
+- **Canonicals point to themselves**, not to the default language. A canonical pointing elsewhere tells search engines to drop the page.
+- **Add an `x-default`** for visitors whose language you don’t serve.
+
+## Common bugs
+
+- Missing return links, so search engines ignore the whole set.
+- Duplicates indexed separately because canonical and hreflang disagree.
+- Language codes that don’t match the URL’s actual content.
+
+## Automate the check
+
+An audit tool that crawls a sample of pages and validates every hreflang set catches these before search engines do.

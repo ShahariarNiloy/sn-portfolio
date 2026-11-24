@@ -1,0 +1,42 @@
+---
+/**
+ * RingSet — one or more rows of Lighthouse rings in a card, optionally titled
+ * ("Before · …") with an arrow between sets. Used on project and highlight pages.
+ */
+import { cx } from '@/lib/cx';
+import type { Score } from '@/lib/lighthouse';
+
+import Ring from './Ring.astro';
+
+/** One row of rings, with an optional caption above it. */
+export interface RingRow {
+	title?: string;
+	scores: Score[];
+}
+
+export interface Props {
+	sets: RingRow[];
+}
+
+const { sets } = Astro.props;
+---
+
+<div class="grid max-w-full grid-cols-1 gap-1.5 rounded-xl border border-line bg-card p-5">
+	{sets.map((set, i) => (
+		<>
+			{i > 0 && (
+				<span class="justify-self-center text-lg leading-none text-mut" aria-hidden="true">
+					↓
+				</span>
+			)}
+			<div class="flex flex-col gap-3.5">
+				{set.title && <span class="font-mono text-xs text-mut">{set.title}</span>}
+				<div class={cx('grid gap-2', set.scores.length === 3 && 'grid-cols-3', set.scores.length === 4 && 'grid-cols-2 gap-y-4 sm:grid-cols-4 sm:gap-y-2')}>
+					{set.scores.map((s) => (
+						<Ring value={s.value} label={s.label} />
+					))}
+				</div>
+			</div>
+		</>
+	))}
+</div>

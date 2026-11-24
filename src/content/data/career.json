@@ -1,0 +1,24 @@
+[
+	{
+		"id": "01",
+		"company": "Adventure Dhaka Limited",
+		"href": "/work/adventure-inc",
+		"from": "2023-10",
+		"to": null,
+		"roles": [
+			{ "title": "Senior Software Engineer · Head of Frontend", "from": "2025-10", "to": null },
+			{ "title": "Software Engineer", "from": "2024-10", "to": "2025-10" },
+			{ "title": "Junior Software Engineer", "from": "2023-10", "to": "2024-10" }
+		]
+	},
+	{
+		"id": "02",
+		"company": "Sheba Technologies",
+		"from": "2022-02",
+		"to": "2023-10",
+		"roles": [
+			{ "title": "Junior Software Engineer", "from": "2022-05", "to": "2023-10" },
+			{ "title": "Software Engineering Intern", "from": "2022-02", "to": "2022-05" }
+		]
+	}
+]

@@ -1,0 +1,25 @@
+---
+/**
+ * NextLink — the "Next project / highlight / post" card at the end of an article.
+ */
+import Icon from '@/components/ui/Icon.astro';
+
+export interface Props {
+	href: string;
+	kicker: string;
+	title: string;
+}
+
+const { href, kicker, title } = Astro.props;
+---
+
+<a
+	href={href}
+	class="flex items-center justify-between gap-4 rounded-xl border border-line p-5 no-underline transition-colors duration-200 ease-out hover:border-line2 hover:bg-card"
+>
+	<span>
+		<span class="block font-mono text-xs text-mut">{kicker}</span>
+		<span class="text-lg font-semibold tracking-tight text-fg">{title}</span>
+	</span>
+	<Icon name="arrow-right" class="text-mut" />
+</a>

@@ -1,0 +1,93 @@
+---
+title: 'Zero-server tools'
+lede: "utilyx.dev is a growing set of developer tools that run entirely in your browser. The server's only job is to hand over static files — everything else happens on your machine."
+card: 'A growing set of developer tools that run entirely in your browser.'
+illustration: zero-server
+order: 5
+---
+
+<MetaList
+	items={[
+		{ label: 'Product', value: '[utilyx.dev](/work/utilyx)' },
+		{ label: 'Role', value: 'Designed and built solo' },
+		{ label: 'Stack', value: 'Next.js, TypeScript, Tailwind CSS' },
+		{ label: 'Tools', value: '50+ and growing' },
+	]}
+/>
+
+## By the numbers
+
+<StatGrid
+	columns={2}
+	items={[
+		{ value: '99', label: 'Lighthouse performance score on mobile' },
+		{ value: '0', label: 'servers doing the work' },
+		{ value: '<1 ms', label: 'for most operations' },
+		{ value: '0 bytes', label: 'of your data uploaded' },
+	]}
+/>
+
+## The problem
+
+Most online formatters, decoders and generators **send what you paste to a server**, just to format some JSON or decode a token. That adds a network round trip to every click, and the things developers paste — tokens, API responses, config files — are often exactly what shouldn't leave their machine.
+
+## Two ways to format a file
+
+<Flow
+	rows={[
+		{
+			label: 'A typical online tool',
+			good: false,
+			chips: [
+				{ text: 'Paste', dim: false },
+				{ text: 'Upload', dim: true },
+				{ text: 'Server', dim: true },
+				{ text: 'Queue', dim: true },
+				{ text: 'Download', dim: true },
+				{ text: 'Result', dim: false },
+			],
+		},
+		{
+			label: 'utilyx',
+			good: true,
+			chips: [
+				{ text: 'Paste', dim: false },
+				{ text: 'Result', dim: false },
+			],
+		},
+	]}
+/>
+
+## How it's built
+
+<Steps
+	items={[
+		{
+			title: 'Static by default',
+			body: 'The whole site is built ahead of time, so any CDN can serve it. There is no backend to scale, patch or pay for as usage grows.',
+		},
+		{
+			title: 'Your device does the work',
+			body: 'Every tool runs in the browser. Most operations finish in under a millisecond, because there is nothing to wait for.',
+		},
+		{ title: 'Works offline', body: 'Once a page has loaded, its tools keep working without a connection — on a plane, or behind a strict network.' },
+		{ title: 'Nothing to leak', body: 'No uploads, no accounts, no stored input. Private by design, not by policy.' },
+		{
+			title: 'Keyboard-first',
+			body: 'A ⌘K command palette jumps to any tool, and the interface is built to be accessible, with semantic markup and skip links.',
+		},
+	]}
+/>
+
+## Try it
+
+There's a live JSON formatter on the [utilyx.dev project page](/work/utilyx) — it runs exactly the same way, right on that page.
+
+## What's next
+
+- **A full redesign** of the landing page, the tool catalogue and every tool page.
+- **A new SEO category:** hreflang generator and validator, canonical and robots.txt generators, sitemap validator, Open Graph and JSON-LD generators, and a meta preview.
+
+## What I took from it
+
+**The best backend is the one you don't need.** If the data is already on the user's machine, the work belongs there too.

@@ -1,0 +1,36 @@
+---
+title: 'Published research'
+lede: 'Before frontend took over, I worked on machine learning. My first-author paper on recognising Bangla handwritten characters with a convolutional neural network was published by IEEE.'
+card: 'First-author IEEE paper on Bangla handwritten character recognition.'
+illustration: research
+order: 7
+---
+
+<PaperTitle>“Machine Learning Based Recognition of Bangla Handwritten Characters”</PaperTitle>
+
+<MetaList
+	items={[
+		{ label: 'Venue', value: 'IEEE ICIRCA 2022 · Coimbatore, India' },
+		{ label: 'Role', value: 'First author' },
+		{ label: 'Field', value: 'Handwritten character recognition' },
+		{ label: 'Paper', value: '[IEEE Xplore ↗](https://ieeexplore.ieee.org/document/9985714)' },
+	]}
+/>
+
+## Results
+
+<StatGrid
+	items={[
+		{ value: '99.06%', label: 'accuracy on 50 basic letters' },
+		{ value: '99.75%', label: 'accuracy on 10 digits' },
+		{ value: '99.15%', label: 'accuracy on 13 special characters' },
+	]}
+/>
+
+## In short
+
+Bangla script has many similar-looking characters, which makes handwriting hard for machines to read. We built a **CNN-based model** that takes an image of a single handwritten character and recognises it, across **73 classes**: 50 basic letters, 10 digits and 13 special characters.
+
+It was trained and tested on **24,231 images** from the CMATERdb dataset. The longer-term goal is a complete system for recognising handwritten Bangla.
+
+<Caption mono>DOI [10.1109/ICIRCA54612.2022.9985714](https://doi.org/10.1109/ICIRCA54612.2022.9985714)</Caption>

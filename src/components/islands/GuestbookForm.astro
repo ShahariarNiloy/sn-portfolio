@@ -1,0 +1,112 @@
+---
+/**
+ * GuestbookForm — the "Leave a note" card on /guestbook. Signed out it offers
+ * GitHub sign-in; signed in (known from the readable gb_name cookie, read while the card is
+ * parsed so nothing flickers) it shows the
+ * note form with a character counter and an optimistic "pending review" message.
+ * Without JavaScript both show and the form is a plain POST. With it, CSS hides
+ * the form from first paint, so nothing below jumps for signed-out visitors.
+ */
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { MAX_NOTE_LENGTH, MAX_NOTES_PER_PERSON } from '@/lib/guestbook/schema';
+import { DISPLAY_COOKIE } from '@/lib/guestbook/session';
+---
+
+<div id="sign" class="sign-card rounded-xl border border-line2 p-5 sm:col-span-6" data-guestbook>
+	{/* Runs before the rest of the card is parsed, so a refresh never flashes the wrong state. */}
+	<script define:vars={{ cookie: DISPLAY_COOKIE }}>
+		if (document.cookie.split('; ').some((c) => c.startsWith(`${cookie}=`))) document.currentScript.parentElement.classList.add('is-signed-in');
+	</script>
+	<div class="flex flex-wrap items-center justify-between gap-4">
+		<div class="flex-1 basis-64">
+			<p class="m-0 font-semibold tracking-tight text-head">Leave a note on the wall</p>
+			<p class="mt-1 mb-0 text-sm text-mut">
+				Up to {MAX_NOTES_PER_PERSON} notes each, {MAX_NOTE_LENGTH} characters. Reviewed before they appear.
+			</p>
+		</div>
+		<span data-signed-out>
+			<Button variant="primary" href="/api/guestbook/login">
+				<Icon name="github" />
+				Sign in with GitHub
+			</Button>
+		</span>
+	</div>
+	<form method="post" action="/api/guestbook/notes" class="mt-5" data-signed-in>
+		<label for="note" class="sr-only">
+			Your note
+		</label>
+		<textarea
+			id="note"
+			name="body"
+			required
+			maxlength={MAX_NOTE_LENGTH}
+			rows="3"
+			class="block w-full resize-none rounded-lg border border-line2 bg-bg p-3 text-sm text-fg placeholder:text-mut"
+			placeholder="Say hello…"
+			aria-describedby="note-count note-status"
+		></textarea>
+		<div class="mt-3 flex flex-wrap items-center justify-between gap-3">
+			<span id="note-count" class="font-mono text-xs text-mut">
+				<span data-count>0</span> / {MAX_NOTE_LENGTH}
+			</span>
+			<Button type="submit">Post note</Button>
+		</div>
+		<p id="note-status" class="mt-3 mb-0 text-sm text-fg empty:hidden" role="status" data-status></p>
+		<p class="mt-3 mb-0 flex flex-wrap items-center gap-x-2 text-sm text-mut">
+			<span class="wrap-anywhere empty:hidden" data-name></span>
+			<script define:vars={{ cookie: DISPLAY_COOKIE }}>
+				const pair = document.cookie.split('; ').find((c) => c.startsWith(`${cookie}=`));
+				if (pair) document.currentScript.previousElementSibling.textContent = `Signed in as ${decodeURIComponent(pair.slice(cookie.length + 1))}`;
+			</script>
+			<button
+				type="submit"
+				formaction="/api/guestbook/logout"
+				formnovalidate
+				class="inline-flex min-h-11 cursor-pointer items-center bg-transparent"
+				data-sign-out
+			>
+				<span class="link-inline">Sign out</span>
+			</button>
+		</p>
+	</form>
+</div>
+
+<script>
+	import { onPageLoad } from './_shared/lifecycle';
+
+	onPageLoad(() => {
+		const root = document.querySelector<HTMLElement>('[data-guestbook]');
+		const form = root?.querySelector('form');
+		const textarea = form?.querySelector('textarea');
+		const count = form?.querySelector<HTMLElement>('[data-count]');
+		const status = form?.querySelector<HTMLElement>('[data-status]');
+		if (!root || !form || !textarea || !count || !status) return;
+
+		const THANKS = 'Thanks — your note will appear once it has been reviewed.';
+		const isPosted = new URLSearchParams(location.search).get('note') === 'pending';
+		if (isPosted) status.textContent = THANKS;
+
+		textarea.addEventListener('input', () => {
+			count.textContent = String(textarea.value.length);
+		});
+		form.addEventListener('submit', async (event) => {
+			// Signing out is a plain form POST to its own endpoint.
+			if (event.submitter?.hasAttribute('data-sign-out')) return;
+			event.preventDefault();
+			status.textContent = THANKS;
+			const response = await fetch(form.action, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+				body: JSON.stringify({ body: textarea.value }),
+			});
+			if (response.ok) {
+				textarea.value = '';
+				count.textContent = '0';
+				return;
+			}
+			const data = (await response.json().catch(() => ({}))) as { error?: string };
+			status.textContent = data.error ?? 'That note could not be saved. Please try again.';
+		});
+	});
+</script>

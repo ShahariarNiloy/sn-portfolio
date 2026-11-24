@@ -1,0 +1,56 @@
+---
+/**
+ * CareerCard — on /timeline, every company and its roles at a glance, newest
+ * first, under a summary line computed from career.json. Each company's roles
+ * hang off a small rail; the current role gets a filled dot, medium weight and
+ * a "Now" pill. Date ranges drop under the names on narrow screens.
+ */
+import type { CollectionEntry } from 'astro:content';
+
+import Card from '@/components/ui/Card.astro';
+import Link from '@/components/ui/Link.astro';
+import Pill from '@/components/ui/Pill.astro';
+import { formatCareerSummary } from '@/lib/career';
+import { cx } from '@/lib/cx';
+import { formatRange } from '@/lib/format';
+
+export interface Props {
+	/** Companies, newest first, each with its roles newest first (from getCareer()). */
+	companies: CollectionEntry<'career'>['data'][];
+}
+
+const { companies } = Astro.props;
+---
+
+<Card padding="xl">
+	<p class="m-0 mb-8 font-mono text-xs text-mut">{formatCareerSummary(companies)}</p>
+	{companies.map((company, i) => (
+		<div class={cx(i > 0 && 'mt-8 border-t border-line pt-8')}>
+			<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+				<h3 class="m-0 text-lg font-semibold tracking-tight text-head">
+					{company.href ? <Link href={company.href}>{company.company}</Link> : company.company}
+				</h3>
+				<span class="font-mono text-xs whitespace-nowrap text-mut">{formatRange(company.from, company.to)}</span>
+			</div>
+			<ol class="m-0 mt-4 list-none border-l border-line2 p-0 pl-5">
+				{company.roles.map((role) => {
+					const isCurrent = role.to === null;
+					return (
+						<li class="relative flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 py-3">
+							<span class={cx('absolute top-5 -left-6 size-2 rounded-full', isCurrent ? 'bg-acc' : 'border border-line2 bg-bg')} aria-hidden="true" />
+							<span class={cx('text-base text-fg', isCurrent && 'font-medium')}>
+								{role.title}
+								{isCurrent && (
+									<Pill tone="acc" class="ml-2">
+										Now
+									</Pill>
+								)}
+							</span>
+							<span class="font-mono text-xs whitespace-nowrap text-mut">{formatRange(role.from, role.to)}</span>
+						</li>
+					);
+				})}
+			</ol>
+		</div>
+	))}
+</Card>

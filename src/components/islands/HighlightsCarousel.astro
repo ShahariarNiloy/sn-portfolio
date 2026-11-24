@@ -1,0 +1,60 @@
+---
+/**
+ * HighlightsCarousel — Home's highlight cards on a CSS scroll-snap track, with
+ * previous / next buttons. The track scrolls by touch and keyboard without
+ * JavaScript; the buttons keep their space but only show once the script has
+ * loaded, so nothing shifts.
+ */
+import Icon from '@/components/ui/Icon.astro';
+import SectionLabel from '@/components/ui/SectionLabel.astro';
+
+export interface Props {
+	/** Id of the section heading, for aria-labelledby. */
+	headingId: string;
+}
+
+const { headingId } = Astro.props;
+const buttonClass =
+	'invisible inline-flex size-11 cursor-pointer items-center justify-center rounded-full border border-line2 bg-transparent text-mut transition-colors duration-200 ease-out hover:bg-card hover:text-fg group-data-ready:visible';
+---
+
+<div class="group" data-carousel>
+	<div class="mb-4 flex items-center gap-3">
+		<SectionLabel id={headingId} class="mb-0 flex-1">
+			Highlights
+		</SectionLabel>
+		<button type="button" class={buttonClass} aria-label="Previous highlight" data-carousel-step="-1">
+			<Icon name="chevron-left" size={14} />
+		</button>
+		<button type="button" class={buttonClass} aria-label="Next highlight" data-carousel-step="1">
+			<Icon name="chevron-right" size={14} />
+		</button>
+	</div>
+	<ul
+		class="carousel-track -mx-6 flex snap-x snap-mandatory scroll-px-6 list-none gap-3 overflow-x-auto scroll-smooth px-6 pb-1"
+		aria-label="Highlights"
+		tabindex="0"
+		data-carousel-track
+	>
+		<slot />
+	</ul>
+</div>
+
+<script>
+	import { onPageLoad } from './_shared/lifecycle';
+
+	onPageLoad(() => {
+		for (const root of document.querySelectorAll<HTMLElement>('[data-carousel]')) {
+			const track = root.querySelector<HTMLElement>('[data-carousel-track]');
+			if (!track) continue;
+			root.setAttribute('data-ready', '');
+			for (const button of root.querySelectorAll<HTMLButtonElement>('[data-carousel-step]')) {
+				button.addEventListener('click', () => {
+					const card = track.firstElementChild;
+					const step = card ? card.getBoundingClientRect().width + 12 : 268;
+					track.scrollBy({ left: Number(button.dataset['carouselStep']) * step });
+				});
+			}
+		}
+	});
+</script>

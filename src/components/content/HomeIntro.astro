@@ -1,0 +1,53 @@
+---
+/**
+ * HomeIntro — Home's hero: the title, the round avatar the intro text wraps
+ * around, and the facts row. The only animated block on Home. The avatar is
+ * served whole at its native size as AVIF: WebP halves colour resolution, which
+ * smears the glasses, and pre-shrunk copies lose detail under the 150% zoom.
+ */
+import { Image } from 'astro:assets';
+
+import Inline from '@/components/ui/Inline.astro';
+import avatar from '@/assets/avatar.png';
+
+export interface Props {
+	title: [string, string];
+	intro: string;
+	facts: { label: string; value: string }[];
+	name: string;
+}
+
+const { title, intro, facts, name } = Astro.props;
+---
+
+<section aria-label="Introduction" class="pt-24 pb-6 motion-safe:animate-rise max-sm:pt-12">
+	<h1 class="m-0 text-3xl leading-tight font-semibold tracking-tight sm:text-4xl">
+		<span class="text-fg">{title[0]}</span> <span class="text-fade">{title[1]}</span>
+	</h1>
+	<div class="mt-11 after:clear-both after:table">
+		<span class="shape-circle float-left mr-4 mb-2 block size-24 overflow-hidden rounded-full bg-card2 ring-1 ring-line2">
+			<Image
+				src={avatar}
+				alt={`3D avatar of ${name}`}
+				width={avatar.width}
+				height={avatar.height}
+				format="avif"
+				quality={90}
+				loading="eager"
+				fetchpriority="high"
+				class="block size-24 origin-top scale-150 object-cover object-top"
+			/>
+		</span>
+		<p class="m-0 text-base leading-relaxed text-mut">
+			<Inline text={intro} />
+		</p>
+	</div>
+	<dl class="mt-14 mb-0 flex flex-wrap gap-x-10 gap-y-3 border-t border-line pt-5">
+		{facts.map((f) => (
+			<div class="flex flex-col gap-0.5">
+				<dt class="font-mono text-xs text-mut">{f.label}</dt>
+				<dd class="m-0 text-sm">{f.value}</dd>
+			</div>
+		))}
+	</dl>
+</section>

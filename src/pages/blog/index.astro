@@ -1,0 +1,39 @@
+---
+/**
+ * /blog — posts grouped by topic, with read times, and a link to Off the clock.
+ * Drafts never appear in production builds.
+ */
+import PostRow from '@/components/content/PostRow.astro';
+import Link from '@/components/ui/Link.astro';
+import SectionLabel from '@/components/ui/SectionLabel.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getPublishedPosts } from '@/lib/content';
+import { getReadMinutes } from '@/lib/format';
+import { TOPICS } from '@/lib/topics';
+
+const posts = await getPublishedPosts();
+const groups = TOPICS.map((t) => ({ ...t, posts: posts.filter((p) => p.data.topic === t.id) })).filter((g) => g.posts.length);
+---
+
+<PageLayout
+	title="Blog"
+	active="blog"
+	lede="Notes from work: making software lighter and faster, being found in search, and what I learn building my own products."
+>
+	{groups.map((g, i) => (
+		<section class={i === 0 ? 'pt-16' : 'pt-12'}>
+			<SectionLabel>{g.label}</SectionLabel>
+			<div class="flex flex-col">
+				{g.posts.map((p) => (
+					<PostRow href={`/blog/${p.id}`} title={p.data.title} summary={p.data.summary} meta={`${getReadMinutes(p.body ?? '')} min read`} />
+				))}
+			</div>
+		</section>
+	))}
+	<p class="mt-12 mb-0 text-sm text-mut">
+		Looking for something less technical?{' '}
+		<Link href="/off-the-clock" class="font-serif text-base italic">
+			Off the clock →
+		</Link>
+	</p>
+</PageLayout>

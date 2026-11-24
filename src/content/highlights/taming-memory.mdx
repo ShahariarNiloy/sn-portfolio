@@ -1,0 +1,82 @@
+---
+title: 'Taming memory'
+lede: 'How I tracked down why a large Next.js app kept running out of memory — and why raising the limit was never the fix.'
+card: 'Traced the heap out-of-memory crashes in a large Next.js app to their causes.'
+illustration: memory
+order: 3
+---
+
+<MetaList
+	items={[
+		{ label: 'Where', value: 'A large production Next.js app' },
+		{ label: 'Type', value: 'Production audit' },
+		{ label: 'Stack', value: 'Next.js, Node.js, containers' },
+		{ label: 'Read', value: '~4 min' },
+	]}
+/>
+
+## The problem
+
+Under load, the app's server pods kept crashing with **“JavaScript heap out of memory”**. The tempting fix is to give Node more memory. That only moves the crash later, and makes every crash more expensive.
+
+So the question wasn't _how much memory do we need_. It was **what is holding on to memory that it should have let go?**
+
+## How I looked for it
+
+I listed everything that could keep memory alive across a request, then ranked each suspect by two things: how likely it was to cause these crashes, and how much memory it could hold at its worst. That gave three tiers, so the work could go strictly from the top.
+
+## What I found
+
+<Tier label="Tier 1" title="Requests that never let go">
+
+- **Timeouts and retries that multiplied.** Outgoing calls could wait for minutes, and retry settings overrode the safe defaults. In the worst case, one slow upstream call could keep its data in memory for **the better part of eight minutes**.
+- **No circuit breaker.** When a dependency slowed down, new requests kept piling onto it, each one holding memory while it waited.
+
+</Tier>
+
+<Tier label="Tier 2" title="Whole files in memory">
+
+- **Image processing** used **several times** the file size in memory, more for heavier image formats.
+- **File proxying** loaded entire files into memory instead of streaming them through.
+
+</Tier>
+
+<Tier label="Tier 3" title="Work the server didn't need to do">
+
+- **Deep copies** of large responses **in many places**, each one doubling that data for a moment.
+- **Many pages forced to render on every request**, skipping caching — while search crawlers alone were sending **a heavy, constant stream of requests**.
+
+</Tier>
+
+## What shipped
+
+- **A request layer that lets go.** I rewrote the shared HTTP helper so every attempt gets its own abort signal and its timer is always cleared — on failure too, not just on success. Retries now default to one, the server's Retry-After header is respected, and analytics calls no longer block the request.
+- **A memory-aware health check.** It reads the real heap and compares it with the pod's memory limit. Near the limit, the pod reports itself unhealthy and stops taking traffic — **before** it crashes, not after.
+- **A sitemap crawlers can't weaponise.** Crawlers working through a sitemap far larger than it needed to be were overloading the backend. Rebuilding it around canonical pages cut it by about 98%.
+
+<Caption>The long timeout stayed on purpose: the gateway already cuts requests off much sooner, so it is only a last-resort safety net.</Caption>
+
+## Finished, waiting to merge
+
+- **No more deep copies** of large responses on the server.
+- **No automatic retries for one-time actions** like payments, so a slow request can never be sent twice.
+
+## Still to do
+
+- A circuit breaker for slow dependencies.
+- Streaming files and images instead of buffering them whole.
+- Moving pages that never needed to be dynamic to incremental static regeneration.
+
+## By the numbers
+
+<StatGrid
+	items={[
+		{ value: '~8 min', label: 'worst case one slow call could hold memory, before' },
+		{ value: '~½', label: 'the complexity of the rewritten request helper' },
+		{ value: '−98%', label: 'sitemap URLs' },
+	]}
+/>
+
+## What I took from it
+
+**Don't raise the limit; find what's holding on.** Memory problems are rarely one big leak. They are a few reasonable decisions that become dangerous together, under load, on a bad day.

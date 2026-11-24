@@ -1,0 +1,33 @@
+---
+title: 'Replacing a component library with about half the JavaScript'
+summary: 'Why bundle size is conversion, and how keeping the same API made migration an import swap.'
+topic: lighter-ui
+status: published
+# TODO(owner): confirm the publish date (the mockup has none; set to launch day).
+publishedOn: 2026-11-24
+illustration: lighter-component-library
+related:
+  href: '/highlights/design-system'
+  label: 'Case study: A lighter design system'
+# TODO(owner): approve — `order` (not in the PRD schema) keeps the mockup order for lists and "Next post".
+order: 6
+---
+
+On a booking-style product, **bundle size is conversion**. Every kilobyte the browser downloads and runs delays the search box someone is waiting to use. The component library we used carried a styling runtime and far more code than we needed.
+
+## Same API, almost no dependencies
+
+The rule was simple: keep everything the team relies on — the same props, hover, focus, keyboard behaviour and density — and drop everything else. Moving a screen over became mostly an import swap.
+
+## Headless first
+
+Complex widgets keep their logic in small hooks, with styles layered on top. That makes them easy to reskin without forking, and easy to test.
+
+## Measure every component
+
+Each component is bundled on its own — minified, tree-shaken, compressed — and compared with its closest equivalent, measured the same way. Overall it came to **about half the JavaScript**, and a typical component is around six times smaller.
+
+<DraftNote>
+	A fair comparison matters: styles that live in a shared stylesheet aren’t counted in a per-component bundle, while a CSS-in-JS library’s numbers include its
+	styling runtime. Say so when you publish numbers.
+</DraftNote>

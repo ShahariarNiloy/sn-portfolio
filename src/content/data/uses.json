@@ -1,0 +1,81 @@
+[
+	{
+		"id": "uses",
+		"updatedOn": "2026-11-23",
+		"groups": [
+			{
+				"id": "hardware",
+				"title": "Hardware",
+				"rows": [
+					{
+						"label": "Computer",
+						"value": "HP ProBook 450 G10 — 13th-gen Core i7, 15.6″ Full HD, running Linux"
+					},
+					{
+						"label": "Audio",
+						"value": "CMF Buds 2 Pro"
+					}
+				]
+			},
+			{
+				"id": "editor-terminal",
+				"title": "Editor & terminal",
+				"rows": [
+					{
+						"label": "Editor",
+						"value": "Zed, with Claude Code as its built-in agent"
+					},
+					{
+						"label": "Also",
+						"value": "VS Code"
+					},
+					{
+						"label": "Terminal",
+						"value": "Ghostty"
+					}
+				]
+			},
+			{
+				"id": "development",
+				"title": "Development",
+				"rows": [
+					{
+						"label": "Browsers",
+						"value": "Chrome and Brave"
+					},
+					{
+						"label": "API clients",
+						"value": "Postman and Bruno"
+					},
+					{
+						"label": "Containers",
+						"value": "Docker"
+					},
+					{
+						"label": "Performance",
+						"value": "Lighthouse and Chrome DevTools"
+					},
+					{
+						"label": "Everyday tools",
+						"value": "[utilyx.dev](https://utilyx.dev) — my own, so I use it the most"
+					}
+				]
+			},
+			{
+				"id": "everything-else",
+				"title": "Everything else",
+				"rows": [
+					{
+						"label": "Notes",
+						"value": "Notion"
+					},
+					{
+						"label": "Fuel",
+						"value": "Milk tea by default. Coffee when it's serious."
+					}
+				]
+			}
+		],
+		"credit": "A uses page, inspired by [Lee Robinson](https://leerob.com) and the [uses.tech](https://uses.tech) tradition."
+	}
+]

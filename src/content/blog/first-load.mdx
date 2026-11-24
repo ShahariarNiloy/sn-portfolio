@@ -1,0 +1,38 @@
+---
+title: 'The fastest code doesn’t run on first load'
+summary: 'Deferring third-party scripts, idle-time rendering and rendering only what’s on screen.'
+topic: performance
+status: published
+# TODO(owner): confirm the publish date (the mockup has none; set to launch day).
+publishedOn: 2026-11-24
+illustration: first-load
+related:
+  href: '/highlights/performance'
+  label: 'Case study: Performance is a feature'
+# TODO(owner): approve — `order` (not in the PRD schema) keeps the mockup order for lists and "Next post".
+order: 3
+---
+
+Most slow pages aren’t slow because of one big thing. They’re slow because everything wants to run first. The fix is mostly about **order**: what truly has to happen before the page is usable, and what can wait.
+
+## Make third parties wait their turn
+
+Security and analytics scripts rarely need to run before a visitor can see anything. Move them from loading up front, to loading lazily, to loading only when the visitor first interacts.
+
+## Lazy-load heavy providers
+
+UI library providers and configuration wrappers often sit at the very top of the tree, blocking the first render. Load them when they’re actually needed.
+
+## Defer to idle time
+
+Work that isn’t part of the first view — below-the-fold widgets, prefetching, warm-ups — can wait for the browser to be idle.
+
+## Render only what’s on screen
+
+A small visibility component built on React’s `useSyncExternalStore` keeps off-screen sections unrendered without causing extra re-renders. And moving a global store from a context provider to a singleton stops every update from re-rendering whole trees.
+
+## Lighter media
+
+Background videos look great and cost a lot. Compressed, cached images often tell the same story for a fraction of the bytes.
+
+> Speed isn’t a project you finish. Every feature makes pages a little slower, so it has to be measured, every month.

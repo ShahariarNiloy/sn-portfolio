@@ -1,0 +1,64 @@
+---
+name: 'GeoRenus'
+group: product
+lede: 'The hidden mechanics of money, markets & power — both sides of the story, so you can decide for yourself.'
+url: 'https://georenus.com'
+meta:
+  - label: 'Type'
+    value: 'Personal product'
+  - label: 'Languages'
+    value: 'Bengali and English'
+  - label: 'Covers'
+    value: 'Economics, finance, geopolitics, business'
+  - label: 'Link'
+    value: '[georenus.com](https://georenus.com)'
+lighthouse:
+  device: desktop
+  measuredOn: 2026-11
+  performance: 93
+  accessibility: 91
+  bestPractices: 100
+  seo: 100
+order: 4
+# TODO(owner): approve — the fields below are not in the PRD schema but the mockup needs them.
+summary: 'The hidden mechanics of money, markets & power — both sides of the story, so you can decide for yourself.'
+period: 'Live'
+---
+
+import georenusHome from '@/assets/work/georenus-home.webp';
+import { lighthouseScores } from '@/lib/lighthouse';
+
+## Speed
+
+<RingSet sets={[{ scores: lighthouseScores(frontmatter.lighthouse) }]} />
+
+<Caption>Lighthouse, desktop, Nov 2026. First Contentful Paint 0.6 s · Largest Contentful Paint 1.0 s</Caption>
+
+## Traction
+
+<StatGrid
+	columns={2}
+	items={[
+		{ value: '20K+', label: 'monthly active users' },
+		{ value: '3', label: 'formats: long reads, InShorts and calculators' },
+	]}
+/>
+
+<Caption mono>As of Sep 2026</Caption>
+
+## The idea
+
+Most finance content tells you what happened. GeoRenus explains **why it happened and what it means** for business and everyday decisions — with data, and with the strongest case from each side, so readers can make up their own minds.
+
+## What I did
+
+- **Built it end to end**: a Next.js frontend on a Nest.js backend.
+- **Three ways to read:** long-form articles, quick InShorts, and interactive calculators and analyzers.
+- **Write and edit** data-backed pieces on money, markets and power.
+
+## Screens
+
+<Shot
+	src={georenusHome}
+	alt="georenus.com homepage: featured articles on working capital and cash flow, with more features on business models and the economy of Bangladesh"
+/>

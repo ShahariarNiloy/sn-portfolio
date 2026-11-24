@@ -1,0 +1,26 @@
+---
+/**
+ * NoteByline — who wrote a Guestbook note: mosaic, name and date on one line.
+ */
+import Mosaic from '@/components/ui/Mosaic.astro';
+import { formatDay, formatIsoDay } from '@/lib/format';
+
+export interface Props {
+	githubId: number;
+	name: string;
+	date: Date;
+}
+
+const { githubId, name, date } = Astro.props;
+---
+
+<figcaption class="flex flex-wrap items-center gap-2 text-sm text-mut">
+	<Mosaic githubId={githubId} />
+	<b class="font-medium wrap-anywhere text-fg">{name}</b>
+	<span class="whitespace-nowrap">
+		<span aria-hidden="true">· </span>
+		<time datetime={formatIsoDay(date)} class="font-mono text-xs">
+			{formatDay(date)}
+		</time>
+	</span>
+</figcaption>

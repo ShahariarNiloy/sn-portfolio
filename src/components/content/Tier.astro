@@ -1,0 +1,22 @@
+---
+/**
+ * Tier — a numbered group of findings in a case study ("Tier 1 · Requests that
+ * never let go") with its list inside. Used in MDX.
+ */
+export interface Props {
+	label: string;
+	title: string;
+}
+
+const { label, title } = Astro.props;
+---
+
+<div class="tier mb-3 rounded-xl border border-line bg-card px-5 py-4">
+	<div class="mb-3.5 flex items-baseline gap-3">
+		<span class="font-mono text-xs text-acc">{label}</span>
+		<span class="font-semibold tracking-tight text-head">{title}</span>
+	</div>
+	<div>
+		<slot />
+	</div>
+</div>

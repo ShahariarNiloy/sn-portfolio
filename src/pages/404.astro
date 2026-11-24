@@ -1,15 +1,28 @@
 ---
-import Base from '../layouts/Base.astro';
+/**
+ * 404 — "Nothing here." with links home and to the page menu.
+ */
+import Button from '@/components/ui/Button.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
-<Base title="Page not found — Shahariar Niloy" description="This page doesn't exist.">
-	<section style="padding-top: 120px; padding-bottom: 40px">
-		<div class="mono rise d1" style="color: var(--mut)">404 · 0 KB of content</div>
-		<h1 class="h rise d2" style="margin: 18px 0 0; font-size: 40px; line-height: 1.1; letter-spacing: -0.04em">Nothing here.<br /><span style="color: var(--mut)">The lightest page on the site.</span></h1>
-		<p class="lede rise d3" style="margin-top: 20px">This page doesn't exist, or it moved. Press <kbd class="mono" style="border: 1px solid var(--line2); border-radius: 6px; padding: 2px 6px">⌘K</kbd> to jump anywhere, or start from home.</p>
-		<div class="rise d3" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px">
-			<a href="/" class="cvbtn">Go home</a>
-			<button type="button" class="cvbtn" data-openk>Open the page menu</button>
+<BaseLayout title="Page not found" description="This page doesn't exist, or it moved." noindex>
+	<section class="pt-28 pb-10 motion-safe:animate-rise">
+		<p class="m-0 font-mono text-xs text-mut">404 · 0 KB of content</p>
+		<h1 class="mt-4 mb-0 text-3xl leading-none font-semibold tracking-tighter text-head sm:text-4xl">
+			Nothing here.
+			<br />
+			<span class="text-mut">The lightest page on the site.</span>
+		</h1>
+		<p class="mt-5 mb-0 text-base leading-relaxed text-mut">
+			This page doesn't exist, or it moved. Press <kbd class="rounded-md border border-line2 px-1.5 py-0.5 font-mono text-xs">⌘K</kbd> to jump anywhere, or
+			start from home.
+		</p>
+		<div class="mt-8 flex flex-wrap gap-2.5">
+			<Button href="/">Go home</Button>
+			<Button href="#site-links" data-palette-open>
+				Open the page menu
+			</Button>
 		</div>
 	</section>
-</Base>
+</BaseLayout>

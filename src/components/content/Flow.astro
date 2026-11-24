@@ -1,0 +1,41 @@
+---
+/**
+ * Flow — rows of step chips joined by arrows ("Paste → Upload → … → Result"),
+ * comparing two ways of doing the same job. The `good` row is highlighted.
+ */
+import { cx } from '@/lib/cx';
+
+export interface Props {
+	rows: { label: string; good: boolean; chips: { text: string; dim: boolean }[] }[];
+}
+
+const { rows } = Astro.props;
+---
+
+<div class="flex flex-col gap-3">
+	{rows.map((row) => (
+		<div class={cx('rounded-xl border bg-card p-4', row.good ? 'flow-good border-acc/45' : 'border-line')}>
+			<span class="mb-2.5 block font-mono text-xs text-mut">{row.label}</span>
+			<div class="flex flex-wrap items-center gap-1.5">
+				{row.chips.map((chip, i) => (
+					<>
+						{i > 0 && (
+							<i class="text-xs text-mut not-italic" aria-hidden="true">
+								→
+							</i>
+						)}
+						<span
+							class={cx(
+								'rounded-lg border bg-bg px-2.5 py-1 text-xs',
+								chip.dim ? 'border-dashed border-line2 text-mut' : 'text-fg',
+								!chip.dim && (row.good ? 'border-acc/50' : 'border-line2'),
+							)}
+						>
+							{chip.text}
+						</span>
+					</>
+				))}
+			</div>
+		</div>
+	))}
+</div>

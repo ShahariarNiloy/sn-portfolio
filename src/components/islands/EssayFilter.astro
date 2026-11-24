@@ -1,0 +1,60 @@
+---
+/**
+ * EssayFilter — topic chips above the essay list. Choosing one hides the other
+ * topics and updates ?topic= so the view can be shared. Without JavaScript every
+ * essay is listed and the chips stay invisible (their space is kept, so
+ * nothing shifts when the script loads).
+ */
+export interface Props {
+	topics: { id: string; label: string }[];
+	/** Id of the list element the chips filter; its children carry data-topic. */
+	listId: string;
+}
+
+const { topics, listId } = Astro.props;
+const all = [{ id: 'all', label: 'All' }, ...topics];
+---
+
+<div role="group" aria-label="Filter by topic" class="invisible flex flex-wrap gap-1 data-ready:visible" data-essay-filter={listId}>
+	{all.map((t) => (
+		<button
+			type="button"
+			class="min-h-11 min-w-11 cursor-pointer rounded-full border border-transparent bg-transparent px-3 py-2 font-mono text-xs text-mut transition-colors duration-200 ease-out hover:text-fg aria-pressed:border-line2 aria-pressed:bg-card aria-pressed:text-fg"
+			aria-pressed={t.id === 'all' ? 'true' : 'false'}
+			data-topic={t.id}
+		>
+			{t.label}
+		</button>
+	))}
+</div>
+
+<script>
+	import { onPageLoad } from './_shared/lifecycle';
+
+	onPageLoad(() => {
+		const bar = document.querySelector<HTMLElement>('[data-essay-filter]');
+		const list = bar ? document.getElementById(bar.dataset['essayFilter'] ?? '') : null;
+		if (bar && list) {
+			const chips = [...bar.querySelectorAll<HTMLButtonElement>('button[data-topic]')];
+			const apply = (topic: string): void => {
+				for (const chip of chips) chip.setAttribute('aria-pressed', String(chip.dataset['topic'] === topic));
+				for (const item of list.querySelectorAll<HTMLElement>(':scope > [data-topic]')) {
+					item.hidden = topic !== 'all' && item.dataset['topic'] !== topic;
+				}
+			};
+			bar.setAttribute('data-ready', '');
+			const initial = new URLSearchParams(location.search).get('topic');
+			if (initial && chips.some((c) => c.dataset['topic'] === initial)) apply(initial);
+			for (const chip of chips) {
+				chip.addEventListener('click', () => {
+					const topic = chip.dataset['topic'] ?? 'all';
+					apply(topic);
+					const url = new URL(location.href);
+					if (topic === 'all') url.searchParams.delete('topic');
+					else url.searchParams.set('topic', topic);
+					history.replaceState(null, '', url);
+				});
+			}
+		}
+	});
+</script>

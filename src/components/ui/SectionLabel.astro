@@ -1,0 +1,19 @@
+---
+/**
+ * SectionLabel — the mono section heading followed by a hairline rule.
+ * Used at the top of every section.
+ */
+import { cx } from '@/lib/cx';
+
+export interface Props {
+	as?: 'h2' | 'h3' | 'p' | undefined;
+	id?: string | undefined;
+	class?: string | undefined;
+}
+
+const { as: Tag = 'h2', id, class: className } = Astro.props;
+---
+
+<Tag id={id} class={cx('section-label', className)}>
+	<slot />
+</Tag>

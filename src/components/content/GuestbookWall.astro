@@ -1,0 +1,35 @@
+---
+/**
+ * GuestbookWall — the bento on /guestbook: the sign-in card (slot), then visitors' notes. Notes past the first 20 wait
+ * behind "Show all notes", a <details>, so it works without JavaScript.
+ */
+import type { Note } from '@/lib/guestbook/db';
+
+import NoteTiles from './NoteTiles.astro';
+
+export interface Props {
+	/** Approved notes, newest first. */
+	notes: Note[];
+}
+
+const { notes } = Astro.props;
+const FIRST = 20;
+const rest = notes.slice(FIRST);
+---
+
+<h2 class="sr-only">Notes</h2>
+<div class="grid grid-cols-1 gap-3 sm:grid-cols-6">
+	<slot />
+	{notes.length === 0 && <p class="m-0 pt-4 text-mut sm:col-span-6">Nobody has signed yet. Yours could be the first note.</p>}
+	<NoteTiles notes={notes.slice(0, FIRST)} />
+</div>
+{rest.length > 0 && (
+	<details class="group mt-4">
+		<summary class="inline-flex min-h-11 cursor-pointer list-none items-center rounded-xl border border-line2 px-4 text-sm text-fg transition-colors duration-200 ease-out group-open:hidden hover:border-mut hover:bg-card">
+			Show all notes
+		</summary>
+		<div class="-mt-1 grid grid-cols-1 gap-3 sm:grid-cols-6">
+			<NoteTiles notes={rest} />
+		</div>
+	</details>
+)}

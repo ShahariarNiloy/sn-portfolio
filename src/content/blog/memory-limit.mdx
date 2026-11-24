@@ -1,0 +1,35 @@
+---
+title: 'Don’t raise the memory limit — find what’s holding on'
+summary: 'How to trace “JavaScript heap out of memory” crashes in a Node or Next.js server, ranked by impact.'
+topic: performance
+status: published
+# TODO(owner): confirm the publish date (the mockup has none; set to launch day).
+publishedOn: 2026-11-24
+illustration: memory-limit
+related:
+  href: '/highlights/taming-memory'
+  label: 'Case study: Taming memory'
+# TODO(owner): approve — `order` (not in the PRD schema) keeps the mockup order for lists and "Next post".
+order: 1
+---
+
+When a Node server starts crashing with **“JavaScript heap out of memory”**, the first fix everyone reaches for is a bigger heap. It works — for a while. The crash just moves later, and every crash after that is more expensive.
+
+The better question isn’t _how much memory do we need_. It’s **what is holding on to memory it should have let go?**
+
+## Rank before you fix
+
+List everything that can keep memory alive past the end of a request. Then rank each suspect by two things: how likely it is to cause these crashes, and how much it can hold at its worst. Work strictly from the top of that list. It stops you from polishing the wrong thing.
+
+## The usual suspects
+
+- **Requests that never let go.** Long timeouts multiplied by retries can keep one slow call’s data alive for minutes.
+- **Whole files in memory.** Image processing, base64-encoded documents and proxies that buffer instead of streaming.
+- **Copies of copies.** Deep-cloning large responses “just to be safe” doubles that data for a moment — on every request.
+- **Work that could be cached.** Pages rendered on every request, while crawlers hammer them all day.
+
+## See it coming
+
+Add a health check that compares the real heap with the container’s memory limit. When it gets close, the instance reports itself unhealthy and stops taking traffic — **before** it crashes, not after.
+
+> Memory problems are rarely one big leak. They’re a few reasonable decisions that become dangerous together, under load, on a bad day.

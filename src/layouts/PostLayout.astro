@@ -1,0 +1,83 @@
+---
+/**
+ * PostLayout — a blog post or highlight article: PageLayout's title block, an
+ * illustration that draws in, the MDX body, an optional related link and the
+ * "Next …" card. `variant` picks long-form (post) or case-study styling.
+ */
+import Card from '@/components/ui/Card.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionLabel from '@/components/ui/SectionLabel.astro';
+import NextLink from '@/components/content/NextLink.astro';
+import Illustration from '@/components/illustrations/Illustration.astro';
+import type { IllustrationName } from '@/components/illustrations/names';
+import IllustrationReveal from '@/components/islands/IllustrationReveal.astro';
+import type { NavSection } from '@/components/layout/Nav.astro';
+import { cx } from '@/lib/cx';
+import type { Crumb } from '@/lib/seo';
+
+import PageLayout from './PageLayout.astro';
+
+export interface Props {
+	variant: 'post' | 'case';
+	title: string;
+	lede: string;
+	trail: Crumb[];
+	crumbLabel?: string | undefined;
+	illustration: IllustrationName;
+	/** Mono line under the lede: topic, read time, author. Posts only. */
+	meta?: string[] | undefined;
+	isDraft?: boolean | undefined;
+	related?: { href: string; label: string } | undefined;
+	next?: { href: string; kicker: string; title: string } | undefined;
+	active?: NavSection | undefined;
+	jsonLd?: Record<string, unknown>[] | undefined;
+}
+
+const { variant, title, lede, trail, crumbLabel, illustration, meta, isDraft = false, related, next, active, jsonLd } = Astro.props;
+---
+
+<PageLayout
+	title={title}
+	lede={lede}
+	trail={trail}
+	crumbLabel={crumbLabel}
+	isDraft={isDraft}
+	active={active}
+	jsonLd={jsonLd}
+	ogType={variant === 'post' ? 'article' : 'website'}
+>
+	{meta && (
+		<p slot="after-lede" class="mt-4 mb-0 flex flex-wrap gap-x-4 gap-y-2 font-mono text-xs text-mut">
+			{meta.map((m) => (
+				<span>{m}</span>
+			))}
+		</p>
+	)}
+	<section class={variant === 'post' ? 'pt-10' : 'pt-12'}>
+		<IllustrationReveal>
+			<Card padding="lg">
+				<Illustration name={illustration} />
+			</Card>
+		</IllustrationReveal>
+	</section>
+	<div class={cx(variant === 'post' ? 'post pt-12' : 'case')}>
+		<slot />
+	</div>
+	{related && (
+		<section class="pt-6">
+			<SectionLabel>Related</SectionLabel>
+			<a
+				href={related.href}
+				class="flex min-h-11 items-center justify-between gap-3 rounded-xl border border-line p-4 text-fg no-underline transition-colors duration-200 ease-out hover:border-line2 hover:bg-card"
+			>
+				<span>{related.label}</span>
+				<Icon name="arrow-right" class="text-mut" />
+			</a>
+		</section>
+	)}
+	{next && (
+		<section class="pt-16">
+			<NextLink {...next} />
+		</section>
+	)}
+</PageLayout>

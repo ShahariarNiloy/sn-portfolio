@@ -1,0 +1,31 @@
+---
+/**
+ * NumberedPosts — Home's "Latest posts": numbered rows (01–04) with the title,
+ * the post summary and its read time. Each whole row is the link.
+ */
+import { padIndex } from '@/lib/format';
+
+export interface Props {
+	posts: { href: string; title: string; summary: string; minutes: number }[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ol class="m-0 list-none border-b border-line p-0">
+	{posts.map((post, i) => (
+		<li class="border-t border-line">
+			<a href={post.href} class="group grid grid-cols-1 gap-0.5 py-4 no-underline sm:grid-cols-label sm:gap-4">
+				<span class="pt-0.5 font-mono text-xs text-acc" aria-hidden="true">
+					{padIndex(i + 1)}
+				</span>
+				<span>
+					<span class="block text-base font-medium text-fg transition-colors duration-200 ease-out group-hover:text-acc">{post.title}</span>
+					<span class="mt-1 block text-sm text-mut">
+						{post.summary} <span class="font-mono whitespace-nowrap">· {post.minutes} min read</span>
+					</span>
+				</span>
+			</a>
+		</li>
+	))}
+</ol>

@@ -1,0 +1,9 @@
+dist
+.astro
+.wrangler
+pnpm-lock.yaml
+src/components/illustrations/*.astro
+src/components/ui/icons.ts
+playwright-report
+test-results
+.lighthouseci

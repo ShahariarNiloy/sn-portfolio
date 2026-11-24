@@ -1,0 +1,26 @@
+---
+/**
+ * ShotGrid — five captioned screenshots under a project's main one: two wide,
+ * then three small. On mobile: two full-width, then pairs, the last full-width.
+ */
+import type { ImageMetadata } from 'astro';
+
+import { cx } from '@/lib/cx';
+
+import Shot from './Shot.astro';
+
+export interface Props {
+	/** The screenshots, in order; the first two get the wide cells. */
+	items: { src: ImageMetadata; alt: string; caption: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-6">
+	{items.map((item, i) => (
+		<div class={cx(i < 2 ? 'col-span-2 sm:col-span-3' : 'col-span-1 last:col-span-2 sm:col-span-2')}>
+			<Shot {...item} size={i < 2 ? 'md' : 'sm'} />
+		</div>
+	))}
+</div>

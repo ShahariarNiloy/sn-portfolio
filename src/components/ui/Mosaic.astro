@@ -1,0 +1,26 @@
+---
+/**
+ * Mosaic — a visitor's 28 px mosaic (4 px cells) beside their Guestbook note, drawn from their
+ * GitHub id at build time. Decorative: the name next to it carries the meaning.
+ */
+import { cx } from '@/lib/cx';
+import { buildMosaic, MOSAIC_SIZE, type MosaicTone } from '@/lib/guestbook/mosaic';
+
+export interface Props {
+	githubId: number;
+}
+
+const TONE_CLASS: Record<MosaicTone, string> = { acc: 'text-acc', good: 'text-good', warn: 'text-warn', bad: 'text-bad', ill: 'text-ill' };
+const { tone, cells } = buildMosaic(Astro.props.githubId);
+// One cell of margin, so the round frame never cuts the pattern's sides.
+const box = MOSAIC_SIZE + 2;
+---
+
+<svg
+	viewBox={`0 0 ${box} ${box}`}
+	class={cx('size-7 shrink-0 rounded-full bg-card2 ring-1 ring-line2', TONE_CLASS[tone])}
+	shape-rendering="crispEdges"
+	aria-hidden="true"
+>
+	<path d={cells.map(([x, y]) => `M${x + 1} ${y + 1}h1v1h-1z`).join('')} fill="currentColor"></path>
+</svg>

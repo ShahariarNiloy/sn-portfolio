@@ -1,0 +1,88 @@
+---
+title: 'Performance is a feature'
+lede: "Fast pages are a product decision, not a finishing touch. On a large production app, I measure first, then cut what the browser doesn't need to do right away."
+card: 'Code-splitting, lazy loading and lean bundles on a large production app.'
+illustration: performance
+order: 4
+---
+
+## Before and after
+
+<RingSet
+	sets={[
+		{
+			title: 'Before · average of the main landing pages, mobile',
+			scores: [
+				{ label: 'Performance', value: 46 },
+				{ label: 'Accessibility', value: 66 },
+				{ label: 'Best practices', value: 72 },
+				{ label: 'SEO', value: 67 },
+			],
+		},
+		{
+			title: 'After · same pages, eight months later',
+			scores: [
+				{ label: 'Performance', value: 95 },
+				{ label: 'Accessibility', value: 97 },
+				{ label: 'Best practices', value: 93 },
+				{ label: 'SEO', value: 100 },
+			],
+		},
+	]}
+/>
+
+<Caption>Lighthouse, mobile, with simulated slow 4G.</Caption>
+
+## Results
+
+<StatGrid
+	columns={2}
+	items={[
+		{ value: '46 → 95', label: 'average Lighthouse performance score on mobile, main landing pages' },
+		{ value: '−20%', label: 'page load time' },
+		{ value: '72 → 93', label: 'average Lighthouse best-practices score' },
+		{ value: '67 → 100', label: 'average Lighthouse SEO score' },
+	]}
+/>
+
+## Where it started
+
+The first audit put mobile performance **in the 40s on the main landing pages, and under 30 on the heaviest dynamic pages**. Most of the cost was code and media the first view didn't need.
+
+## What I changed
+
+- **Lighter media.** Heavy background videos became compressed, cached images.
+- **Third-party scripts wait their turn.** A third-party security script moved from loading up front to loading lazily, then to loading only when a visitor first interacts.
+- **Heavy UI providers load lazily.** The component library's configuration provider no longer blocks the first render.
+- **Idle-time rendering.** Work that isn't needed for the first view is deferred until the browser is idle.
+- **Render only what's on screen.** I rebuilt the visibility component on React's external-store hook, so off-screen parts stay unrendered without extra re-renders.
+- **Leaner state.** The main store moved from a context provider to a singleton, so updates stop re-rendering whole trees.
+- **A lighter component library.** Replaced a heavy component library with a design system of my own, with about half the JavaScript. [Read more](/highlights/design-system)
+- **Rendering strategy per page:** server rendering, static generation and incremental regeneration where each fits, plus lazy loading, image optimisation and code splitting.
+
+## How we keep it fast
+
+- **A monthly performance review.** Every month, Lighthouse runs on every key page template, on desktop and mobile. Each month ends with countermeasures, and the next month checks whether they worked.
+- **Changes ship in stages.** If a score drops, we know which change caused it, instead of untangling ten at once.
+
+## Next release
+
+The next release goes live this month, served through a CDN for the first time. On staging, every key page template already tests in the 90s on mobile:
+
+<RingSet
+	sets={[
+		{
+			scores: [
+				{ label: 'Lowest', value: 92 },
+				{ label: 'Average', value: 95 },
+				{ label: 'Highest', value: 99 },
+			],
+		},
+	]}
+/>
+
+<Caption>Lighthouse performance, mobile, staging. Production numbers will follow after launch.</Caption>
+
+## What I took from it
+
+**The fastest code is the code that doesn't run on first load.** And speed isn't a project you finish — pages drift slower with every feature, so it has to be measured every month.

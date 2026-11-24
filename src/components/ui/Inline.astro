@@ -1,0 +1,29 @@
+---
+/**
+ * Inline — renders the small inline Markdown used in data files (bold, italic,
+ * links, line breaks) as real elements, without set:html.
+ */
+import { parseInline } from '@/lib/format';
+
+import Link from './Link.astro';
+
+export interface Props {
+	/** Source text, e.g. "Built on **Astro**, see [Work](/work)". */
+	text: string;
+	/** How **bold** reads: `strong` is medium weight in the body colour, `fg` only brightens. */
+	emphasis?: 'strong' | 'fg' | undefined;
+}
+
+const { text, emphasis = 'strong' } = Astro.props;
+const parts = parseInline(text);
+const strongClass = emphasis === 'strong' ? 'font-medium text-fg' : 'font-normal text-fg';
+---
+
+{parts.map((part) => {
+	if (part.kind === 'text') return part.text;
+	if (part.kind === 'break') return <br />;
+	if (part.kind === 'strong') return <strong class={strongClass}>{part.text}</strong>;
+	if (part.kind === 'em') return <em class="text-fg">{part.text}</em>;
+	const link = <Link href={part.href}>{part.text}</Link>;
+	return part.strong ? <strong class={strongClass}>{link}</strong> : link;
+})}

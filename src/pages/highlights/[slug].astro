@@ -1,0 +1,30 @@
+---
+/**
+ * /highlights/[slug] — one case study: title, lede, illustration, MDX body and
+ * the next highlight.
+ */
+import { render } from 'astro:content';
+
+import { MDX_COMPONENTS } from '@/components/content/mdx';
+import PostLayout from '@/layouts/PostLayout.astro';
+import { getHighlights, getNext } from '@/lib/content';
+
+export async function getStaticPaths() {
+	const highlights = await getHighlights();
+	return highlights.map((highlight) => ({ params: { slug: highlight.id }, props: { highlight, next: getNext(highlights, highlight.id) } }));
+}
+
+const { highlight, next } = Astro.props;
+const { Content } = await render(highlight);
+---
+
+<PostLayout
+	variant="case"
+	title={highlight.data.title}
+	lede={highlight.data.lede}
+	trail={[{ label: 'Highlights', href: '/#highlights' }]}
+	illustration={highlight.data.illustration}
+	next={next && { href: `/highlights/${next.id}`, kicker: 'Next highlight', title: next.data.title }}
+>
+	<Content components={MDX_COMPONENTS} />
+</PostLayout>

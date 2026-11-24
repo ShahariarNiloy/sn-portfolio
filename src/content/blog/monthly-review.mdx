@@ -1,0 +1,32 @@
+---
+title: 'A monthly performance review that actually works'
+summary: 'Lighthouse on every page template, countermeasures each month, and shipping in phases.'
+topic: performance
+status: published
+# TODO(owner): confirm the publish date (the mockup has none; set to launch day).
+publishedOn: 2026-11-24
+illustration: monthly-review
+related:
+  href: '/highlights/performance'
+  label: 'Case study: Performance is a feature'
+# TODO(owner): approve — `order` (not in the PRD schema) keeps the mockup order for lists and "Next post".
+order: 5
+---
+
+Most performance work happens in bursts: a slow page gets noticed, someone fixes it, everyone moves on. Then it slowly gets worse again. A monthly review turns that into a habit.
+
+## Measure templates, not pages
+
+Pick one representative URL for every key page template — home, listings, detail pages, checkout — and run Lighthouse on **desktop and mobile**. Mobile is the stricter, more honest test.
+
+## End every month with countermeasures
+
+Each review ends with a short list of concrete actions for the frontend and backend. Next month starts by checking whether they worked.
+
+## Ship in phases
+
+If you change ten things and the score drops, you’ll spend days untangling which one caused it. Ship a few at a time so every movement has an obvious cause.
+
+## Expect regressions
+
+Scores drift down as features land. That isn’t failure — it’s exactly what the review is for. The point is to catch the drift early, not to hit a number once.

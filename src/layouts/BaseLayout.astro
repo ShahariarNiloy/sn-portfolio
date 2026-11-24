@@ -1,0 +1,96 @@
+---
+/**
+ * BaseLayout — the document shell for every page: <html>, <head> (title,
+ * description, canonical, Open Graph, JSON-LD, fonts), the skip link, backdrop,
+ * nav, footer and command palette. Titles and descriptions come from lib/seo.ts.
+ */
+import '@fontsource/geist/latin-400.css';
+import '@fontsource/geist/latin-500.css';
+import '@fontsource/geist/latin-600.css';
+import '@fontsource/geist-mono/latin-400.css';
+import '@fontsource/geist-mono/latin-500.css';
+import '@fontsource/instrument-serif/latin-400.css';
+import '@fontsource/instrument-serif/latin-400-italic.css';
+import geist400 from '@fontsource/geist/files/geist-latin-400-normal.woff2?url';
+import '@/styles/global.css';
+
+import CommandPalette from '@/components/islands/CommandPalette.astro';
+import Footer from '@/components/layout/Footer.astro';
+import Nav, { type NavSection } from '@/components/layout/Nav.astro';
+import { getPaletteEntries, getSite } from '@/lib/content';
+import { buildBreadcrumbJsonLd, buildDescription, buildTitle, type Crumb } from '@/lib/seo';
+
+export interface Props {
+	/** Page name for "<page> — Shahariar Niloy"; omit on Home. */
+	title?: string | undefined;
+	/** Meta description source text; trimmed to 155 characters. */
+	description?: string | undefined;
+	active?: NavSection | undefined;
+	isHome?: boolean | undefined;
+	/** Breadcrumb trail, for BreadcrumbList JSON-LD on inner pages. */
+	crumbs?: Crumb[] | undefined;
+	/** Extra JSON-LD objects (Person, BlogPosting). */
+	jsonLd?: Record<string, unknown>[] | undefined;
+	/** og:type; "article" for posts. */
+	ogType?: 'website' | 'article' | undefined;
+	/** Keeps the page out of search results (admin). */
+	noindex?: boolean | undefined;
+}
+
+const { title, description, active, isHome = false, crumbs, jsonLd = [], ogType = 'website', noindex = false } = Astro.props;
+const [site, paletteEntries] = await Promise.all([getSite(), getPaletteEntries()]);
+const origin = Astro.site?.origin ?? 'https://shahariarniloy.com';
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', origin).href;
+const pageTitle = buildTitle(site.name, title);
+const pageDescription = buildDescription(description ?? site.description);
+const structured = [...jsonLd, ...(crumbs ? [buildBreadcrumbJsonLd(crumbs, canonical, origin)] : [])];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{pageTitle}</title>
+		<meta name="description" content={pageDescription} />
+		<link rel="canonical" href={canonical} />
+		{noindex && <meta name="robots" content="noindex" />}
+		<meta name="theme-color" content="#111214" />
+		<meta name="color-scheme" content="dark" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="alternate" type="application/rss+xml" title={`${site.name} — Blog`} href="/blog/rss.xml" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="preload" href={geist400} as="font" type="font/woff2" crossorigin />
+		<meta property="og:type" content={ogType} />
+		<meta property="og:site_name" content={site.name} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={pageDescription} />
+		<meta property="og:url" content={canonical} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={pageDescription} />
+		{/* TODO(owner): supply the 1200 × 630 share images in public/og/, then add og:image and twitter:image here. */}
+		{structured.map((data) => (
+			<script type="application/ld+json" set:html={JSON.stringify(data).replaceAll('<', '\\u003c')} />
+		))}
+		<script is:inline>
+			// Marks the page as scripted before first paint, so the illustration
+			// draw-in can start hidden without ever hiding it when JS is off.
+			document.documentElement.classList.add('js');
+		</script>
+	</head>
+	<body class="page-grain relative isolate min-h-screen before:pointer-events-none before:fixed before:inset-0 before:-z-10 before:opacity-10 before:mix-blend-overlay">
+		<a href="#main" class="sr-only z-50 rounded-lg bg-fg px-4 py-2.5 text-sm font-medium text-bg focus:not-sr-only focus:fixed focus:top-4 focus:left-4">
+			Skip to content
+		</a>
+		<div class:list={['backdrop-fade pointer-events-none absolute inset-x-0 top-0 -z-10 overflow-hidden', isHome ? 'h-160' : 'h-112']} aria-hidden="true">
+			<div class:list={['backdrop-glow absolute inset-x-0 h-168', isHome ? '-top-80' : '-top-96']}></div>
+		</div>
+		<Nav active={active} isHome={isHome} siteName={site.name} />
+		<main id="main" tabindex="-1" class="relative mx-auto w-full max-w-screen-sm px-6 outline-none">
+			<slot />
+		</main>
+		<Footer siteName={site.name} email={site.email} github={site.github} linkedin={site.linkedin} location={site.location} isHome={isHome} />
+		<CommandPalette entries={paletteEntries} />
+	</body>
+</html>

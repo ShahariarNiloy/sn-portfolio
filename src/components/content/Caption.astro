@@ -1,0 +1,17 @@
+---
+/**
+ * Caption — the small line under a chart, ring set or stat grid.
+ * `mono` is for dates and sources ("As of Sep 2026").
+ */
+import { cx } from '@/lib/cx';
+
+export interface Props {
+	mono?: boolean | undefined;
+}
+
+const { mono = false } = Astro.props;
+---
+
+<p class={cx('mt-3 mb-0 text-mut', mono ? 'font-mono text-xs' : 'text-sm')}>
+	<slot />
+</p>

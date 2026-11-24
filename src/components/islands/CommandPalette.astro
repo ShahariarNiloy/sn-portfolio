@@ -1,0 +1,79 @@
+---
+/**
+ * CommandPalette — the ⌘K / Ctrl K / Menu dialog that lists every page, project,
+ * highlight, published post and contact link. Only a tiny listener loads with the
+ * page; the dialog logic is imported on first open. Without JavaScript the Menu
+ * trigger is a link to the footer links.
+ */
+import type { PaletteEntry } from '@/lib/content';
+
+export interface Props {
+	/** Generated at build time from the content collections. */
+	entries: PaletteEntry[];
+}
+
+const { entries } = Astro.props;
+---
+
+<dialog
+	id="palette"
+	aria-label="Jump to a page"
+	class="m-0 h-full max-h-none w-full max-w-none bg-transparent px-4 pt-24 text-fg backdrop:bg-bg/60 backdrop:backdrop-blur-sm open:flex open:justify-center"
+>
+	<div class="h-fit w-full max-w-xl overflow-hidden rounded-xl border border-line bg-card shadow-2xl motion-safe:animate-rise">
+		<input
+			type="text"
+			role="combobox"
+			aria-expanded="true"
+			aria-controls="palette-list"
+			aria-autocomplete="list"
+			aria-label="Search pages"
+			placeholder="Jump to a page…"
+			autocomplete="off"
+			class="w-full border-b border-line bg-transparent px-5 py-4 text-base text-fg outline-none placeholder:text-mut"
+			data-palette-input
+		/>
+		<ul id="palette-list" role="listbox" aria-label="Pages" class="m-0 max-h-80 list-none overflow-auto p-1.5" data-palette-list></ul>
+		<div class="flex gap-4 border-t border-line px-5 py-2.5 font-mono text-xs text-mut" aria-hidden="true">
+			<span>↑ ↓ move</span>
+			<span>↵ open</span>
+			<span>esc close</span>
+		</div>
+	</div>
+	<script type="application/json" data-palette-entries set:html={JSON.stringify(entries).replaceAll('<', '\\u003c')} />
+</dialog>
+
+<script>
+	import { onPageLoad } from './_shared/lifecycle';
+
+	// Lazy: the palette is rarely opened, so its logic must not cost first load.
+	let opener: Promise<(trigger: Element | null) => void> | undefined;
+	let builtFor: Element | null = null;
+
+	function open(trigger: Element | null): void {
+		// Rebuild if the page (and so the dialog) was replaced by a client-side navigation.
+		const dialog = document.querySelector('#palette');
+		if (dialog !== builtFor) {
+			builtFor = dialog;
+			opener = import('./palette').then((m) => m.createPalette());
+		}
+		void opener?.then((show) => show(trigger));
+	}
+
+	// The document outlives navigations, so the shortcut is bound once.
+	document.addEventListener('keydown', (event) => {
+		if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+			event.preventDefault();
+			open(document.activeElement);
+		}
+	});
+
+	onPageLoad(() => {
+		for (const trigger of document.querySelectorAll('[data-palette-open]')) {
+			trigger.addEventListener('click', (event) => {
+				event.preventDefault();
+				open(trigger);
+			});
+		}
+	});
+</script>

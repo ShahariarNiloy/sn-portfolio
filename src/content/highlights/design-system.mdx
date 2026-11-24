@@ -1,0 +1,78 @@
+---
+title: 'A lighter design system'
+lede: "At work, I built our booking platform's design system from scratch: a drop-in replacement for the component library we used before, with the same APIs and about half the JavaScript."
+card: "Our platform's component library, rebuilt from scratch with about half the JavaScript."
+illustration: design-system
+order: 1
+---
+
+<MetaList
+	items={[
+		{ label: 'Type', value: 'Company project' },
+		{ label: 'Role', value: 'Designed and built it' },
+		{ label: 'Stack', value: 'React, TypeScript, Tailwind CSS' },
+		{ label: 'Scope', value: '60+ components' },
+	]}
+/>
+
+## By the numbers
+
+<StatGrid
+	columns={2}
+	items={[
+		{ value: '60+', label: 'components, all production-ready' },
+		{ value: '~½', label: 'the JavaScript of the library it replaced' },
+		{ value: '~6×', label: 'smaller, for a typical component' },
+		{ value: '~⅓', label: 'the size of the shared base code' },
+	]}
+/>
+
+## Where it matters most
+
+<BarChart
+	legend={['New design system', 'Previous library']}
+	items={[
+		{ label: 'Data table', now: 9.5, before: 100.0, change: '−91%' },
+		{ label: 'Time picker', now: 9.6, before: 60.1, change: '−84%' },
+		{ label: 'Date picker', now: 13.9, before: 60.0, change: '−77%' },
+		{ label: 'List', now: 7.2, before: 57.9, change: '−87%' },
+		{ label: 'Pagination', now: 7.5, before: 54.2, change: '−86%' },
+		{ label: 'Dropdown', now: 7.6, before: 51.2, change: '−85%' },
+		{ label: 'Select', now: 9.3, before: 49.0, change: '−81%' },
+		{ label: 'Button', now: 5.6, before: 22.4, change: '−75%' },
+	]}
+/>
+
+<Caption>Download size of each component, compared with its closest equivalent before.</Caption>
+
+## Why build one
+
+On a booking site, **bundle size is conversion**: every kilobyte the browser has to download and run delays the search box someone is waiting to use. The library we used carried a styling runtime and far more code than the platform needed.
+
+So the goal was simple: keep everything the team relies on — the same props, hover, focus, keyboard behaviour and density — and drop everything else. Moving a screen over is mostly **an import swap**.
+
+## Principles
+
+<PrincipleGrid
+	items={[
+		{ title: 'Same API, almost no dependencies', body: 'Behaves like the library it replaces, but leans only on a few small helpers.' },
+		{
+			title: 'Accessibility first',
+			body: "WCAG AA as the baseline, standard ARIA patterns, full keyboard support and managed focus. If it isn't accessible, it isn't done.",
+		},
+		{ title: 'Performance is conversion', body: 'Tree-shakeable, heavy parts loaded only when needed, and safe to render on the server.' },
+		{ title: 'Headless first', body: 'Complex widgets keep their logic in hooks, with styles layered on top, so they can be reskinned without forking.' },
+		{ title: 'Tokens, never raw values', body: 'Every colour, space, shadow and motion value comes from tokens, with paired light and dark modes.' },
+		{ title: 'Built for travel at scale', body: 'Right-to-left text, long translations and dense data are handled from the start.' },
+	]}
+/>
+
+## Motion with manners
+
+- **A calm motion language**: purposeful, brief, never bouncy.
+- **Every component transition is 300 ms or less**, and exits are faster than entrances.
+- **Reduced motion is respected everywhere**: movement becomes a fade, autoplay and shimmer stop.
+
+## How it's measured
+
+Each component is bundled on its own — minified, tree-shaken and compressed — and compared with its closest equivalent in the previous library, measured the same way. Framework code is left out, since the app ships it either way.

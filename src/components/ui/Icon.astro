@@ -1,0 +1,36 @@
+---
+/**
+ * Icon — every icon on the site, as inline SVG from icons.ts.
+ * Decorative by default (aria-hidden); pass `label` when the icon carries meaning.
+ */
+import { ICONS, type IconName } from './icons';
+
+export interface Props {
+	/** Which icon to draw. */
+	name: IconName;
+	/** Size in px; icons are square. */
+	size?: 14 | 16 | 20 | undefined;
+	/** Accessible name; omit for decorative icons. */
+	label?: string | undefined;
+	class?: string | undefined;
+}
+
+const { name, size = 16, label, class: className } = Astro.props;
+const icon = ICONS[name];
+---
+
+<svg
+	viewBox="0 0 24 24"
+	width={size}
+	height={size}
+	class={className}
+	fill={icon.stroke ? 'none' : 'currentColor'}
+	stroke={icon.stroke ? 'currentColor' : undefined}
+	stroke-width={icon.stroke ? 1.6 : undefined}
+	stroke-linecap={icon.stroke ? 'round' : undefined}
+	stroke-linejoin={icon.stroke ? 'round' : undefined}
+	role={label ? 'img' : undefined}
+	aria-label={label}
+	aria-hidden={label ? undefined : 'true'}
+	set:html={icon.paths}
+/>

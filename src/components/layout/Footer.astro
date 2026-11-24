@@ -1,0 +1,51 @@
+---
+/**
+ * Footer — copyright, the live page-weight line and the site links
+ * (Now · Uses · Guestbook · Email · GitHub · LinkedIn). `#site-links` is where
+ * the mobile Menu link lands when JavaScript is off.
+ */
+import PageWeight from '@/components/islands/PageWeight.astro';
+import Link from '@/components/ui/Link.astro';
+
+import Container from './Container.astro';
+
+export interface Props {
+	siteName: string;
+	email: string;
+	github: string;
+	linkedin: string;
+	/** Home adds "Built light, in Dhaka." after the copyright. */
+	isHome?: boolean | undefined;
+	location: string;
+}
+
+const { siteName, email, github, linkedin, isHome = false, location } = Astro.props;
+const year = new Date().getUTCFullYear();
+const links = [
+	{ label: 'Now', href: '/now' },
+	{ label: 'Uses', href: '/uses' },
+	{ label: 'Guestbook', href: '/guestbook' },
+	{ label: 'Email', href: `mailto:${email}` },
+	{ label: 'GitHub', href: github },
+	{ label: 'LinkedIn', href: linkedin },
+];
+---
+
+<footer class={isHome ? 'mt-10' : 'mt-24'}>
+	<Container class="flex flex-col flex-wrap justify-between gap-3 border-t border-line pt-8 pb-10 text-xs text-mut">
+		<span class="flex flex-col gap-1.5">
+			<span>
+				&copy; {year} {siteName}
+				{isHome && ` · Built light, in ${location}.`}
+			</span>
+			<PageWeight />
+		</span>
+		<nav id="site-links" aria-label="Site" class="flex flex-wrap items-start gap-x-3">
+			{links.map((l) => (
+				<Link href={l.href} variant="muted" class="inline-flex min-h-11 items-center py-2 text-xs">
+					{l.label}
+				</Link>
+			))}
+		</nav>
+	</Container>
+</footer>

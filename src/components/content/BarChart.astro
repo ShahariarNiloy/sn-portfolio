@@ -1,0 +1,42 @@
+---
+/**
+ * BarChart — paired horizontal bars (now vs before) with the change on the right,
+ * for size comparisons. Each row's bars expose their meaning as text.
+ * Widths arrive as data and are set through a CSS custom property.
+ */
+export interface Props {
+	/** Names for the two bars: [now, before]. */
+	legend: [string, string];
+	/** Widths are percentages of the largest "before" value. */
+	items: { label: string; now: number; before: number; change: string }[];
+}
+
+const { legend, items } = Astro.props;
+---
+
+<div>
+	<div class="mb-3.5 flex gap-4 font-mono text-xs text-mut" aria-hidden="true">
+		<span>
+			<i class="mr-1.5 inline-block h-1.5 w-3 rounded-sm bg-acc align-middle"></i>
+			{legend[0]}
+		</span>
+		<span>
+			<i class="mr-1.5 inline-block h-1.5 w-3 rounded-sm bg-mut/45 align-middle"></i>
+			{legend[1]}
+		</span>
+	</div>
+	<ul class="m-0 list-none p-0">
+		{items.map((b) => (
+			<li class="grid grid-cols-label items-center gap-3.5 border-t border-line py-2 first:border-t-0">
+				<span class="text-sm text-fg">{b.label}</span>
+				<span class="flex items-center gap-3.5">
+					<span class="flex flex-1 flex-col gap-0.5" role="img" aria-label={`${b.label}: ${b.change.replace('−', '')} smaller than before`}>
+						<i class="bar-fill block h-1.5 rounded-r bg-acc" style={`--w: ${b.now}%`} />
+						<i class="bar-fill block h-1.5 rounded-r bg-mut/45" style={`--w: ${b.before}%`} />
+					</span>
+					<span class="w-12 text-right font-mono text-xs text-good">{b.change}</span>
+				</span>
+			</li>
+		))}
+	</ul>
+</div>

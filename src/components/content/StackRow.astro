@@ -1,0 +1,25 @@
+---
+/**
+ * StackRow — one technology on /stack: logo, name and what it is used for.
+ */
+import type { CollectionEntry } from 'astro:content';
+
+import Icon from '@/components/ui/Icon.astro';
+import type { IconName } from '@/components/ui/icons';
+
+export interface Props {
+	item: CollectionEntry<'stack'>;
+}
+
+const { item } = Astro.props;
+---
+
+<div class="stack-row grid grid-cols-icon items-center gap-x-3.5 gap-y-1 border-t border-line py-3.5" style={`--c: ${item.data.colour}`}>
+	<dt class="contents">
+		<span class="stack-row-logo inline-flex size-7 items-center justify-center self-center rounded-md">
+			<Icon name={item.data.icon as IconName} />
+		</span>
+		<span class="font-medium text-fg">{item.data.name}</span>
+	</dt>
+	<dd class="col-start-2 m-0 text-sm leading-relaxed text-mut sm:col-start-3">{item.data.description}</dd>
+</div>

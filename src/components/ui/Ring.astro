@@ -1,0 +1,26 @@
+---
+/**
+ * Ring — one Lighthouse score as a coloured ring, in Lighthouse's own colour
+ * bands. The value is exposed as text (role="img" + aria-label).
+ */
+import { getScoreTone } from '@/lib/lighthouse';
+
+export interface Props {
+	/** Score, 0–100. */
+	value: number;
+	/** What the score measures, shown under the ring. */
+	label: string;
+}
+
+const { value, label } = Astro.props;
+const tone = getScoreTone(value);
+---
+
+<div class="ring" data-tone={tone} style={`--v: ${value}`} role="img" aria-label={`${label}: ${value}`}>
+	<span class="relative font-mono text-base font-medium" aria-hidden="true">
+		{value}
+	</span>
+	<span class="ring-label" aria-hidden="true">
+		{label}
+	</span>
+</div>

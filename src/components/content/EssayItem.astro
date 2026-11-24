@@ -1,0 +1,40 @@
+---
+/**
+ * EssayItem — one essay on Off the clock: number, serif title, excerpt and topic,
+ * expanding in place to the full text (a <details>, so it works without JS).
+ */
+import type { CollectionEntry } from 'astro:content';
+
+import { padIndex } from '@/lib/format';
+
+export interface Props {
+	essay: CollectionEntry<'essays'>;
+	index: number;
+	topicLabel: string;
+	minutes: number;
+}
+
+const { essay, index, topicLabel, minutes } = Astro.props;
+---
+
+<details class="group/essay border-b border-line" data-topic={essay.data.topic} id={essay.id}>
+	<summary class="essay-summary grid cursor-pointer list-none items-baseline gap-3.5 px-1 py-5">
+		<span class="font-mono text-xs text-mut">{padIndex(index)}</span>
+		<span class="flex min-w-0 flex-col gap-1.5">
+			<span class="font-serif text-2xl leading-tight text-fg transition-colors duration-200 group-hover/essay:text-acc">{essay.data.title}</span>
+			<span class="line-clamp-1 text-sm leading-relaxed whitespace-pre-line text-mut group-open/essay:hidden">{essay.data.excerpt}</span>
+		</span>
+		<span class="font-mono text-xs whitespace-nowrap text-mut max-sm:hidden">
+			{topicLabel} · {minutes} min
+		</span>
+		<span class="text-xl leading-none text-mut transition-transform duration-300 group-open/essay:rotate-45" aria-hidden="true">
+			+
+		</span>
+	</summary>
+	<div class="essay max-w-xl px-1 pb-8 sm:pl-12">
+		<slot />
+		<p class="mt-5 text-lg" aria-label="Signed with a peace sign">
+			✌️
+		</p>
+	</div>
+</details>

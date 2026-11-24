@@ -1,0 +1,46 @@
+---
+/**
+ * /blog/[slug] — one post: breadcrumb (Blog / topic), title, summary, meta line,
+ * illustration, article, related link and next post. Drafts are only built in dev.
+ */
+import { render } from 'astro:content';
+
+import { MDX_COMPONENTS } from '@/components/content/mdx';
+import PostLayout from '@/layouts/PostLayout.astro';
+import { getNext, getPublishedPosts, getRoutablePosts, getSite } from '@/lib/content';
+import { getReadMinutes } from '@/lib/format';
+import { buildPostingJsonLd } from '@/lib/seo';
+import { TOPICS } from '@/lib/topics';
+
+export async function getStaticPaths() {
+	const [posts, published] = await Promise.all([getRoutablePosts(), getPublishedPosts()]);
+	return posts.map((post) => ({ params: { slug: post.id }, props: { post, next: getNext(published, post.id) } }));
+}
+
+const { post, next } = Astro.props;
+const site = await getSite();
+const { Content } = await render(post);
+const { title, summary, topic, status, publishedOn, illustration, related } = post.data;
+const isDraft = status === 'draft';
+const topicLabel = TOPICS.find((t) => t.id === topic)?.label ?? topic;
+const url = new URL(Astro.url.pathname, Astro.site).href;
+const jsonLd =
+	publishedOn && !isDraft ? [buildPostingJsonLd({ title, summary, url, publishedOn, authorName: site.name, authorUrl: Astro.site?.href ?? '/' })] : [];
+---
+
+<PostLayout
+	variant="post"
+	title={title}
+	lede={summary}
+	trail={[{ label: 'Blog', href: '/blog' }]}
+	crumbLabel={topicLabel}
+	illustration={illustration}
+	meta={[topicLabel, isDraft ? 'Outline' : `${getReadMinutes(post.body ?? '')} min read`, `By ${site.name}`]}
+	isDraft={isDraft}
+	related={related}
+	next={next && { href: `/blog/${next.id}`, kicker: 'Next post', title: next.data.title }}
+	active="blog"
+	jsonLd={jsonLd}
+>
+	<Content components={MDX_COMPONENTS} />
+</PostLayout>

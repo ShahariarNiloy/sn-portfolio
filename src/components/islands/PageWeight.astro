@@ -1,0 +1,36 @@
+---
+/**
+ * PageWeight — the footer's "This page: X KB · Ys to load" line, measured in the
+ * visitor's browser from performance entries once the page is idle.
+ * Without JavaScript the line stays hidden.
+ */
+---
+
+<span class="hidden items-center gap-2 font-mono text-xs text-mut" data-page-weight title="Measured in your browser when this page loaded">
+	<span class="size-1.5 rounded-full bg-good" aria-hidden="true"></span>
+	<span>
+		This page: <span data-page-weight-value>measuring…</span>
+	</span>
+</span>
+
+<script>
+	import { formatPageWeight } from '@/lib/format';
+	import { whenIdle } from './_shared/focus';
+	import { onPageLoad } from './_shared/lifecycle';
+
+	function measure(): void {
+		const line = document.querySelector<HTMLElement>('[data-page-weight]');
+		const value = line?.querySelector<HTMLElement>('[data-page-weight-value]');
+		if (!line || !value) return;
+		const [nav] = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+		const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+		const bytes = [nav, ...resources].reduce((sum, e) => sum + (e ? e.transferSize || e.encodedBodySize : 0), 0);
+		value.textContent = formatPageWeight(bytes, nav && nav.loadEventEnd ? nav.loadEventEnd : performance.now());
+		line.classList.replace('hidden', 'inline-flex');
+	}
+
+	onPageLoad(() => {
+		if (document.readyState === 'complete') whenIdle(measure);
+		else addEventListener('load', () => whenIdle(measure), { once: true });
+	});
+</script>

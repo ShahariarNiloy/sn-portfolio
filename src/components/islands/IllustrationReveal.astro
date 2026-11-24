@@ -1,0 +1,28 @@
+---
+/**
+ * IllustrationReveal — wraps content holding an Illustration so its strokes draw
+ * in once it enters the viewport. The hidden "before" state only applies when
+ * BaseLayout has marked the page with the `js` class, so without JavaScript (or
+ * with reduced motion) the drawing shows complete.
+ */
+export interface Props {
+	class?: string | undefined;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div data-reveal class={className}>
+	<slot />
+</div>
+
+<script>
+	import { onPageLoad } from './_shared/lifecycle';
+	import { whenVisible } from './_shared/focus';
+
+	onPageLoad(() => {
+		for (const el of document.querySelectorAll<HTMLElement>('[data-reveal]')) {
+			whenVisible(el, () => el.classList.add('is-visible'));
+		}
+	});
+</script>

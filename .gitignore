@@ -200,3 +200,9 @@ dist
 
 ### Astro ###
 .astro/
+
+### Tests
+playwright-report/
+test-results/
+.lighthouseci/
+budgets.md

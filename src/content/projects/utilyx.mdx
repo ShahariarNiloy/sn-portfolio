@@ -1,0 +1,65 @@
+---
+name: 'utilyx.dev'
+group: product
+lede: 'A growing collection of developer tools — formatters, encoders, generators and validators — that run entirely in your browser. Nothing is uploaded and there is no server to wait for.'
+url: 'https://utilyx.dev'
+meta:
+  - label: 'Type'
+    value: 'Personal product'
+  - label: 'Role'
+    value: 'Designed and built solo'
+  - label: 'Tools'
+    value: '50+ and growing'
+  - label: 'Link'
+    value: '[utilyx.dev](https://utilyx.dev)'
+lighthouse:
+  device: mobile
+  measuredOn: 2026-11
+  performance: 99
+  accessibility: 100
+  bestPractices: 100
+  seo: 92
+order: 2
+# TODO(owner): approve — the fields below are not in the PRD schema but the mockup needs them.
+summary: 'Developer tools that run entirely in your browser. Zero servers, nothing uploaded.'
+period: 'Live'
+homeSummary: '50+ developer tools that run entirely in your browser. Zero servers.'
+---
+
+import utilyxHome from '@/assets/work/utilyx-home.webp';
+import { lighthouseScores } from '@/lib/lighthouse';
+
+## Why it exists
+
+Most online dev tools send your data to a server just to format some JSON or decode a token. That is slow and, for anything sensitive, risky. **utilyx does all of it on your machine**, so it is instant and private by design.
+
+## How it's built
+
+- **Zero-server architecture.** Every tool runs client-side; the site is static. [Read more](/highlights/zero-server)
+- **Works offline.** Once loaded, the tools keep working without a connection, and most operations finish in under a millisecond.
+- **Keyboard-first.** A ⌘K command palette jumps to any tool, and the interface is built to be accessible, with semantic markup and skip links.
+- **Built with** Next.js, TypeScript and Tailwind CSS.
+
+## Speed
+
+<RingSet sets={[{ scores: lighthouseScores(frontmatter.lighthouse) }]} />
+
+<Caption>Lighthouse, mobile, Nov 2026. A perfect 100 for accessibility and best practices</Caption>
+
+## Try one here
+
+<JsonTryIt />
+
+<Caption>This runs the same way every utilyx tool does: entirely on your device. [Try the rest on utilyx.dev](https://utilyx.dev)</Caption>
+
+## Now
+
+- Redesigning the landing page, catalogue and tool pages.
+- Adding an SEO category: hreflang generator and validator, canonical and robots.txt generators, sitemap validator, Open Graph and JSON-LD generators, meta preview.
+
+## Screens
+
+<Shot
+	src={utilyxHome}
+	alt="utilyx.dev homepage: the headline Every tool you need. None you don’t, with buttons to browse all tools or try the JSON formatter"
+/>

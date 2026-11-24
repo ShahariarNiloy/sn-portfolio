@@ -1,0 +1,69 @@
+---
+/**
+ * QuoteRotator — Off the clock's featured line, with previous / next buttons
+ * through quotes.json. Never advances on its own. Without JavaScript the first
+ * quote is shown and the buttons stay invisible (their space is kept, so
+ * nothing shifts when the script loads).
+ */
+export interface Props {
+	quotes: { text: string; essayTitle: string }[];
+}
+
+const { quotes } = Astro.props;
+const [first] = quotes;
+const buttonClass =
+	'size-11 cursor-pointer rounded-lg border border-line2 bg-transparent text-fg transition-colors duration-200 ease-out hover:border-mut hover:bg-card2';
+---
+
+{first && (
+	<figure class="quote-card group relative m-0 overflow-hidden rounded-xl border border-line bg-card px-9 pt-10 pb-6 max-sm:px-6" data-quotes>
+		<span class="pointer-events-none absolute -top-2 right-6 font-serif text-9xl leading-none text-acc/20" aria-hidden="true">
+			“
+		</span>
+		<blockquote class="relative m-0 min-h-32 font-serif text-2xl leading-tight text-fg sm:text-4xl" aria-live="polite" data-quote-text>
+			{first.text}
+		</blockquote>
+		<figcaption class="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4 text-xs text-mut">
+			<span data-quote-source>from “{first.essayTitle}”</span>
+			<span class="invisible flex items-center gap-1.5 group-data-ready:visible">
+				<span class="mr-1.5 font-mono" data-quote-position>
+					1 / {quotes.length}
+				</span>
+				<button type="button" class={buttonClass} aria-label="Previous thought" data-quote-step="-1">
+					←
+				</button>
+				<button type="button" class={buttonClass} aria-label="Next thought" data-quote-step="1">
+					→
+				</button>
+			</span>
+		</figcaption>
+		<script type="application/json" data-quote-data set:html={JSON.stringify(quotes).replaceAll('<', '\\u003c')} />
+	</figure>
+)}
+
+<script>
+	import { onPageLoad } from './_shared/lifecycle';
+
+	onPageLoad(() => {
+		const root = document.querySelector<HTMLElement>('[data-quotes]');
+		const data = root?.querySelector('[data-quote-data]')?.textContent;
+		if (root && data) {
+			const quotes = JSON.parse(data) as { text: string; essayTitle: string }[];
+			const text = root.querySelector<HTMLElement>('[data-quote-text]');
+			const source = root.querySelector<HTMLElement>('[data-quote-source]');
+			const position = root.querySelector<HTMLElement>('[data-quote-position]');
+			let index = 0;
+			root.setAttribute('data-ready', '');
+			for (const button of root.querySelectorAll<HTMLButtonElement>('[data-quote-step]')) {
+				button.addEventListener('click', () => {
+					index = (index + Number(button.dataset['quoteStep']) + quotes.length) % quotes.length;
+					const quote = quotes[index];
+					if (!quote || !text || !source || !position) return;
+					text.textContent = quote.text;
+					source.textContent = `from “${quote.essayTitle}”`;
+					position.textContent = `${index + 1} / ${quotes.length}`;
+				});
+			}
+		}
+	});
+</script>

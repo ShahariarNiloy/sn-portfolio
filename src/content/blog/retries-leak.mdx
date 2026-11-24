@@ -1,0 +1,35 @@
+---
+title: 'Why your retries are a memory leak'
+summary: 'Per-attempt abort signals, timers that always clear, and why one-time actions should never retry.'
+topic: performance
+status: published
+# TODO(owner): confirm the publish date (the mockup has none; set to launch day).
+publishedOn: 2026-11-24
+illustration: retries-leak
+related:
+  href: '/highlights/taming-memory'
+  label: 'Case study: Taming memory'
+# TODO(owner): approve — `order` (not in the PRD schema) keeps the mockup order for lists and "Next post".
+order: 2
+---
+
+Retries feel like resilience. But a retry loop with a long timeout is also a promise to keep a request — and everything it references — in memory for a long time. Multiply that by a slow dependency and a busy server, and retries become the leak.
+
+## Clear the timer on every path
+
+The most common bug: the timeout is cleared when the request succeeds, but not when it fails. Each failed attempt leaves a live timer holding its closure. Put the cleanup in a `finally` block so it runs no matter how the attempt ends.
+
+## One abort signal per attempt
+
+Give each attempt its own `AbortController`. Reusing one across attempts means an old timer can cancel a new request — or worse, never cancel the old one.
+
+## Retry less, and politely
+
+- Default to **one retry**, not three.
+- Respect the server’s `Retry-After` header instead of guessing.
+- Don’t `await` fire-and-forget work like analytics inside the request path.
+- If a gateway in front already cuts requests off sooner, your long timeout is only a last-resort safety net — keep it that way.
+
+## Never auto-retry one-time actions
+
+Payments, bookings, cancellations: anything that must happen exactly once should not be retried automatically. A slow response doesn’t mean it failed — retrying can do it twice.

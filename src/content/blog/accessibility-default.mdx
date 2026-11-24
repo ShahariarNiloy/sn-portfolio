@@ -1,0 +1,26 @@
+---
+title: 'Accessibility as a default, not a feature'
+summary: 'Semantic HTML, keyboard support, visible focus — and taking this site’s colours to WCAG AAA.'
+topic: lighter-ui
+status: published
+# TODO(owner): confirm the publish date (the mockup has none; set to launch day).
+publishedOn: 2026-11-24
+illustration: accessibility-default
+# TODO(owner): approve — `order` (not in the PRD schema) keeps the mockup order for lists and "Next post".
+order: 8
+---
+
+Accessibility isn’t a sprint at the end. It’s a set of defaults that make the right thing the easy thing.
+
+## The defaults
+
+- **Semantic first.** Native buttons, links and inputs before ARIA; standard patterns when ARIA is needed.
+- **Keyboard complete.** Everything that works with a pointer works with a keyboard.
+- **Visible focus.** A clear ring, every time.
+- **Never colour alone.** Status always pairs colour with text or an icon.
+
+## Taking this site to AAA contrast
+
+For this portfolio I checked every text colour against all three surfaces. Muted grey was the main miss: it passed AA but sat around 5.6–6.3:1. Lifting it to `#A9AEB7` brought it to 7.4–8.4:1. Score colours, success text and error text got the same treatment, and interactive targets grew to at least 44 × 44px.
+
+<DraftNote>Brighter muted text means a little less contrast between “primary” and “secondary” text. Keep headings brightest to hold the hierarchy.</DraftNote>

@@ -1,0 +1,51 @@
+---
+title: 'Next.js isn’t the answer to everything'
+summary: 'Choosing a framework by what the page does: Astro, Next.js, React with Vite — or none at all.'
+topic: lighter-ui
+status: draft
+illustration: right-framework
+related:
+  href: '/work/truly-remote-work'
+  label: 'Project: Truly Remote Work'
+# TODO(owner): approve — `order` (not in the PRD schema) keeps the mockup order for lists and "Next post".
+order: 9
+---
+
+<DraftNote>Draft — outline only. Add the real numbers after this site goes live.</DraftNote>
+
+## The default trap
+
+{/* TODO(owner): explain the default trap in your own words. */}
+
+- [React and Next.js become the answer before anyone asks what the page needs]
+
+## Sort pages by their job
+
+{/* TODO(owner): add the reasoning behind each pairing. */}
+
+- **Content people read** (blog, docs, portfolio): static-first, like Astro.
+- **Signed-in apps with lots of state**: React or Next.js.
+- **Large multilingual products** that need server rendering and SEO: Next.js — what I use at work.
+- **Small tools that run in the browser**: React with Vite, or no framework at all, like utilyx.dev.
+
+## What each choice costs
+
+{/* TODO(owner): add real numbers for each cost (JS size, hydration time, server cost, build time). */}
+
+- [JavaScript sent to the browser]
+- [Hydration]
+- [Server costs]
+- [Build complexity]
+
+## Two of my own projects
+
+{/* TODO(owner): add why Truly Remote Work splits Astro + Go, and this portfolio's Lighthouse scores after launch. */}
+
+- **Truly Remote Work**: Astro for the pages, Go for the job pipeline. [Why this split]
+- **This portfolio**: Astro, with JavaScript only for the page menu and the guestbook. [Lighthouse scores after launch]
+
+## When I’d still choose Next.js
+
+{/* TODO(owner): list the cases where Next.js is the right tool, with your reasoning. */}
+
+- [Cases where it is the right tool]

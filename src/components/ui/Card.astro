@@ -1,0 +1,31 @@
+---
+/**
+ * Card — the raised surface used for highlights, stats, notes and principles.
+ */
+import { cx } from '@/lib/cx';
+
+export interface Props {
+	as?: 'div' | 'li' | 'article' | 'figure' | 'section' | undefined;
+	/** Brightens the border on hover, for cards that hold a link. */
+	interactive?: boolean | undefined;
+	/** `md` padding is the default; `sm` is for dense grids. */
+	padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
+	class?: string | undefined;
+}
+
+const { as: Tag = 'div', interactive = false, padding = 'md', class: className } = Astro.props;
+---
+
+<Tag
+	class={cx(
+		'rounded-xl border border-line bg-card',
+		padding === 'sm' && 'p-4',
+		padding === 'md' && 'p-5',
+		padding === 'lg' && 'p-4 sm:p-7',
+		padding === 'xl' && 'px-6 py-8',
+		interactive && 'transition-colors duration-300 ease-out hover:border-line2',
+		className,
+	)}
+>
+	<slot />
+</Tag>

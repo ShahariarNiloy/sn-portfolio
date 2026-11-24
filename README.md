@@ -1,64 +1,61 @@
-# Astro Starter Kit: Blog
+# shahariarniloy.com
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/astro-blog-starter-template)
+Portfolio of Shahariar Niloy — a dark-only, near-zero-JavaScript Astro site that
+follows the "Portfolio PRD — shahariarniloy.com (Astro build)" and the V2 mockup.
 
-![Astro Template Preview](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+## Stack
 
-<!-- dash-content-start -->
+Astro 7 (static, with on-demand rendering only for the Guestbook), Tailwind CSS v4
+(theme in `src/styles/global.css`), MDX content collections, vanilla TypeScript
+islands, Cloudflare Workers + D1 (Guestbook) + R2 (CV PDF). Node 24, pnpm.
 
-Create a blog with Astro and deploy it on Cloudflare Workers as a [static website](https://developers.cloudflare.com/workers/static-assets/).
+## Scripts
 
-Features:
+| Script                   | Runs                                                                                     |
+| ------------------------ | ---------------------------------------------------------------------------------------- |
+| `pnpm dev`               | Astro dev server (local D1 through wrangler)                                             |
+| `pnpm check`             | `astro check` + `tsc --noEmit`                                                           |
+| `pnpm lint`              | ESLint + Prettier check                                                                  |
+| `pnpm test`              | Vitest unit tests for `src/lib`                                                          |
+| `pnpm e2e`               | Playwright + axe on every route at 390, 768 and 1440 px                                  |
+| `pnpm lhci`              | Lighthouse CI budgets against the production build                                       |
+| `pnpm build`             | Production build (`dist/client` static, `dist/server` worker)                            |
+| `pnpm db:migrate:local`  | Apply D1 migrations locally                                                              |
+| `pnpm db:migrate:remote` | Apply D1 migrations in production (the Cloudflare build does this)                       |
+| `pnpm guestbook:pull`    | Copies live Guestbook notes into a fresh local D1 so the build can bake in approved ones |
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-- ✅ Built-in Observability logging
+`pnpm e2e` and `pnpm lhci` serve the build with `astro preview`; run `pnpm build` first.
+Astro runs one preview server per project — if one is already running, set
+`PREVIEW_PORT` to its port.
 
-<!-- dash-content-end -->
+## Content
 
-## Getting Started
+Everything visible lives in `src/content` and is validated by
+`src/content.config.ts`:
 
-Outside of this repo, you can start a new project with this template using [C3](https://developers.cloudflare.com/pages/get-started/c3/) (the `create-cloudflare` CLI):
+- `blog/*.mdx` — posts (`status: draft` posts are never built in production)
+- `projects/*.mdx`, `highlights/*.mdx` — case studies
+- `essays/*.md` — Off the clock
+- `data/*.json` — site, now, uses, stack, timeline, quotes
 
-```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/astro-blog-starter-template
-```
+Adding a post, project or highlight is one new file.
 
-A live public deployment of this template is available at [https://astro-blog-starter-template.templates.workers.dev](https://astro-blog-starter-template.templates.workers.dev)
+## Guestbook setup
 
-## 🚀 Project Structure
+1. Create a GitHub OAuth app; callback `https://shahariarniloy.com/api/guestbook/callback`.
+2. `wrangler d1 create guestbook` and put the id in `wrangler.jsonc`.
+3. Set secrets: `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `SESSION_SECRET`,
+   `OWNER_GITHUB_ID`, `DEPLOY_HOOK_URL` (`wrangler secret put …`). Locally, copy
+   `.dev.vars.example` to `.dev.vars`.
+4. Moderate at `/guestbook/admin`. Approving a note calls the deploy hook, which
+   rebuilds the static `/guestbook` page.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Deploying
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Cloudflare Workers Builds deploys `main` (Settings → Builds of the Worker):
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+- Build command: `pnpm db:migrate:remote && pnpm guestbook:pull && pnpm build`
+- Deploy command: `pnpm exec wrangler deploy --config dist/server/wrangler.json`
+- API token: the default build permissions plus D1 Edit
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                           | Action                                           |
-| :-------------------------------- | :----------------------------------------------- |
-| `npm install`                     | Installs dependencies                            |
-| `npm run dev`                     | Starts local dev server at `localhost:4321`      |
-| `npm run build`                   | Build your production site to `./dist/`          |
-| `npm run preview`                 | Preview your build locally, before deploying     |
-| `npm run astro ...`               | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help`         | Get help using the Astro CLI                     |
-| `npm run build && npm run deploy` | Deploy your production site to Cloudflare        |
-| `npm wrangler tail`               | View real-time logs for all Workers              |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+A Deploy Hook for `main`, stored as `DEPLOY_HOOK_URL`, rebuilds after a note is approved.

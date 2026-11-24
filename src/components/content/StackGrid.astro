@@ -1,0 +1,58 @@
+---
+/**
+ * StackGrid — the large 9 × 6 grid on /stack, fading out at its edges. Learning items are dashed. Decorative (the rows below list the
+ * same items as text), so it is hidden from screen readers. Static: no JS.
+ * Below sm only the filled cells show, three to a row.
+ */
+import type { CollectionEntry } from 'astro:content';
+
+import { cx } from '@/lib/cx';
+
+export interface Props {
+	items: CollectionEntry<'stack'>[];
+}
+
+const { items } = Astro.props;
+const COLUMNS = 9;
+const ROWS = 6;
+const PLUSES = [
+	[2, 1],
+	[5, 1],
+	[7, 3],
+	[3, 4],
+	[6, 2],
+] as const;
+const cells = Array.from({ length: COLUMNS * ROWS }, (_, i) => {
+	const key = `${i % COLUMNS},${Math.floor(i / COLUMNS)}`;
+	return items.find((item) => item.data.grid === key);
+});
+---
+
+<div class="stack-grid-wrap" aria-hidden="true">
+	<div class="stack-grid">
+		{cells.map((item) =>
+			item ? (
+				<div class={cx('stack-cell is-on', item.data.group === 'learning' && 'is-learning')} style={`--c: ${item.data.colour}`}>
+					<span class="stack-cell-cat">{item.data.category}</span>
+					<span class="stack-cell-sym">{item.data.symbol}</span>
+					<span class="stack-cell-name">{item.data.name}</span>
+				</div>
+			) : (
+				<div class="stack-cell" />
+			),
+		)}
+	</div>
+	{PLUSES.map(([x, y]) => (
+		<svg class="stack-plus" viewBox="0 0 11 11" style={`--x: ${x}; --y: ${y}`}>
+			<path d="M5.5 0V11M0 5.5H11" stroke="currentColor" fill="none" />
+		</svg>
+	))}
+</div>
+<p class="mt-4 flex flex-wrap justify-center gap-5 font-mono text-xs text-mut" aria-hidden="true">
+	<span>
+		<i class="mr-1.5 inline-block size-3 rounded-sm border border-line2 bg-card align-middle"></i>Use in production
+	</span>
+	<span>
+		<i class="mr-1.5 inline-block size-3 rounded-sm border border-dashed border-line2 align-middle"></i>Learning
+	</span>
+</p>

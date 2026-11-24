@@ -1,0 +1,50 @@
+---
+/**
+ * /off-the-clock — the personal page: serif title, the quote rotator and the
+ * essay list with topic filters.
+ */
+import { render } from 'astro:content';
+
+import EssayItem from '@/components/content/EssayItem.astro';
+import EssayFilter from '@/components/islands/EssayFilter.astro';
+import QuoteRotator from '@/components/islands/QuoteRotator.astro';
+import Link from '@/components/ui/Link.astro';
+import SectionLabel from '@/components/ui/SectionLabel.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getEssays, getQuotes } from '@/lib/content';
+import { getReadMinutes } from '@/lib/format';
+import { ESSAY_TOPICS } from '@/lib/topics';
+
+const [essays, quotes] = await Promise.all([getEssays(), getQuotes()]);
+const rendered = await Promise.all(essays.map(async (essay) => ({ essay, Content: (await render(essay)).Content })));
+const topicLabel = (id: string): string => ESSAY_TOPICS.find((t) => t.id === id)?.label ?? id;
+---
+
+<PageLayout
+	title="Off the clock"
+	seoTitle="Off the clock — thoughts"
+	lede="Nothing here is about work. Short essays on the self, people, gratitude and character — the things I keep thinking about on long walks."
+>
+	<h1 slot="title" class="mt-4 mb-0 text-5xl leading-none font-semibold tracking-tighter text-head">
+		Thoughts, <em class="font-serif font-normal tracking-normal text-mut">unfinished.</em>
+	</h1>
+	<section class="pt-14">
+		<QuoteRotator quotes={quotes} />
+	</section>
+	<section class="pt-16">
+		<div class="mb-3.5 flex flex-wrap items-center justify-between gap-3">
+			<SectionLabel class="mb-0">Essays</SectionLabel>
+			<EssayFilter topics={[...ESSAY_TOPICS]} listId="essays" />
+		</div>
+		<div id="essays" class="border-t border-line">
+			{rendered.map(({ essay, Content }, i) => (
+				<EssayItem essay={essay} index={i + 1} topicLabel={topicLabel(essay.data.topic)} minutes={getReadMinutes(essay.body ?? '')}>
+					<Content />
+				</EssayItem>
+			))}
+		</div>
+		<p class="mt-7 mb-0 font-mono text-xs text-mut">
+			Every one ends the same way: ✌️ · <Link href="/guestbook">Leave a note on the wall →</Link>
+		</p>
+	</section>
+</PageLayout>

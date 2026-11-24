@@ -1,0 +1,28 @@
+---
+/**
+ * Breadcrumb — "Home / Section / Page" trail above every inner page title.
+ * The last item is the current page and is not a link.
+ */
+import type { Crumb } from '@/lib/seo';
+
+export interface Props {
+	items: Crumb[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class="flex flex-wrap items-center gap-2 font-mono text-xs text-mut">
+	{items.map((item, i) => (
+		<>
+			{i > 0 && <span aria-hidden="true">/</span>}
+			{item.href ? (
+				<a href={item.href} class="inline-flex min-h-11 items-center py-2.5 text-mut no-underline transition-colors duration-200 hover:text-fg">
+					{item.label}
+				</a>
+			) : (
+				<span aria-current="page">{item.label}</span>
+			)}
+		</>
+	))}
+</nav>

@@ -1,0 +1,33 @@
+---
+/**
+ * /guestbook/admin — owner only, rendered on demand: every note, as Waiting, On
+ * the wall and Rejected, with the decisions each allows.
+ */
+import { env } from 'cloudflare:workers';
+
+import ModerationList from '@/components/content/ModerationList.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { readConfig } from '@/lib/guestbook/config';
+import { listNotes } from '@/lib/guestbook/db';
+import { readSession, SESSION_COOKIE } from '@/lib/guestbook/session';
+
+export const prerender = false;
+
+const config = readConfig(env, Astro.url.origin);
+const session = config ? await readSession(Astro.cookies.get(SESSION_COOKIE)?.value, config.sessionSecret) : null;
+if (!config || !session) return Astro.redirect('/api/guestbook/login');
+if (session.githubId !== config.ownerGithubId) return new Response('Only the owner can moderate notes.', { status: 403 });
+const [pending, approved, rejected] = await Promise.all([listNotes(env.DB, 'pending'), listNotes(env.DB, 'approved'), listNotes(env.DB, 'rejected')]);
+const hasRebuildFailed = Astro.url.searchParams.get('rebuild') === 'failed';
+---
+
+<PageLayout title="Moderate notes" trail={[{ label: 'Guestbook', href: '/guestbook' }]} noindex>
+	{hasRebuildFailed && (
+		<p class="mt-6 mb-0 rounded-xl border border-dashed border-line2 px-4 py-3.5 text-sm text-fg" role="status">
+			Saved, but the rebuild could not be started, so the live wall is unchanged. Start a build in Cloudflare.
+		</p>
+	)}
+	<ModerationList title="Waiting" status="pending" notes={pending} />
+	<ModerationList title="On the wall" status="approved" notes={approved} />
+	<ModerationList title="Rejected" status="rejected" notes={rejected} />
+</PageLayout>

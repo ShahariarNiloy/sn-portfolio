@@ -1,0 +1,87 @@
+---
+title: 'Only the words a page needs'
+lede: 'A multilingual Next.js app was sending its entire translation dictionary — thousands of strings — inside every page, to show a few hundred of them. I rebuilt how text reaches the browser.'
+card: 'Each page now ships only its own translations — about 90% less text in the HTML.'
+illustration: localization
+order: 2
+---
+
+<MetaList
+	items={[
+		{ label: 'Type', value: 'Engineering case study' },
+		{ label: 'Focus', value: 'Internationalisation and performance' },
+		{ label: 'Stack', value: 'Next.js App Router, React Server Components, TypeScript' },
+		{ label: 'Scale', value: 'Dozens of locales, thousands of strings' },
+	]}
+/>
+
+## By the numbers
+
+<StatGrid
+	columns={2}
+	items={[
+		{ value: '~90%', label: "less translation data in each page's HTML" },
+		{ value: '~70%', label: 'less over a typical five-page first visit' },
+		{ value: '~90%', label: 'less on every visit after that' },
+		{ value: '1 year', label: 'how long browsers can cache the full dictionary' },
+	]}
+/>
+
+## The problem
+
+Interactive components need their text **on the very first render** — on the server and again while React hydrates — or visitors see raw keys or a flash of English. The simplest way to guarantee that was to embed the whole dictionary in every page.
+
+It worked, but it put tens of kilobytes of compressed text into every HTML response, before the page could render. No single page used more than a small fraction of it.
+
+## Before and after
+
+<Compare
+	items={[
+		{ label: 'Before', width: 100, tone: 'mut', text: 'The whole dictionary, embedded in every page.' },
+		{ label: 'After', width: 10, tone: 'acc', text: "Just the page's own words. The rest arrives later, once, and stays cached." },
+	]}
+/>
+
+## How it works
+
+<Steps
+	items={[
+		{
+			title: 'Find the words at build time',
+			body: "A generator reads the code with the TypeScript compiler, following every import — dynamic ones too — from each page and layout, and records which strings could be translation keys. A simple regex scan missed hundreds of keys; parsing the code didn't.",
+		},
+		{
+			title: 'Pick them per request',
+			body: "When a page renders, the server keeps only the candidates that really exist in that language's dictionary. Over-collecting at build time costs nothing: a string that isn't a key never reaches the page.",
+		},
+		{
+			title: 'Inherit instead of copying',
+			body: "Each page lists only the words its layouts don't already provide. In the browser, nested providers link to their parent through the prototype chain, so a missing key is found one level up without duplicating anything.",
+		},
+		{
+			title: 'Send the rest later',
+			body: 'After the page has loaded and the browser is idle, the full dictionary arrives in the background and applies inside a React transition, so the page stays responsive. Its URL is content-hashed, so browsers cache it for a year and every country that shares a language shares one copy.',
+		},
+	]}
+/>
+
+## The mistake that taught me the most
+
+My first version **preloaded** the full dictionary at low priority. On a throttled phone it still competed with the page's largest image and pushed Largest Contentful Paint back by more than a second and a half. Moving it to after load, at the next idle moment, removed the cost completely.
+
+## Guardrails
+
+- **The build fails** if a page or layout isn't wired up to receive its words, so nothing ships half-translated.
+- **An escape hatch for keys built from data**, like a status code or a country name, so they can still travel with the page.
+- **Every string has an English fallback**, so a missing translation shows readable text, never a raw key.
+
+## The rest of the locale system
+
+- **The locale lives in the URL**, so every language version has its own indexable, shareable address, with canonical and hreflang links for search engines.
+- **Right-to-left support** through logical CSS properties, with icons and arrows that mirror.
+- **Dates, numbers and prices** formatted per language, with date locales loaded only when needed.
+- **Changing language in one tab** updates the others too.
+
+## What I took from it
+
+**Measure what's inside the HTML, not just the JavaScript bundle.** The bytes that arrive before the page can render matter most — and they're the easiest to forget.

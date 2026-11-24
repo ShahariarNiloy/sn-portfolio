@@ -1,0 +1,27 @@
+---
+/**
+ * Illustration — renders a named isometric illustration at its own aspect ratio.
+ * `card` is the small version on Home's carousel; `hero` sits in a card under a
+ * page title. Wrap it in IllustrationReveal for the draw-in effect.
+ */
+import { cx } from '@/lib/cx';
+
+import { ILLUSTRATIONS } from './index';
+import type { IllustrationName } from './names';
+
+export interface Props {
+	name: IllustrationName;
+	size?: 'card' | 'hero' | undefined;
+}
+
+const { name, size = 'hero' } = Astro.props;
+const { component: Drawing, width, height } = ILLUSTRATIONS[name];
+---
+
+<div
+	class={cx('ill', size === 'hero' && 'mx-auto max-w-lg', size === 'card' && 'w-full')}
+	style={`--ar: ${width} / ${height}`}
+	aria-hidden="true"
+>
+	<Drawing />
+</div>

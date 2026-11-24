@@ -1,0 +1,69 @@
+---
+title: 'Found in every language'
+lede: 'A site in dozens of languages only works if search engines understand every version of every page. I worked on the plumbing that makes that happen — and on pages search engines actually want to index.'
+card: 'Sitemaps, hreflang and structured data across a multilingual platform.'
+illustration: seo
+order: 6
+---
+
+<MetaList
+	items={[
+		{ label: 'Type', value: 'Ongoing technical SEO' },
+		{ label: 'Focus', value: 'A large multilingual site' },
+		{ label: 'Stack', value: 'Next.js, structured data, XML sitemaps' },
+		{ label: 'Cadence', value: 'Reviewed every month' },
+	]}
+/>
+
+## By the numbers
+
+<StatGrid
+	columns={2}
+	items={[
+		{ value: '−98%', label: 'sitemap URLs, rebuilt around canonical pages' },
+		{ value: '67 → 100', label: 'average Lighthouse SEO score on the main landing pages' },
+		{ value: 'Every', label: 'language version linked to its siblings' },
+		{ value: 'Monthly', label: 'review of indexing and page scores' },
+	]}
+/>
+
+## The problem
+
+Most of the site's pages **weren't being indexed**. Language versions competed with each other instead of pointing to each other, the sitemap listed far more URLs than really existed as distinct pages, and crawlers spent their time on slow, dynamic pages instead of the ones worth finding.
+
+## What I did
+
+<Steps
+	items={[
+		{
+			title: 'One page, one address',
+			body: 'Restructured URLs across the site, then set canonical, hreflang and noindex rules so every language version points to its siblings and nothing competes with itself.',
+		},
+		{
+			title: 'Sitemaps that tell the truth',
+			body: 'Rebuilt the sitemaps around canonical pages — about 98% fewer URLs — with every language alternate listed inside each entry. Then tested larger files to speed up indexing without overloading the crawlers.',
+		},
+		{
+			title: 'Pages built to be found',
+			body: 'Static landing pages for countries, regions and cities, and search-friendly versions of the listing and detail pages, with real titles, content and FAQs instead of empty shells.',
+		},
+		{ title: "Structured data that's safe", body: 'Audited the JSON-LD on every page type and fixed a security issue in how it was embedded.' },
+		{
+			title: 'Catch it automatically',
+			body: 'Built an SEO audit tool so broken hreflang, canonical or structured data shows up before search engines see it.',
+		},
+	]}
+/>
+
+## How it was shipped
+
+- **In phases.** One change at a time, so any shift in indexing could be traced to its cause.
+- **Measured monthly.** Indexing in Search Console and Lighthouse scores for every key page template, reviewed every month with countermeasures for the next.
+
+## Where it stands
+
+Indexed pages **climbed steadily, month after month**. It isn't finished: some language duplicates are still indexed separately, and the next round of canonical work targets them.
+
+## What I took from it
+
+**Search engines reward clarity.** One page, one URL, one canonical — and a sitemap that tells the truth.

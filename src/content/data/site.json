@@ -1,0 +1,70 @@
+[
+	{
+		"id": "site",
+		"name": "Shahariar Niloy",
+		"role": "Senior Software Engineer",
+		"domain": "shahariarniloy.com",
+		"email": "shahariarniloyblv@gmail.com",
+		"location": "Dhaka",
+		"github": "https://github.com/ShahariarNiloy",
+		"linkedin": "https://linkedin.com/in/shahariarniloy",
+		"description": "Shahariar Niloy makes software lighter and faster. Senior Software Engineer in Dhaka, leading frontend on a platform used by millions.",
+		"home": {
+			"title": ["Building software that's lighter,", "faster, and scalable."],
+			"intro": "Hey, I'm Niloy. I love to make software lighter and faster. At Adventure Dhaka Limited, I lead the frontend team behind a travel booking platform used by millions. [Off the clock](/off-the-clock), I build [small, fast tools](/work) and write about people — usually over tea.",
+			"facts": [
+				{
+					"label": "Focus",
+					"value": "Optimization · Performance"
+				},
+				{
+					"label": "Languages",
+					"value": "JavaScript · TypeScript"
+				},
+				{
+					"label": "Based in",
+					"value": "Dhaka"
+				}
+			],
+			"experience": [
+				{
+					"period": "2023 – Present",
+					"title": "Adventure Dhaka Limited",
+					"body": "Senior Software Engineer · frontend, performance, search and SEO. Head of the frontend department."
+				},
+				{
+					"period": "2022 – 2023",
+					"title": "Sheba Technologies",
+					"body": "Junior Software Engineer · built the BRAC learning management system."
+				}
+			],
+			"recognition": [
+				{
+					"title": "Best Employee of the Year",
+					"detail": "FY 23–24 and FY 25–26"
+				},
+				{
+					"title": "Best Flexible Employee",
+					"detail": "FY 24–25"
+				},
+				{
+					"title": "IEEE ICIRCA 2022",
+					"detail": "first author, Bangla handwritten character recognition"
+				},
+				{
+					"title": "Meta and IBM",
+					"detail": "front-end certificates, 2023"
+				}
+			],
+			"stackStory": [
+				"I think in {typescript} and speak fluent {javascript}. Interfaces take shape in {react}, {next-js} and {astro}, dressed in {tailwind-css}.",
+				"Client state stays light with {zustand}; server data stays fresh with {react-query}.",
+				"Data rests in {postgresql}, shaped by {drizzle} and kept close by {redis}, while files and images settle into {aws-s3}.",
+				"It all runs on {node-js} with {nestjs} for APIs, builds with {vite}, and ships to the edge on {vercel} and {cloudflare} — and nothing ships until {lighthouse} agrees it's fast.",
+				"After hours, I'm picking up {go} because simple should also be fast, losing friendly arguments with {rust}'s borrow checker, and smuggling near-native speed into the browser with {webassembly}."
+			],
+			"contact": "Have something that should be faster? Write to {email}, or find me on {github} and {linkedin}.",
+			"offTheClock": "Off the clock, I write about people and the self."
+		}
+	}
+]

@@ -1,0 +1,38 @@
+[
+	{
+		"id": "now",
+		"updatedOn": "2026-11-23",
+		"place": "Dhaka",
+		"items": [
+			{
+				"label": "Work",
+				"body": "**Senior Software Engineer at Adventure Dhaka Limited**, leading the frontend department on [adventure.inc](/work/adventure-inc)."
+			},
+			{
+				"label": "Building",
+				"body": "**[Repo Galaxy](/work/repo-galaxy)** — codebases as a 3D star map. And a redesign of [utilyx.dev](/work/utilyx), with a new set of SEO tools."
+			},
+			{
+				"label": "Learning",
+				"body": "**Rust and Go**, for speed beyond the browser."
+			},
+			{
+				"label": "Writing",
+				"body": "Short notes on people and the self, [off the clock](/off-the-clock)."
+			},
+			{
+				"label": "Collecting",
+				"body": "Quotes worth sitting with, and the occasional mindful thought. A few of them end up [off the clock](/off-the-clock)."
+			},
+			{
+				"label": "Life",
+				"body": "Long walks, slow mornings, and an ongoing debate between tea and coffee. So far, both are winning."
+			}
+		],
+		"home": [
+			"Building **Repo Galaxy**, a 3D codebase explorer with AI answers.",
+			"Redesigning **utilyx.dev** and adding a set of SEO tools.",
+			"Learning **Rust** and **Go** for even lighter tools."
+		]
+	}
+]

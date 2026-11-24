@@ -1,0 +1,38 @@
+# CI on every pull request: check, lint, unit tests, build, e2e (+ axe) at three
+# widths, Lighthouse CI budgets, and a bundle-size comment on the PR.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+      - name: Budgets (HTML ≤ 30 KB, CSS ≤ 15 KB, first-load JS ≤ 15 KB, gzipped)
+        run: node scripts/budgets.mjs >> "$GITHUB_STEP_SUMMARY"
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm e2e
+      - run: pnpm lhci
+      - name: Post bundle sizes
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: budgets.md

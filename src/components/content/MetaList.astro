@@ -1,0 +1,24 @@
+---
+/**
+ * MetaList — the two-column "label / value" grid under project and highlight
+ * titles. Values may hold inline Markdown links.
+ */
+import Inline from '@/components/ui/Inline.astro';
+
+export interface Props {
+	items: { label: string; value: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<dl class="mt-9 mb-0 grid grid-cols-2 border-t border-line">
+	{items.map((item) => (
+		<div class="border-b border-line py-3.5 odd:pr-4">
+			<dt class="mb-0.5 font-mono text-xs text-mut">{item.label}</dt>
+			<dd class="m-0">
+				<Inline text={item.value} />
+			</dd>
+		</div>
+	))}
+</dl>

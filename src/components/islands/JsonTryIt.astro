@@ -1,0 +1,60 @@
+---
+/**
+ * JsonTryIt — a live JSON formatter on the utilyx page, timing itself in the
+ * browser. Without JavaScript the sample input and its formatted output are
+ * shown as static text, formatted at build time.
+ */
+import { formatJson } from '@/lib/json';
+
+const SAMPLE = '{"name": "utilyx.dev", "tools": "50+", "servers": 0, "uploads": [], "private": true}';
+const initial = formatJson(SAMPLE);
+---
+
+<div class="overflow-hidden rounded-xl border border-line2 bg-card" data-json-try>
+	<div class="flex justify-between gap-3 border-b border-line px-3.5 py-2.5 font-mono text-xs text-mut">
+		<span>JSON formatter</span>
+		<span>Edit the left side</span>
+	</div>
+	<div class="grid min-h-56 grid-cols-1 sm:grid-cols-2">
+		<textarea
+			class="min-h-56 resize-y border-0 border-b border-line bg-transparent p-3.5 font-mono text-xs leading-relaxed text-fg outline-none focus:bg-card2 sm:border-r sm:border-b-0"
+			spellcheck="false"
+			aria-label="JSON to format"
+			data-json-input
+		>{SAMPLE}</textarea>
+		<div class="overflow-auto p-3.5" aria-live="polite">
+			<pre class="m-0 font-mono text-xs leading-relaxed whitespace-pre-wrap text-prose" data-json-output>{initial.ok ? initial.output : ''}</pre>
+			<span class="font-mono text-xs text-bad" data-json-error></span>
+		</div>
+	</div>
+	<div class="flex justify-between gap-3 border-t border-line px-3.5 py-2.5 font-mono text-xs text-mut">
+		<span class="text-good">
+			Formatted in <span data-json-ms>0.00</span> ms
+		</span>
+		<span>Nothing left your browser</span>
+	</div>
+</div>
+
+<script>
+	import { formatJson } from '@/lib/json';
+	import { onPageLoad } from './_shared/lifecycle';
+
+	onPageLoad(() => {
+		const root = document.querySelector<HTMLElement>('[data-json-try]');
+		const input = root?.querySelector<HTMLTextAreaElement>('[data-json-input]');
+		const output = root?.querySelector<HTMLElement>('[data-json-output]');
+		const error = root?.querySelector<HTMLElement>('[data-json-error]');
+		const ms = root?.querySelector<HTMLElement>('[data-json-ms]');
+		if (input && output && error && ms) {
+			const run = (): void => {
+				const start = performance.now();
+				const result = formatJson(input.value);
+				ms.textContent = (performance.now() - start).toFixed(2);
+				output.textContent = result.ok ? result.output : '';
+				error.textContent = result.ok ? '' : result.error;
+			};
+			input.addEventListener('input', run);
+			run();
+		}
+	});
+</script>

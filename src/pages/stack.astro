@@ -1,135 +1,41 @@
 ---
-import Base from '../layouts/Base.astro';
-import PageHead from '../components/PageHead.astro';
-import StackGrid from '../components/StackGrid.astro';
+/**
+ * /stack — the large stack grid, then every technology by group.
+ */
+import StackGrid from '@/components/content/StackGrid.astro';
+import StackRow from '@/components/content/StackRow.astro';
+import SectionLabel from '@/components/ui/SectionLabel.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getStack } from '@/lib/content';
 
-const groups: { title: string; rows: [string, string, string, string][] }[] = [
-	{
-		title: 'Every day',
-		rows: [
-			['Ts', 'TypeScript', '#5B9BEA', 'The default for everything I write.'],
-			['Js', 'JavaScript', '#E8CB3A', 'The language under it all — and what I optimize for the browser.'],
-			['Re', 'React', '#61DAFB', 'UI on adventure.inc and my own products.'],
-			['Nx', 'Next.js', 'var(--fg)', 'Server rendering, routing and SEO on a large multilingual app.'],
-			['Tw', 'Tailwind CSS', '#38BDF8', 'Styling that stays consistent as a team grows.'],
-		],
-	},
-	{
-		title: 'State & data',
-		rows: [
-			['Rq', 'React Query', '#F472B6', 'Server state, caching and infinite scroll.'],
-			['Zu', 'Zustand', '#D4A373', 'Small, fast client state without the boilerplate.'],
-			['Pg', 'PostgreSQL', '#7FA7DB', 'Relational data for data pipelines and products.'],
-			['Dz', 'Drizzle', '#C5F74F', 'Typed SQL from TypeScript.'],
-			['Rd', 'Redis', '#FF4D4D', 'Caching hot data.'],
-		],
-	},
-	{
-		title: 'Runtime, build & delivery',
-		rows: [
-			['No', 'Node.js', '#6CC24A', 'Servers, scripts and build tooling.'],
-			['Vi', 'Vite', '#B07CFF', 'Fast builds and dev servers.'],
-			['Vc', 'Vercel', 'var(--fg)', 'Where most of my sites deploy: previews on every push, served from the edge.'],
-			['Cf', 'Cloudflare', '#F38020', 'Edge hosting, DNS and caching close to every visitor.'],
-			['S3', 'AWS S3', '#F29D38', 'File and image storage.'],
-			['Lh', 'Lighthouse', '#FF7A66', 'Where every performance change starts: measure first.'],
-		],
-	},
-	{
-		title: 'Learning',
-		rows: [
-			['Go', 'Go', '#29BEB0', 'Simple, fast backends.'],
-			['Rs', 'Rust', '#DEA584', 'Systems programming and speed without a garbage collector.'],
-			['Wa', 'WebAssembly', '#7C8CFF', 'Near-native speed in the browser — a natural fit for zero-server tools.'],
-		],
-	},
-];
+const stack = await getStack();
+const GROUPS = [
+	{ id: 'every-day', label: 'Every day' },
+	{ id: 'state-and-data', label: 'State & data' },
+	{ id: 'runtime-build-delivery', label: 'Runtime, build & delivery' },
+	{ id: 'learning', label: 'Learning' },
+] as const;
 ---
 
-<Base title="Stack — Shahariar Niloy" description="The tools behind the speed: what I use every day, for data and performance, and what I'm learning next." current="/stack">
-	<PageHead title="Stack" lede="The tools behind the speed — what I reach for every day, what I use for data and performance, and what I'm learning next." />
-	<div class="wide breakout" style="padding-top: 56px">
-		<p class="sr">The full stack is listed below the grid.</p>
-		<StackGrid size="lg" />
-		<div class="legend" aria-hidden="true"><span><i></i>Use in production</span><span><i class="d"></i>Learning</span></div>
+<PageLayout
+	title="Stack"
+	active="stack"
+	lede="The tools behind the speed — what I reach for every day, what I use for data and performance, and what I'm learning next."
+>
+	<div class="relative left-1/2 w-screen max-w-6xl -translate-x-1/2 px-6 pt-14">
+		<p class="sr-only">The full stack is listed below the grid.</p>
+		<StackGrid items={stack} />
 	</div>
-	{
-		groups.map((g, i) => (
-			<section style={`padding-top:${i === 0 ? 64 : 56}px`}>
-				<h2 class="lbl">{g.title}</h2>
-				<dl class="srows">
-					{g.rows.map(([sy, n, c, d]) => (
-						<div class="srow" style={`--c:${c}`}>
-							<span class="sy" aria-hidden="true">{sy}</span>
-							<dt class="sn">{n}</dt>
-							<dd class="sd">{d}</dd>
-						</div>
+	{GROUPS.map((g, i) => (
+		<section class={i === 0 ? 'pt-16' : 'pt-14'}>
+			<SectionLabel>{g.label}</SectionLabel>
+			<dl class="m-0 border-b border-line">
+				{stack
+					.filter((s) => s.data.group === g.id)
+					.map((s) => (
+						<StackRow item={s} />
 					))}
-				</dl>
-			</section>
-		))
-	}
-</Base>
-
-<style>
-	.legend {
-		display: flex;
-		gap: 20px;
-		justify-content: center;
-		flex-wrap: wrap;
-		margin-top: 18px;
-		font-family: var(--mono);
-		font-size: 11.5px;
-		color: var(--mut);
-	}
-	.legend i {
-		display: inline-block;
-		width: 12px;
-		height: 12px;
-		border-radius: 3px;
-		vertical-align: -2px;
-		margin-right: 7px;
-		border: 1px solid var(--line2);
-		background: var(--card);
-	}
-	.legend i.d {
-		border-style: dashed;
-		background: transparent;
-	}
-	.srows {
-		margin: 0;
-		border-bottom: 1px solid var(--line);
-	}
-	.srow {
-		display: grid;
-		grid-template-columns: 28px 150px minmax(0, 1fr);
-		gap: 14px;
-		align-items: baseline;
-		padding: 14px 0;
-		border-top: 1px solid var(--line);
-	}
-	.sy {
-		font-family: var(--mono);
-		font-size: 12px;
-		font-weight: 500;
-		color: var(--c);
-	}
-	.sn {
-		color: var(--fg);
-		font-weight: 500;
-	}
-	.sd {
-		margin: 0;
-		color: var(--mut);
-		font-size: 14px;
-		line-height: 1.6;
-	}
-	@media (max-width: 640px) {
-		.srow {
-			grid-template-columns: 28px minmax(0, 1fr);
-		}
-		.sd {
-			grid-column: 2;
-		}
-	}
-</style>
+			</dl>
+		</section>
+	))}
+</PageLayout>

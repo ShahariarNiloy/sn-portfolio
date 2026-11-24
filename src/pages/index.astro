@@ -1,319 +1,112 @@
 ---
-import Base from '../layouts/Base.astro';
-import Illustration from '../components/Illustration.astro';
-import StackSentence from '../components/StackSentence.astro';
-import { Image } from 'astro:assets';
-import { SITE, PROJECTS, HIGHLIGHTS } from '../data/site';
-import { ILL } from '../lib/illustrations';
-import avatar from '../assets/avatar.png';
+/**
+ * Home — hero, Work, Now, Highlights, Latest posts, Stack, Experience +
+ * Recognition, Guestbook (the two newest notes) and Contact.
+ */
+import ContactLine from '@/components/content/ContactLine.astro';
+import HighlightCard from '@/components/content/HighlightCard.astro';
+import HomeIntro from '@/components/content/HomeIntro.astro';
+import HomeList from '@/components/content/HomeList.astro';
+import NoteWall from '@/components/content/NoteWall.astro';
+import NumberedPosts from '@/components/content/NumberedPosts.astro';
+import StackStory from '@/components/content/StackStory.astro';
+import WorkRow from '@/components/content/WorkRow.astro';
+import HighlightsCarousel from '@/components/islands/HighlightsCarousel.astro';
+import IllustrationReveal from '@/components/islands/IllustrationReveal.astro';
+import Link from '@/components/ui/Link.astro';
+import SectionLabel from '@/components/ui/SectionLabel.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getHighlights, getLatestPosts, getNow, getProjects, getSite, getStack } from '@/lib/content';
+import { formatMonth, getReadMinutes } from '@/lib/format';
+import { getApprovedNotes } from '@/lib/guestbook/approved';
+import { buildPersonJsonLd } from '@/lib/seo';
+
+const [site, projects, now, highlights, stack, posts, notes] = await Promise.all([
+	getSite(),
+	getProjects(),
+	getNow(),
+	getHighlights(),
+	getStack(),
+	getLatestPosts(4),
+	getApprovedNotes(),
+]);
+const { home } = site;
+const more = 'inline-block mt-5 py-1.5';
 ---
 
-<Base home>
-	<section aria-label="Introduction" style="padding-top: 104px; padding-bottom: 24px">
-		<div class="who rise d1">
-			<span class="av-wrap">
-				<span class="av"><Image src={avatar} alt="3D avatar of Shahariar Niloy" widths={[102, 204]} sizes="102px" format="webp" quality={80} loading="eager" fetchpriority="high" /></span>
-				<span class="dot" title="Available for new work"></span>
-			</span>
-			<span style="display: flex; flex-direction: column">
-				<span style="font-weight: 600; letter-spacing: -0.01em">{SITE.name}</span>
-				<span style="font-size: 14px; color: var(--mut)">Senior Software Engineer · available for new work</span>
-			</span>
-		</div>
-		<h1 class="h rise d2 hero">Building software that's lighter, <span class="grad">faster, and scalable.</span></h1>
-		<p class="rise d3" style="margin: 24px 0 0; color: var(--mut); font-size: 16px; line-height: 1.7; max-width: 560px">I love building things and finding smarter ways to make them work. Always exploring, optimizing, and pushing the boundaries of what's possible with software.</p>
-		<dl class="facts rise d4">
-			<div><dt class="mono">Focus</dt><dd>Performance · SEO</dd></div>
-			<div><dt class="mono">Languages</dt><dd>JavaScript · TypeScript</dd></div>
-			<div><dt class="mono">Based in</dt><dd>Dhaka</dd></div>
-		</dl>
+<BaseLayout isHome jsonLd={[buildPersonJsonLd(site, Astro.site?.href ?? '/')]}>
+	<HomeIntro title={home.title} intro={home.intro} facts={home.facts} name={site.name} />
+	<section id="work" aria-labelledby="work-h" class="pt-16">
+		<SectionLabel id="work-h">Work</SectionLabel>
+		{projects.map((p) => (
+			<WorkRow project={p} context="home" />
+		))}
+		<Link href="/work" class={more}>
+			All work →
+		</Link>
 	</section>
-
-	<section id="work" aria-labelledby="w-h">
-		<h2 id="w-h" class="lbl">Work</h2>
-		{
-			PROJECTS.map((p) => (
-				<a href={`/work/${p.slug}`} class="wrow">
-					<span class="wn">
-						{p.name}
-						{p.group === 'Company' && p.pill && <span class="pill">{p.pill}</span>}
-						<span class="ar" aria-hidden="true">↗</span>
-					</span>
-					<span class="wy">{p.when}</span>
-					<span class="wd">{p.short}</span>
-				</a>
-			))
-		}
-		<a href="/work" class="ilink more-link">All work →</a>
-	</section>
-
-	<section aria-labelledby="n-h">
-		<h2 id="n-h" class="lbl">Now</h2>
-		<ul class="now">
-			<li><span>→</span><span>Building <b>Repo Galaxy</b>, a 3D codebase explorer with AI answers.</span></li>
-			<li><span>→</span><span>Redesigning <b>utilyx.dev</b> and adding a set of SEO tools.</span></li>
-			<li><span>→</span><span>Learning <b>Rust</b> and <b>Go</b> for even lighter tools.</span></li>
-		</ul>
-		<p class="mono" style="margin: 14px 0 0; color: var(--mut)">Updated Nov 2026 · <a href="/now" class="ilink">More on the Now page →</a></p>
-	</section>
-
-	<section id="highlights" class="cap" aria-labelledby="cap">
-		<div class="hlhead">
-			<h2 id="cap" class="lbl" style="flex: 1; margin: 0">Highlights</h2>
-			<button type="button" class="cbtn" aria-label="Previous highlight" data-hl="-1"><svg width="14" height="14" viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
-			<button type="button" class="cbtn" aria-label="Next highlight" data-hl="1"><svg width="14" height="14" viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
-		</div>
-		<ul class="hltrack" id="hl-track">
-			{
-				HIGHLIGHTS.map((h) => (
-					<li class="card hlslide">
-						<div class="hlill">
-							<Illustration ill={ILL[h.ill]} w={h.w} h={h.h} />
-						</div>
-						<div>
-							<h3>
-								<a href={`/highlights/${h.slug}`}>
-									{h.title} <span aria-hidden="true" style="color: var(--mut)">→</span>
-								</a>
-							</h3>
-							<p class="cd">{h.short}</p>
-						</div>
-					</li>
-				))
-			}
-		</ul>
-	</section>
-
-	<section aria-labelledby="p-h">
-		<h2 id="p-h" class="lbl">How I work</h2>
-		<div class="erow"><span class="mono num">01</span><div><div style="font-weight: 500">Measure first</div><div class="sub">No optimization without a number before and after.</div></div></div>
-		<div class="erow"><span class="mono num">02</span><div><div style="font-weight: 500">Ship less</div><div class="sub">The fastest code is the code the browser never downloads.</div></div></div>
-		<div class="erow"><span class="mono num">03</span><div><div style="font-weight: 500">Leave it simpler</div><div class="sub">Every change should make the next one easier.</div></div></div>
-	</section>
-
-	<section id="stack" aria-labelledby="s-h">
-		<h2 id="s-h" class="lbl">Stack</h2>
-		<StackSentence />
-		<a href="/stack" class="ilink more-link" style="margin-top: 22px">See the full stack →</a>
-	</section>
-
-	<section aria-labelledby="a-h">
-		<h2 id="a-h" class="lbl">Experience</h2>
-		<div class="erow"><span class="mono when">2023 — now</span><div><div style="font-weight: 500">Adventure Dhaka Limited</div><div class="sub">Senior Software Engineer · frontend, performance, search and SEO. Head of the frontend department.</div></div></div>
-		<div class="erow"><span class="mono when">2022 — 2023</span><div><div style="font-weight: 500">Sheba Technologies</div><div class="sub">Junior Software Engineer · built the BRAC learning management system.</div></div></div>
-		<h2 class="lbl" style="margin-top: 56px">Recognition</h2>
-		<ul class="rec">
-			<li><b>Best Employee of the Year</b> · FY 23–24 and FY 25–26</li>
-			<li><b>Best Flexible Employee</b> · FY 24–25</li>
-			<li><b>IEEE ICIRCA 2022</b> · first author, Bangla handwritten character recognition</li>
-			<li><b>Meta and IBM</b> · front-end certificates, 2023</li>
-		</ul>
-		<a href="/experience" class="ilink more-link">Full timeline →</a>
-	</section>
-
-	<section id="contact" aria-labelledby="c-h" style="padding-bottom: 24px">
-		<h2 id="c-h" class="lbl">Contact</h2>
-		<p style="margin: 0; color: var(--mut); font-size: 16px">
-			Have something that should be faster? Write to <a href={`mailto:${SITE.email}`} class="ilink">{SITE.email}</a>, or find me on <a href={SITE.github} class="ilink" target="_blank" rel="noopener">GitHub</a> and <a href={SITE.linkedin} class="ilink" target="_blank" rel="noopener">LinkedIn</a>.
+	<section aria-labelledby="now-h" class="pt-16">
+		<SectionLabel id="now-h">Now</SectionLabel>
+		<HomeList variant="arrows" lines={now.home} />
+		<p class="mt-3.5 mb-0 font-mono text-xs text-mut">
+			Updated {formatMonth(now.updatedOn)} · <Link href="/now">More on the Now page →</Link>
 		</p>
-		<p style="margin: 40px 0 0; color: var(--mut); font-size: 15px">Off the clock, I write about people and the self. <a href="/writing" class="ilink serif" style="font-style: italic; font-size: 17px">Read the notes →</a></p>
 	</section>
-</Base>
-
-<style>
-	.who {
-		display: flex;
-		align-items: center;
-		gap: 14px;
-		margin-bottom: 48px;
-	}
-	.av-wrap {
-		position: relative;
-		flex-shrink: 0;
-	}
-	.av {
-		position: relative;
-		display: block;
-		width: 64px;
-		height: 64px;
-		border-radius: 50%;
-		overflow: hidden;
-		background: radial-gradient(120% 90% at 50% 0%, var(--accbg), transparent 65%), var(--card2);
-		box-shadow: 0 0 0 1px var(--line2), 0 0 0 4px var(--bg), 0 0 0 5px var(--line);
-	}
-	.av :global(img) {
-		position: absolute;
-		left: -19px;
-		top: 3px;
-		width: 102px;
-		height: auto;
-		max-width: none;
-		display: block;
-	}
-	.av-wrap .dot {
-		position: absolute;
-		right: 1px;
-		bottom: 3px;
-		width: 10px;
-		height: 10px;
-		border: 2px solid var(--bg);
-		box-shadow: none;
-	}
-	.hero {
-		margin: 0;
-		font-size: 34px;
-		line-height: 1.18;
-		letter-spacing: -0.035em;
-	}
-	.facts {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 12px 40px;
-		margin: 56px 0 0;
-		padding-top: 20px;
-		border-top: 1px solid var(--line);
-	}
-	.facts div {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-	}
-	.facts dt {
-		color: var(--mut);
-	}
-	.facts dd {
-		margin: 0;
-		font-size: 15px;
-	}
-	.now,
-	.rec {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		color: var(--mut);
-	}
-	.now li {
-		display: flex;
-		gap: 12px;
-	}
-	.now li > span:first-child {
-		color: var(--acc);
-	}
-	.now b,
-	.rec b {
-		color: var(--fg);
-		font-weight: 400;
-	}
-	.num {
-		color: var(--acc);
-		padding-top: 3px;
-	}
-	.when {
-		color: var(--mut);
-		padding-top: 3px;
-	}
-	.sub {
-		color: var(--mut);
-		font-size: 14px;
-	}
-
-	/* highlights carousel */
-	.hlhead {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		margin-bottom: 18px;
-	}
-	.cbtn {
-		width: 44px;
-		height: 44px;
-		border-radius: 999px;
-		border: 1px solid var(--line2);
-		background: transparent;
-		color: var(--mut);
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		cursor: pointer;
-		transition: color 0.2s, background-color 0.2s;
-	}
-	.cbtn:hover {
-		color: var(--fg);
-		background: var(--card);
-	}
-	.hltrack {
-		list-style: none;
-		display: flex;
-		gap: 12px;
-		overflow-x: auto;
-		scroll-snap-type: x mandatory;
-		scrollbar-width: none;
-		margin: 0 -24px;
-		padding: 0 24px 4px;
-		scroll-padding-left: 24px;
-		-webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 48px), transparent);
-		mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 48px), transparent);
-	}
-	.hltrack::-webkit-scrollbar {
-		display: none;
-	}
-	.hlslide {
-		flex: 0 0 272px;
-		scroll-snap-align: start;
-		padding: 16px 16px 18px;
-		display: flex;
-		flex-direction: column;
-		gap: 14px;
-	}
-	.hlslide:hover {
-		border-color: var(--line2);
-	}
-	.hlill {
-		height: 150px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.hlslide h3 {
-		margin: 0;
-		font-size: 15px;
-		font-weight: 600;
-		letter-spacing: -0.01em;
-	}
-	.hlslide h3 a {
-		color: var(--fg);
-		text-decoration: none;
-	}
-	/* whole card is clickable */
-	.hlslide {
-		position: relative;
-	}
-	.hlslide h3 a::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		border-radius: 16px;
-	}
-	.cd {
-		margin: 4px 0 0;
-		font-size: 14px;
-		line-height: 1.55;
-		color: var(--mut);
-	}
-	@media (max-width: 700px) {
-		.hero {
-			font-size: 30px;
-		}
-	}
-</style>
-
-<script>
-	const track = document.getElementById('hl-track');
-	const smooth = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
-	document.querySelectorAll<HTMLButtonElement>('[data-hl]').forEach((b) =>
-		b.addEventListener('click', () => track?.scrollBy({ left: Number(b.dataset.hl) * 284, behavior: smooth ? 'smooth' : 'auto' })),
-	);
-</script>
+	<section id="highlights" aria-labelledby="highlights-h" class="pt-16">
+		<IllustrationReveal>
+			<HighlightsCarousel headingId="highlights-h">
+				{highlights.map((h) => (
+					<HighlightCard highlight={h} />
+				))}
+			</HighlightsCarousel>
+		</IllustrationReveal>
+	</section>
+	<section id="blog" aria-labelledby="blog-h" class="pt-16">
+		<SectionLabel id="blog-h">Latest posts</SectionLabel>
+		<NumberedPosts posts={posts.map((p) => ({ href: `/blog/${p.id}`, title: p.data.title, summary: p.data.summary, minutes: getReadMinutes(p.body ?? '') }))} />
+		<Link href="/blog" class={more}>
+			All posts →
+		</Link>
+	</section>
+	<section id="stack" aria-labelledby="stack-h" class="pt-16">
+		<SectionLabel id="stack-h">Stack</SectionLabel>
+		<StackStory paragraphs={home.stackStory} items={stack} />
+		<Link href="/stack" class={more}>
+			See the full stack →
+		</Link>
+	</section>
+	<section id="about" aria-labelledby="exp-h" class="pt-16">
+		<SectionLabel id="exp-h">Experience</SectionLabel>
+		<HomeList variant="rows" rows={home.experience.map((e) => ({ key: e.period, title: e.title, body: e.body }))} />
+		<SectionLabel as="h3" class="mt-14">
+			Recognition
+		</SectionLabel>
+		<ul class="m-0 flex list-none flex-col gap-2.5 p-0 text-mut">
+			{home.recognition.map((r) => (
+				<li>
+					<span class="text-fg">{r.title}</span> · {r.detail}
+				</li>
+			))}
+		</ul>
+		<Link href="/timeline" class={more}>
+			Full timeline →
+		</Link>
+	</section>
+	<section id="guestbook" aria-labelledby="guestbook-h" class="pt-16">
+		<SectionLabel id="guestbook-h">Guestbook</SectionLabel>
+		<NoteWall notes={notes.slice(0, 2)} />
+		<Link href="/guestbook" class={more}>
+			Sign the wall →
+		</Link>
+	</section>
+	<section id="contact" aria-labelledby="contact-h" class="pt-16 pb-6">
+		<SectionLabel id="contact-h">Contact</SectionLabel>
+		<ContactLine sentence={home.contact} email={site.email} github={site.github} linkedin={site.linkedin} />
+		<p class="mt-10 mb-0 text-sm text-mut">
+			{home.offTheClock}{' '}
+			<Link href="/off-the-clock" class="font-serif text-base italic">
+				Read the notes →
+			</Link>
+		</p>
+	</section>
+</BaseLayout>
