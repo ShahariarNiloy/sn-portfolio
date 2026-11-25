@@ -2,6 +2,7 @@
 title: 'Stop pulling the knot'
 excerpt: 'Perhaps the purpose of an argument was never to decide who was right and who won it.'
 topic: people
+publishedOn: 2026-11-24
 order: 2
 ---
 

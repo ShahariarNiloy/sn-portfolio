@@ -29,10 +29,6 @@
 				"body": "Long walks, slow mornings, and an ongoing debate between tea and coffee. So far, both are winning."
 			}
 		],
-		"home": [
-			"Building **Repo Galaxy**, a 3D codebase explorer with AI answers.",
-			"Redesigning **utilyx.dev**.",
-			"Learning **Rust** and **WebAssembly** for even lighter tools."
-		]
+		"home": ["Redesigning **utilyx.dev**.", "Learning **Rust** and **WebAssembly** for even lighter tools."]
 	}
 ]

@@ -1,21 +1,47 @@
 ---
 /**
- * CareerRows — Home's career: one row per company (period, name, one line).
+ * CareerRows — Home's career: one row per company (period, name, one line). A
+ * company whose roles have short labels in career.json also shows the ladder,
+ * oldest role first.
  */
+import type { CollectionEntry } from 'astro:content';
+
 export interface Props {
 	rows: { period: string; title: string; body: string }[];
+	career: CollectionEntry<'career'>['data'][];
 }
 
-const { rows } = Astro.props;
+const { rows, career } = Astro.props;
+const items = rows.map((row) => {
+	const roles = career.find((c) => c.company === row.title)?.roles ?? [];
+	const ladder = roles.flatMap((r) => (r.short ? [{ label: r.short, year: r.from.slice(0, 4) }] : [])).reverse();
+	return { ...row, ladder };
+});
 ---
 
 <div class="border-b border-line">
-	{rows.map((row) => (
+	{items.map((row) => (
 		<div class="grid grid-cols-1 gap-0.5 border-t border-line py-3.5 sm:grid-cols-label sm:gap-4">
 			<span class="pt-0.5 font-mono text-xs text-mut">{row.period}</span>
 			<div>
 				<div class="font-medium">{row.title}</div>
 				<div class="text-sm text-mut">{row.body}</div>
+				{row.ladder.length > 0 && (
+					<ol class="m-0 mt-3 flex list-none flex-wrap items-baseline gap-x-2 gap-y-1 p-0 text-sm" aria-label={`Roles at ${row.title}, oldest first`}>
+						{row.ladder.map((step, i) => (
+							<li class="flex items-baseline gap-2">
+								{i > 0 && (
+									<span class="text-acc" aria-hidden="true">
+										→
+									</span>
+								)}
+								<span class="whitespace-nowrap text-fg">
+									{step.label} <span class="font-mono text-xs text-mut">{step.year}</span>
+								</span>
+							</li>
+						))}
+					</ol>
+				)}
 			</div>
 		</div>
 	))}

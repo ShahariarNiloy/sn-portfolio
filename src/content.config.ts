@@ -53,6 +53,8 @@ const projects = defineCollection({
 			meta: z.array(metaItem),
 			lighthouse: lighthouse.optional(),
 			order: z.number().int(),
+			/** False keeps it off Home; it stays on /work. */
+			showOnHome: z.boolean().optional(),
 			/** Screenshot shown beside it on /work; without one, its badge fills the frame. */
 			thumbnail: image().optional(),
 			/** Owner approval pending: pill next to the name ("Company project", "In progress"). */
@@ -95,6 +97,7 @@ const essays = defineCollection({
 		title: z.string(),
 		excerpt: z.string(),
 		topic: z.enum(['self', 'people', 'gratitude', 'character']),
+		publishedOn: z.coerce.date(),
 		order: z.number().int(),
 	}),
 });
@@ -122,7 +125,9 @@ const career = defineCollection({
 		/** null while it is the current company. */
 		to: yearMonth.nullable(),
 		/** Newest first. */
-		roles: z.array(z.object({ title: z.string(), from: yearMonth, to: yearMonth.nullable() })).min(1),
+		roles: z
+			.array(z.object({ title: z.string(), /** Label on Home's career ladder. */ short: z.string().optional(), from: yearMonth, to: yearMonth.nullable() }))
+			.min(1),
 	}),
 });
 

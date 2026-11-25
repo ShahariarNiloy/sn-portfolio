@@ -24,7 +24,7 @@ const groups = TOPICS.map((t) => ({ ...t, posts: posts.filter((p) => p.data.topi
 			<SectionLabel>{g.label}</SectionLabel>
 			<div class="flex flex-col">
 				{g.posts.map((p) => (
-					<PostRow href={`/blog/${p.id}`} title={p.data.title} summary={p.data.summary} />
+					<PostRow href={`/blog/${p.id}`} title={p.data.title} summary={p.data.summary} date={p.data.publishedOn} />
 				))}
 			</div>
 		</section>

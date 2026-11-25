@@ -13,17 +13,18 @@ import WorkRow from '@/components/content/WorkRow.astro';
 import Link from '@/components/ui/Link.astro';
 import SectionLabel from '@/components/ui/SectionLabel.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getHomeHighlights, getLatestPosts, getNow, getProjects, getSite, getStack } from '@/lib/content';
+import { getCareer, getHomeHighlights, getLatestPosts, getNow, getProjects, getSite, getStack } from '@/lib/content';
 import { formatMonth } from '@/lib/format';
 import { buildPersonJsonLd } from '@/lib/seo';
 
-const [site, projects, now, highlights, stack, posts] = await Promise.all([
+const [site, projects, now, highlights, stack, posts, career] = await Promise.all([
 	getSite(),
 	getProjects(),
 	getNow(),
 	getHomeHighlights(),
 	getStack(),
 	getLatestPosts(4),
+	getCareer(),
 ]);
 const { home } = site;
 const more = 'mt-5 inline-flex min-h-11 items-center';
@@ -33,9 +34,11 @@ const more = 'mt-5 inline-flex min-h-11 items-center';
 	<HomeIntro title={home.title} intro={home.intro} cta={home.cta} linkedin={site.linkedin} facts={home.facts} name={site.name} />
 	<section id="work" aria-labelledby="work-h" class="section-gap">
 		<SectionLabel id="work-h">Work</SectionLabel>
-		{projects.map((p) => (
-			<WorkRow project={p} context="home" />
-		))}
+		{projects
+			.filter((p) => p.data.showOnHome !== false)
+			.map((p) => (
+				<WorkRow project={p} context="home" />
+			))}
 		<p class={more}>
 			<Link href="/work">All work →</Link>
 		</p>
@@ -56,14 +59,14 @@ const more = 'mt-5 inline-flex min-h-11 items-center';
 	</section>
 	<section id="blog" aria-labelledby="blog-h" class="section-gap">
 		<SectionLabel id="blog-h">Latest posts</SectionLabel>
-		<NumberedPosts posts={posts.map((p) => ({ href: `/blog/${p.id}`, title: p.data.title, summary: p.data.summary }))} />
+		<NumberedPosts posts={posts.map((p) => ({ href: `/blog/${p.id}`, title: p.data.title, summary: p.data.summary, date: p.data.publishedOn }))} />
 		<p class={more}>
 			<Link href="/blog">All posts →</Link>
 		</p>
 	</section>
 	<section id="about" aria-labelledby="career-h" class="section-gap">
 		<SectionLabel id="career-h">Career</SectionLabel>
-		<CareerRows rows={home.experience} />
+		<CareerRows rows={home.experience} career={career} />
 		<h3 class="mt-10 mb-4 text-base font-semibold tracking-tight text-head">Recognition</h3>
 		<ul class="m-0 flex list-none flex-col gap-2.5 p-0 text-mut">
 			{home.recognition.map((r) => (

@@ -35,6 +35,7 @@ const jsonLd =
 	crumbLabel={topicLabel}
 	illustration={illustration}
 	meta={[topicLabel, ...(isDraft ? ['Outline'] : []), `By ${site.name}`]}
+	date={publishedOn}
 	isDraft={isDraft}
 	related={related}
 	next={next && { href: `/blog/${next.id}`, kicker: 'Next post', title: next.data.title }}

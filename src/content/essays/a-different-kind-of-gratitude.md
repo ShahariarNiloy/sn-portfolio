@@ -2,6 +2,7 @@
 title: 'A different kind of gratitude'
 excerpt: 'I think there is a different kind of gratitude that goes beyond just being thankful for what we have.'
 topic: gratitude
+publishedOn: 2026-11-24
 order: 4
 ---
 

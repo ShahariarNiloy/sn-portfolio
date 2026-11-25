@@ -2,6 +2,7 @@
 title: 'Words last'
 excerpt: 'Words can last for a very, very long time.'
 topic: character
+publishedOn: 2026-11-24
 order: 6
 ---
 

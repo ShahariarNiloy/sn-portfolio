@@ -2,6 +2,7 @@
 title: 'What people remember'
 excerpt: 'We spend so much time trying to perfect our appearance that we sometimes forget what people actually remember.'
 topic: character
+publishedOn: 2026-11-24
 order: 5
 ---
 
@@ -18,7 +19,7 @@ Were you someone people felt safe around?
 
 There is nothing wrong with taking care of your appearance. Looking your best is a good thing. But appearance should never become the measure of your worth.
 
-Beauty changes. Hair turns gray, skin wrinkles, and bodies age. A good heart, gentle words, honesty, patience, and good character are the things that grow more valuable with time.
+Beauty changes. Hair turns grey, skin wrinkles, and bodies age. A good heart, gentle words, honesty, patience, and good character are the things that grow more valuable with time.
 
 Don’t spend your whole life chasing perfection in the mirror while neglecting the person looking back at you.
 

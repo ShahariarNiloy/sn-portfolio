@@ -1,12 +1,13 @@
 ---
 /**
- * NumberedPosts — Home's "Latest posts": numbered rows (01–04) with the title
- * and the post summary. Each whole row is the link.
+ * NumberedPosts — Home's "Latest posts": numbered rows (01–04) with the title,
+ * the post summary and its date. Each whole row is the link.
  */
+import DayStamp from '@/components/ui/DayStamp.astro';
 import { padIndex } from '@/lib/format';
 
 export interface Props {
-	posts: { href: string; title: string; summary: string }[];
+	posts: { href: string; title: string; summary: string; date?: Date | undefined }[];
 }
 
 const { posts } = Astro.props;
@@ -22,6 +23,7 @@ const { posts } = Astro.props;
 				<span>
 					<span class="block text-base font-medium text-fg transition-colors duration-200 ease-out group-hover:text-acc">{post.title}</span>
 					<span class="mt-1 block text-sm text-mut">{post.summary}</span>
+					{post.date && <DayStamp date={post.date} class="mt-1.5 block" />}
 				</span>
 			</a>
 		</li>

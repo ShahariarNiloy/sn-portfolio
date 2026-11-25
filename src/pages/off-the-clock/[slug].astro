@@ -6,6 +6,7 @@
 import { render } from 'astro:content';
 
 import NextLink from '@/components/content/NextLink.astro';
+import DayStamp from '@/components/ui/DayStamp.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getEssays, getNext } from '@/lib/content';
 
@@ -22,6 +23,9 @@ const { Content } = await render(essay);
 	<h1 slot="title" class="mt-4 mb-0 font-serif text-4xl leading-tight font-normal text-head sm:text-5xl">
 		{essay.data.title}
 	</h1>
+	<p slot="after-lede" class="mt-4 mb-0">
+		<DayStamp date={essay.data.publishedOn} />
+	</p>
 	<article class="essay pt-12">
 		<Content />
 		<p class="mt-5 text-lg" aria-label="Signed with a peace sign">

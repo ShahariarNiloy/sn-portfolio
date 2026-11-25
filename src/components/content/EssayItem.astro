@@ -1,10 +1,11 @@
 ---
 /**
- * EssayItem — one essay on Off the clock: number, serif title, excerpt and topic,
+ * EssayItem — one essay on Off the clock: number, serif title, excerpt, date and topic,
  * expanding in place to the full text (a <details>, so it works without JS).
  */
 import type { CollectionEntry } from 'astro:content';
 
+import DayStamp from '@/components/ui/DayStamp.astro';
 import { padIndex } from '@/lib/format';
 
 export interface Props {
@@ -22,6 +23,7 @@ const { essay, index, topicLabel } = Astro.props;
 		<span class="flex min-w-0 flex-col gap-1.5">
 			<span class="font-serif text-2xl leading-tight text-fg transition-colors duration-200 group-hover/essay:text-acc">{essay.data.title}</span>
 			<span class="line-clamp-1 text-sm leading-relaxed whitespace-pre-line text-mut group-open/essay:hidden">{essay.data.excerpt}</span>
+			<DayStamp date={essay.data.publishedOn} />
 		</span>
 		<span class="font-mono text-xs whitespace-nowrap text-mut max-sm:hidden">{topicLabel}</span>
 		<span class="text-xl leading-none text-mut transition-transform duration-300 group-open/essay:rotate-45" aria-hidden="true">

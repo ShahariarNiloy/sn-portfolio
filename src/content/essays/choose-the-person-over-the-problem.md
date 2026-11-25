@@ -2,6 +2,7 @@
 title: 'Choose the person over the problem'
 excerpt: "Don’t let your anger win.\nDon’t let your grudges win.\nDon’t let your ego win."
 topic: people
+publishedOn: 2026-11-24
 order: 3
 ---
 
@@ -17,7 +18,7 @@ We keep thinking there will always be another meeting, another conversation, ano
 
 But what if there isn’t?
 
-Sometimes the last conversation is an argument. The last meeting feels ordinary. And only later do we realize that we were holding onto something that was never worth losing someone over.
+Sometimes the last conversation is an argument. The last meeting feels ordinary. And only later do we realise that we were holding onto something that was never worth losing someone over.
 
 Life is too uncertain to leave things broken with the people who matter.
 
