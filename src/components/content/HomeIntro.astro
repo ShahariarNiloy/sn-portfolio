@@ -1,6 +1,6 @@
 ---
 /**
- * HomeIntro — Home's hero: the title, the round avatar beside the intro text,
+ * HomeIntro — Home's hero: the title, the round avatar beside the intro text (which wraps around it on phones),
  * the sentence with the LinkedIn pill, and the facts row. The only animated block on Home. The avatar
  * file is cropped to what the circle shows and served at its native 258 px (2.7×)
  * as AVIF: WebP halves colour resolution, which smears the glasses.
@@ -26,8 +26,8 @@ const { title, intro, cta, linkedin, facts, name } = Astro.props;
 	<h1 class="m-0 text-3xl leading-tight font-semibold tracking-tight sm:text-4xl">
 		<span class="text-fg">{title[0]}</span> <span class="text-fade">{title[1]}</span>
 	</h1>
-	<div class="mt-10 grid grid-cols-intro items-start gap-4 sm:gap-6">
-		<span class="block size-16 overflow-hidden rounded-full bg-card2 ring-1 ring-line2 sm:size-24">
+	<div class="mt-8 items-start max-sm:flow-root sm:mt-10 sm:grid sm:grid-cols-intro sm:gap-6">
+		<span class="block size-24 overflow-hidden max-sm:float-left max-sm:mt-1 max-sm:mr-4 rounded-full bg-card2 ring-1 ring-line2">
 			<Image
 				src={avatar}
 				alt={`3D avatar of ${name}`}
@@ -50,7 +50,7 @@ const { title, intro, cta, linkedin, facts, name } = Astro.props;
 					href={linkedin}
 					target="_blank"
 					rel="noopener"
-					class="relative ml-1 inline-flex items-center gap-1.5 rounded-full border border-line2 bg-card px-2.5 py-0.5 text-sm font-medium whitespace-nowrap text-fg no-underline transition-colors duration-200 ease-out after:absolute after:-inset-x-1 after:-inset-y-2.5 hover:border-mut hover:bg-card2"
+					class="relative inline-flex items-center max-sm:mt-2 sm:ml-1 gap-1.5 rounded-full border border-line2 bg-card px-2.5 py-0.5 text-sm font-medium whitespace-nowrap text-fg no-underline transition-colors duration-200 ease-out after:absolute after:-inset-x-1 after:-inset-y-2.5 hover:border-mut hover:bg-card2"
 				>
 					{cta.label}
 					<span class="sr-only">on LinkedIn (opens in a new tab)</span>
@@ -59,7 +59,7 @@ const { title, intro, cta, linkedin, facts, name } = Astro.props;
 			</p>
 		</div>
 	</div>
-	<dl class="mt-14 mb-0 flex flex-wrap gap-x-10 gap-y-3 border-t border-line pt-5">
+	<dl class="mt-10 mb-0 flex flex-wrap gap-x-8 gap-y-3 border-t border-line pt-5 sm:mt-14 sm:gap-x-10">
 		{facts.map((f) => (
 			<div class="flex flex-col gap-0.5">
 				<dt class="font-mono text-xs text-mut">{f.label}</dt>
