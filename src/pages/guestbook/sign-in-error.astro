@@ -1,0 +1,87 @@
+---
+/**
+ * /guestbook/sign-in-error — where the GitHub sign-in routes send a browser when
+ * sign-in can't finish, instead of a raw JSON error. Static: the page renders
+ * every reason and a tiny script shows the one named by `?reason=`; without
+ * JavaScript the most common one ("expired") stays visible.
+ */
+import Button from '@/components/ui/Button.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import type { SignInError } from '@/lib/guestbook/http';
+
+const reasons: Record<SignInError, { tag: string; title: string; hint: string; body: string; tips?: string[] }> = {
+	expired: {
+		tag: 'sign-in expired',
+		title: "That sign-in didn't stick.",
+		hint: 'Nothing is wrong with your GitHub account.',
+		body: 'Your browser lost track of the sign-in partway through, so I stopped it to keep you safe. One fresh try usually fixes it.',
+		tips: [
+			'Opened this from Messenger, Instagram or another app? Open shahariarniloy.com in Chrome or Safari and sign in there.',
+			'Finish signing in within 10 minutes, in a single tab.',
+			"Don't refresh or go back to the GitHub redirect page.",
+		],
+	},
+	denied: {
+		tag: 'sign-in cancelled',
+		title: 'No problem.',
+		hint: "You didn't give GitHub the go-ahead.",
+		body: "I only ask for your public GitHub name, to show it next to your note. Nothing else is read or stored. Whenever you're ready, try again.",
+	},
+	github: {
+		tag: 'github did not answer',
+		title: "GitHub didn't answer.",
+		hint: 'The hiccup was on their side, not yours.',
+		body: "I couldn't confirm your account with GitHub just now. Give it a moment and try again.",
+	},
+	config: {
+		tag: 'sign-in unavailable',
+		title: 'Sign-in is down for now.',
+		hint: "That's on me, not you.",
+		body: "The guestbook's sign-in isn't set up right at the moment. Please check back a little later.",
+	},
+};
+---
+
+<BaseLayout title="Sign-in didn't finish" description="GitHub sign-in for the guestbook didn't finish. Try again." noindex>
+	<section class="pt-28 pb-10 motion-safe:animate-rise" aria-live="polite">
+		{Object.entries(reasons).map(([reason, r]) => (
+			<div data-reason={reason} hidden={reason !== 'expired'}>
+				<p class="m-0 font-mono text-xs text-mut">guestbook · {r.tag}</p>
+				<h1 class="mt-4 mb-0 text-3xl leading-none font-semibold tracking-tighter text-head sm:text-4xl">
+					{r.title}
+					<br />
+					<span class="text-mut">{r.hint}</span>
+				</h1>
+				<p class="mt-5 mb-0 text-base leading-relaxed text-mut">{r.body}</p>
+				{r.tips && (
+					<ul class="mt-5 mb-0 flex list-none flex-col gap-2 p-0 text-sm leading-relaxed text-mut">
+						{r.tips.map((tip) => (
+							<li class="flex gap-2.5">
+								<span class="font-mono text-fg" aria-hidden="true">
+									→
+								</span>
+								<span>{tip}</span>
+							</li>
+						))}
+					</ul>
+				)}
+				<div class="mt-8 flex flex-wrap gap-2.5">
+					{reason !== 'config' && (
+						<Button variant="primary" href="/api/guestbook/login">
+							Try signing in again
+						</Button>
+					)}
+					<Button href="/guestbook">Back to the guestbook</Button>
+				</div>
+			</div>
+		))}
+	</section>
+</BaseLayout>
+
+<script>
+	const reason = new URLSearchParams(location.search).get('reason');
+	const match = reason ? document.querySelector<HTMLElement>(`[data-reason="${CSS.escape(reason)}"]`) : null;
+	if (match) {
+		for (const block of document.querySelectorAll<HTMLElement>('[data-reason]')) block.hidden = block !== match;
+	}
+</script>

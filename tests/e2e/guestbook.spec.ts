@@ -43,3 +43,25 @@ test.describe('signed in', () => {
 		expect(response.status()).toBe(403);
 	});
 });
+
+test.describe('sign-in error page', () => {
+	test('shows the expired message by default, with a way to retry', async ({ page }) => {
+		await page.goto('/guestbook/sign-in-error');
+		await expect(page.getByRole('heading', { level: 1 })).toContainText("That sign-in didn't stick.");
+		await expect(page.getByRole('link', { name: 'Try signing in again' })).toHaveAttribute('href', '/api/guestbook/login');
+	});
+
+	test('shows the message for the reason in the URL', async ({ page }) => {
+		await page.goto('/guestbook/sign-in-error?reason=denied');
+		await expect(page.getByRole('heading', { level: 1 })).toContainText('No problem.');
+		await page.goto('/guestbook/sign-in-error?reason=config');
+		await expect(page.getByRole('heading', { level: 1 })).toContainText('Sign-in is down for now.');
+		await expect(page.getByRole('link', { name: 'Try signing in again' })).toHaveCount(0);
+	});
+
+	test('a callback without the state cookie lands on it instead of raw JSON', async ({ request }) => {
+		const response = await request.get('/api/guestbook/callback?code=x&state=y', { maxRedirects: 0 });
+		expect(response.status()).toBe(302);
+		expect(response.headers()['location']).toMatch(/^\/guestbook\/sign-in-error\?reason=(expired|config)$/);
+	});
+});

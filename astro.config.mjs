@@ -29,7 +29,7 @@ export default defineConfig({
 		mdx(),
 		sitemap({
 			// Admin and API routes are never public pages.
-			filter: (page) => !page.includes('/guestbook/admin') && !page.includes('/api/'),
+			filter: (page) => !page.includes('/guestbook/admin') && !page.includes('/guestbook/sign-in-error') && !page.includes('/api/'),
 		}),
 	],
 	vite: { plugins: [tailwindcss()] },

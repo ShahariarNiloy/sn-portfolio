@@ -13,6 +13,21 @@ export function wantsHtml(request: Request): boolean {
 	return !(request.headers.get('Accept') ?? '').includes('application/json');
 }
 
+/** Why a GitHub sign-in did not finish; each has its own message on /guestbook/sign-in-error. */
+export const SIGN_IN_ERRORS = ['expired', 'denied', 'github', 'config'] as const;
+export type SignInError = (typeof SIGN_IN_ERRORS)[number];
+
+/**
+ * Sends a browser that was mid sign-in to the friendly error page. The sign-in
+ * routes are full-page navigations, so a JSON body would show up as raw text.
+ */
+export function signInError(reason: SignInError): Response {
+	return new Response(null, {
+		status: 302,
+		headers: { Location: `/guestbook/sign-in-error?reason=${reason}`, 'Cache-Control': 'no-store' },
+	});
+}
+
 /** A 303 redirect, so a form POST lands on a GET. */
 export function seeOther(location: string, headers: HeadersInit = {}): Response {
 	return new Response(null, { status: 303, headers: { Location: location, ...headers } });

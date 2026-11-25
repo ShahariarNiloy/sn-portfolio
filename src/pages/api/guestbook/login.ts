@@ -7,14 +7,14 @@ import { env } from 'cloudflare:workers';
 
 import { readConfig } from '@/lib/guestbook/config';
 import { buildAuthorizeUrl } from '@/lib/guestbook/github';
-import { jsonError } from '@/lib/guestbook/http';
+import { signInError } from '@/lib/guestbook/http';
 import { OAUTH_COOKIE, pkceChallenge, randomToken, sign } from '@/lib/guestbook/session';
 
 export const prerender = false;
 
 export const GET: APIRoute = async ({ url, cookies, redirect }) => {
 	const config = readConfig(env, url.origin);
-	if (!config) return jsonError(500, 'Sign-in is not configured.');
+	if (!config) return signInError('config');
 	const state = randomToken();
 	const codeVerifier = randomToken();
 	cookies.set(OAUTH_COOKIE, await sign({ state, codeVerifier }, config.sessionSecret), {
