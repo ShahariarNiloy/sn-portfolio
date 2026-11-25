@@ -19,7 +19,8 @@ test('opens with Ctrl K and ⌘K, filters, navigates', async ({ page }) => {
 	await expect(page).toHaveURL(/\/stack$/);
 });
 
-test('the Menu / ⌘K button opens it and Esc returns focus to the button', async ({ page }) => {
+test('the ⌘K button opens it and Esc returns focus to the button', async ({ page }, testInfo) => {
+	test.skip(testInfo.project.name === 'mobile', 'Phones get the Menu button instead (mobile-menu.spec.ts).');
 	await page.goto('/work');
 	const trigger = page.getByRole('link', { name: 'Open the page menu' });
 	await trigger.click();

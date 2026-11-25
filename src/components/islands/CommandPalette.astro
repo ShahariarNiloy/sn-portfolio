@@ -34,7 +34,7 @@ const { entries } = Astro.props;
 			data-palette-input
 		/>
 		<ul id="palette-list" role="listbox" aria-label="Pages" class="m-0 max-h-80 list-none overflow-auto p-1.5" data-palette-list></ul>
-		<div class="flex gap-4 border-t border-line px-5 py-2.5 font-mono text-xs text-mut" aria-hidden="true">
+		<div class="flex gap-4 border-t border-line px-5 py-2.5 font-mono text-xs text-mut pointer-coarse:hidden" aria-hidden="true">
 			<span>↑ ↓ move</span>
 			<span>↵ open</span>
 			<span>esc close</span>
@@ -45,26 +45,33 @@ const { entries } = Astro.props;
 
 <script>
 	import { onPageLoad } from './_shared/lifecycle';
+	import type { createPalette } from './palette';
 
 	// Lazy: the palette is rarely opened, so its logic must not cost first load.
-	let opener: Promise<(trigger: Element | null) => void> | undefined;
+	let opener: Promise<ReturnType<typeof createPalette>> | undefined;
 	let builtFor: Element | null = null;
 
-	function open(trigger: Element | null): void {
+	function open(trigger: Element | null, search = false): void {
 		// Rebuild if the page (and so the dialog) was replaced by a client-side navigation.
 		const dialog = document.querySelector('#palette');
 		if (dialog !== builtFor) {
 			builtFor = dialog;
 			opener = import('./palette').then((m) => m.createPalette());
 		}
-		void opener?.then((show) => show(trigger));
+		void opener?.then((show) => show(trigger, { search }));
 	}
+
+	// The mobile menu's "Search everything" row asks for the palette with the search field focused.
+	document.addEventListener('palette:open', (event) => {
+		const detail = (event as CustomEvent<{ trigger?: Element | null; search?: boolean }>).detail;
+		open(detail?.trigger ?? null, detail?.search ?? false);
+	});
 
 	// The document outlives navigations, so the shortcut is bound once.
 	document.addEventListener('keydown', (event) => {
 		if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
 			event.preventDefault();
-			open(document.activeElement);
+			open(document.activeElement, true);
 		}
 	});
 

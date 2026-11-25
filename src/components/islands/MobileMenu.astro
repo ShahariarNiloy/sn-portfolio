@@ -1,0 +1,171 @@
+---
+/**
+ * MobileMenu — the full-screen menu the header's Menu button opens below sm:
+ * Home and the primary sections in large tap targets (the current one marked),
+ * the smaller pages, a "Search everything" row that hands off to the command
+ * palette, and the social links. A native <dialog>, so Esc and Back close it;
+ * it never focuses a text field, so no on-screen keyboard pops up. Without
+ * JavaScript the Menu link jumps to the footer links instead.
+ */
+import Container from '@/components/layout/Container.astro';
+import { cx } from '@/lib/cx';
+import { NAV_LINKS, type NavSection } from '@/lib/nav';
+
+export interface Props {
+	active?: NavSection | undefined;
+	isHome?: boolean | undefined;
+	siteName: string;
+	github: string;
+	linkedin: string;
+}
+
+const { active, isHome = false, siteName, github, linkedin } = Astro.props;
+const primary = [{ key: 'home', label: 'Home', href: '/' }, ...NAV_LINKS];
+const isCurrent = (key: string): boolean => (key === 'home' ? isHome : key === active);
+const secondary = [
+	{ label: 'Stack', href: '/stack' },
+	{ label: 'Now', href: '/now' },
+	{ label: 'Uses', href: '/uses' },
+	{ label: 'Contact', href: '/contact' },
+];
+const social = [
+	{ label: 'GitHub', href: github },
+	{ label: 'LinkedIn', href: linkedin },
+];
+---
+
+<dialog
+	id="mobile-menu"
+	aria-label="Menu"
+	class="m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto overscroll-contain bg-bg p-0 text-fg backdrop:bg-transparent open:block sm:hidden"
+>
+	<div class="motion-safe:animate-rise">
+		<Container class="flex items-center justify-between gap-3 py-5">
+			<a href={isHome ? '#main' : '/'} class="-mx-3 flex min-h-11 items-center px-3 py-2.5" data-menu-link>
+				<img src="/images/logo.png" alt={`${siteName}, home`} width="23" height="20" class="block h-5 w-auto" />
+			</a>
+			<button
+				type="button"
+				class="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center gap-2 rounded-lg border border-line2 px-4 py-2 text-sm text-fg transition-colors duration-200 ease-out hover:border-mut"
+				data-menu-close
+			>
+				Close{' '}
+				<span aria-hidden="true" class="text-mut">
+					✕
+				</span>
+			</button>
+		</Container>
+
+		<Container class="pt-4 pb-10">
+			<nav aria-label="Menu">
+				<ul class="m-0 list-none border-t border-line p-0">
+					{primary.map((l) => (
+						<li class="border-b border-line">
+							<a
+								href={l.href}
+								class={cx(
+									'flex min-h-16 items-center justify-between gap-3 py-3 text-2xl font-semibold tracking-tight no-underline transition-colors duration-200 ease-out',
+									isCurrent(l.key) ? 'text-fg' : 'text-mut hover:text-fg',
+								)}
+								aria-current={isCurrent(l.key) ? 'page' : undefined}
+								data-menu-link
+							>
+								{l.label}
+								{isCurrent(l.key) && (
+									<span class="flex items-center gap-2 font-mono text-xs font-normal tracking-normal text-mut">
+										<span class="size-1.5 rounded-full bg-fg" aria-hidden="true" />
+										you're here
+									</span>
+								)}
+							</a>
+						</li>
+					))}
+				</ul>
+
+				<ul class="m-0 mt-6 grid list-none grid-cols-2 gap-x-6 p-0">
+					{secondary.map((l) => (
+						<li>
+							<a
+								href={l.href}
+								class="flex min-h-11 items-center text-base text-mut no-underline transition-colors duration-200 ease-out hover:text-fg"
+								data-menu-link
+							>
+								{l.label}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+
+			<button
+				type="button"
+				class="mt-8 flex min-h-12 w-full cursor-pointer items-center justify-between gap-3 rounded-xl border border-line2 bg-card px-4 py-3 text-left text-base text-mut transition-colors duration-200 ease-out hover:border-mut hover:text-fg"
+				data-menu-search
+			>
+				Search everything…
+				<span class="font-mono text-xs">projects · posts</span>
+			</button>
+
+			<ul class="m-0 mt-8 flex list-none gap-6 p-0" aria-label="Elsewhere">
+				{social.map((l) => (
+					<li>
+						<a
+							href={l.href}
+							target="_blank"
+							rel="noopener"
+							class="inline-flex min-h-11 items-center gap-1 text-sm text-mut no-underline transition-colors duration-200 ease-out hover:text-fg"
+						>
+							{l.label}
+							<span class="sr-only">(opens in a new tab)</span>
+							<span aria-hidden="true">↗</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</Container>
+	</div>
+</dialog>
+
+<script>
+	import { onPageLoad } from './_shared/lifecycle';
+	import { trapFocus } from './_shared/focus';
+
+	onPageLoad(() => {
+		const dialog = document.querySelector<HTMLDialogElement>('#mobile-menu');
+		const triggers = document.querySelectorAll<HTMLElement>('[data-menu-open]');
+		if (!dialog || triggers.length === 0) return;
+		let returnTo: HTMLElement | null = null;
+		trapFocus(dialog);
+
+		const close = (): void => {
+			if (dialog.open) dialog.close();
+		};
+
+		for (const trigger of triggers) {
+			trigger.addEventListener('click', (event) => {
+				event.preventDefault();
+				returnTo = trigger;
+				dialog.showModal();
+				// Focus the Close button, never a text field, so no keyboard opens.
+				dialog.querySelector<HTMLElement>('[data-menu-close]')?.focus();
+			});
+		}
+
+		dialog.querySelector('[data-menu-close]')?.addEventListener('click', close);
+		// Same-page links (the logo on Home) don't navigate away, so close explicitly.
+		for (const link of dialog.querySelectorAll('[data-menu-link]')) link.addEventListener('click', close);
+		dialog.addEventListener('close', () => returnTo?.focus());
+
+		// Hand off to the command palette; its focus returns to the Menu button afterwards.
+		dialog.querySelector('[data-menu-search]')?.addEventListener('click', () => {
+			const trigger = returnTo;
+			close();
+			document.dispatchEvent(new CustomEvent('palette:open', { detail: { trigger, search: true } }));
+		});
+
+		// Rotating to a wide screen shows the desktop nav, so the menu has no reason to stay open.
+		matchMedia('(min-width: 40rem)').addEventListener('change', (event) => {
+			if (event.matches) close();
+		});
+	});
+</script>

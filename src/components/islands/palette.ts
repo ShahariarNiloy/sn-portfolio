@@ -7,8 +7,12 @@ import type { PaletteEntry } from '@/lib/content';
 
 import { trapFocus } from './_shared/focus';
 
-/** Builds the palette once and returns the function that opens it from a trigger. */
-export function createPalette(): (trigger: Element | null) => void {
+/**
+ * Builds the palette once and returns the function that opens it from a trigger.
+ * `search` focuses the text field even on touch screens (the person asked to search);
+ * otherwise touch screens get the list without an on-screen keyboard covering it.
+ */
+export function createPalette(): (trigger: Element | null, options?: { search?: boolean }) => void {
 	const dialog = document.querySelector<HTMLDialogElement>('#palette');
 	const input = dialog?.querySelector<HTMLInputElement>('[data-palette-input]');
 	const list = dialog?.querySelector<HTMLUListElement>('[data-palette-list]');
@@ -82,7 +86,7 @@ export function createPalette(): (trigger: Element | null) => void {
 		if (returnTo instanceof HTMLElement) returnTo.focus();
 	});
 
-	return (trigger) => {
+	return (trigger, { search = false } = {}) => {
 		if (dialog.open) {
 			dialog.close();
 			return;
@@ -92,7 +96,10 @@ export function createPalette(): (trigger: Element | null) => void {
 		shown = entries;
 		selected = 0;
 		render();
+		const focusInput = search || !matchMedia('(pointer: coarse)').matches;
+		// showModal focuses the first field by itself; autofocus on the dialog makes it focus the dialog instead.
+		dialog.autofocus = !focusInput;
 		dialog.showModal();
-		input.focus();
+		if (focusInput) input.focus();
 	};
 }

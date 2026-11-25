@@ -1,17 +1,18 @@
 ---
 /**
  * Nav — the site header: logo, primary links and the ⌘K / Ctrl K trigger.
- * Below sm the links collapse into the Menu button, which opens the
- * command palette; without JavaScript it jumps to the footer links instead.
+ * Below sm the links collapse into the Menu button, which opens the mobile
+ * menu (MobileMenu.astro); without JavaScript both triggers jump to the footer
+ * links instead.
  */
 import { cx } from '@/lib/cx';
+import { NAV_LINKS, type NavSection } from '@/lib/nav';
 
 import PaletteKey from '@/components/ui/PaletteKey.astro';
 
 import Container from './Container.astro';
 
-/** Which nav item is the current section. */
-export type NavSection = 'work' | 'stack' | 'blog' | 'timeline' | 'about' | 'guestbook';
+export type { NavSection };
 
 export interface Props {
 	active?: NavSection | undefined;
@@ -21,13 +22,6 @@ export interface Props {
 }
 
 const { active, isHome = false, siteName } = Astro.props;
-const links: { key: NavSection; label: string; href: string }[] = [
-	{ key: 'work', label: 'Work', href: '/work' },
-	{ key: 'blog', label: 'Blog', href: '/blog' },
-	{ key: 'timeline', label: 'Timeline', href: '/timeline' },
-	{ key: 'about', label: 'About', href: '/about' },
-	{ key: 'guestbook', label: 'Guestbook', href: '/guestbook' },
-];
 const linkClass =
 	'inline-flex min-h-11 min-w-11 items-center justify-center px-2 py-3 text-sm text-mut no-underline transition-colors duration-200 ease-out hover:text-fg';
 ---
@@ -38,19 +32,28 @@ const linkClass =
 			<img src="/images/logo.png" alt={`${siteName}, home`} width="23" height="20" class="block h-5 w-auto" />
 		</a>
 		<nav aria-label="Primary" class="vt-site-nav flex flex-wrap items-center">
-			{links.map((l) => (
+			{NAV_LINKS.map((l) => (
 				<a href={l.href} class={cx(linkClass, 'max-sm:hidden', active === l.key && 'text-fg')} aria-current={active === l.key ? 'page' : undefined}>
 					{l.label}
 				</a>
 			))}
 			<a
 				href="#site-links"
-				class="group inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center py-2 pl-3 text-mut transition-colors duration-200 ease-out hover:text-fg max-sm:rounded-lg max-sm:border max-sm:border-line2 max-sm:px-4"
+				class="group inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center py-2 pl-3 text-mut transition-colors duration-200 ease-out hover:text-fg max-sm:hidden"
+				aria-label="Open the page menu"
 				data-palette-open
 				aria-haspopup="dialog"
 			>
-				<span class="text-sm text-fg sm:sr-only">Menu</span>
-				<PaletteKey class="transition-colors duration-200 ease-out group-hover:border-mut group-hover:text-fg max-sm:hidden" />
+				<PaletteKey class="transition-colors duration-200 ease-out group-hover:border-mut group-hover:text-fg" />
+			</a>
+			<a
+				href="#site-links"
+				class="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg border border-line2 px-4 py-2 text-sm text-fg transition-colors duration-200 ease-out hover:border-mut sm:hidden"
+				data-menu-open
+				aria-haspopup="dialog"
+				aria-controls="mobile-menu"
+			>
+				Menu
 			</a>
 		</nav>
 	</Container>
