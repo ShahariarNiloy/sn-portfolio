@@ -1,12 +1,13 @@
 ---
 /**
  * MetaList — the two-column "label / value" grid under project and highlight
- * titles. Values may hold inline Markdown links.
+ * titles. Values may hold inline Markdown links, or show as a chip.
  */
 import Inline from '@/components/ui/Inline.astro';
+import Pill from '@/components/ui/Pill.astro';
 
 export interface Props {
-	items: { label: string; value: string }[];
+	items: { label: string; value: string; chip?: boolean | undefined }[];
 }
 
 const { items } = Astro.props;
@@ -14,11 +15,9 @@ const { items } = Astro.props;
 
 <dl class="mt-9 mb-0 grid grid-cols-2 border-t border-line">
 	{items.map((item) => (
-		<div class="border-b border-line py-3.5 odd:pr-4">
+		<div class="border-b border-line py-3.5 odd:pr-4 last:odd:col-span-2">
 			<dt class="mb-0.5 font-mono text-xs text-mut">{item.label}</dt>
-			<dd class="m-0">
-				<Inline text={item.value} />
-			</dd>
+			<dd class="m-0">{item.chip ? <Pill>{item.value}</Pill> : <Inline text={item.value} />}</dd>
 		</div>
 	))}
 </dl>

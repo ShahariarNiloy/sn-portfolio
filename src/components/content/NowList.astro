@@ -1,0 +1,25 @@
+---
+/**
+ * NowList — Home's "Now" section: "→ line" rows; **bold** words only brighten.
+ */
+import Inline from '@/components/ui/Inline.astro';
+
+export interface Props {
+	lines: string[];
+}
+
+const { lines } = Astro.props;
+---
+
+<ul class="m-0 flex list-none flex-col gap-2.5 p-0 text-mut">
+	{lines.map((line) => (
+		<li class="flex gap-3">
+			<span class="text-acc" aria-hidden="true">
+				→
+			</span>
+			<span>
+				<Inline text={line} emphasis="fg" />
+			</span>
+		</li>
+	))}
+</ul>

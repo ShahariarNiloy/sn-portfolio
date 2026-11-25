@@ -27,6 +27,10 @@ import Performance from './Performance.astro';
 import ZeroServer from './ZeroServer.astro';
 import Seo from './Seo.astro';
 import Research from './Research.astro';
+import MemoryTall from './MemoryTall.astro';
+import ResearchTall from './ResearchTall.astro';
+import SeoTall from './SeoTall.astro';
+import ZeroServerTall from './ZeroServerTall.astro';
 import type { IllustrationName } from './names';
 
 /** One entry per illustration: the component and its viewBox size. */
@@ -72,4 +76,12 @@ export const ILLUSTRATIONS: Record<IllustrationName, { component: typeof DesignS
 	'zero-server': { component: ZeroServer, width: 320, height: 180 },
 	seo: { component: Seo, width: 420, height: 180 },
 	research: { component: Research, width: 420, height: 180 },
+};
+
+/** Upright drawings for narrow highlight cards. Wide drawings are never shrunk into them. */
+export const TALL_ILLUSTRATIONS: Partial<Record<IllustrationName, { component: typeof DesignSystem; width: number; height: number }>> = {
+	memory: { component: MemoryTall, width: 200, height: 240 },
+	'zero-server': { component: ZeroServerTall, width: 200, height: 240 },
+	seo: { component: SeoTall, width: 200, height: 240 },
+	research: { component: ResearchTall, width: 200, height: 240 },
 };

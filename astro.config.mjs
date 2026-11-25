@@ -10,6 +10,8 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
+import nowFreshness from './scripts/now-freshness.mjs';
+
 export default defineConfig({
 	site: 'https://shahariarniloy.com',
 	output: 'static',
@@ -19,8 +21,9 @@ export default defineConfig({
 	trailingSlash: 'never',
 	// Pages load on hover, so navigating feels instant without a client router.
 	prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
-	build: { format: 'file' },
+	build: { format: 'directory' },
 	integrations: [
+		nowFreshness(),
 		mdx(),
 		sitemap({
 			// Admin and API routes are never public pages.

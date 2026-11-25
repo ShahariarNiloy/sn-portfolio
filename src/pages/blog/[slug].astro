@@ -8,7 +8,6 @@ import { render } from 'astro:content';
 import { MDX_COMPONENTS } from '@/components/content/mdx';
 import PostLayout from '@/layouts/PostLayout.astro';
 import { getNext, getPublishedPosts, getRoutablePosts, getSite } from '@/lib/content';
-import { getReadMinutes } from '@/lib/format';
 import { buildPostingJsonLd } from '@/lib/seo';
 import { TOPICS } from '@/lib/topics';
 
@@ -35,7 +34,7 @@ const jsonLd =
 	trail={[{ label: 'Blog', href: '/blog' }]}
 	crumbLabel={topicLabel}
 	illustration={illustration}
-	meta={[topicLabel, isDraft ? 'Outline' : `${getReadMinutes(post.body ?? '')} min read`, `By ${site.name}`]}
+	meta={[topicLabel, ...(isDraft ? ['Outline'] : []), `By ${site.name}`]}
 	isDraft={isDraft}
 	related={related}
 	next={next && { href: `/blog/${next.id}`, kicker: 'Next post', title: next.data.title }}

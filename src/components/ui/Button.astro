@@ -16,11 +16,13 @@ export interface Props {
 	/** Extra attributes for islands, e.g. data-palette-open. */
 	[key: `data-${string}`]: string | boolean | undefined;
 	download?: boolean | undefined;
+	/** Opens the link in a new tab; say so in the label. */
+	target?: '_blank' | undefined;
 	disabled?: boolean | undefined;
 	class?: string | undefined;
 }
 
-const { variant = 'ghost', href, type = 'button', name, value, download, disabled, class: className, ...rest } = Astro.props;
+const { variant = 'ghost', href, type = 'button', name, value, download, target, disabled, class: className, ...rest } = Astro.props;
 const classes = cx(
 	'inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm no-underline transition-colors duration-200 ease-out',
 	variant === 'primary' && 'bg-fg font-medium text-bg hover:bg-head',
@@ -31,7 +33,7 @@ const classes = cx(
 ---
 
 {href ? (
-	<a href={href} class={classes} download={download} {...rest}>
+	<a href={href} class={classes} download={download} target={target} rel={target && 'noopener'} {...rest}>
 		<slot />
 	</a>
 ) : (

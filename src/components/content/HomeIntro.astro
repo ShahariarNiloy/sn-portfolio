@@ -1,7 +1,7 @@
 ---
 /**
- * HomeIntro — Home's hero: the title, the round avatar the intro text wraps
- * around, and the facts row. The only animated block on Home. The avatar
+ * HomeIntro — Home's hero: the title, the round avatar beside the intro text,
+ * the sentence with the LinkedIn pill, and the facts row. The only animated block on Home. The avatar
  * file is cropped to what the circle shows and served at its native 258 px (2.7×)
  * as AVIF: WebP halves colour resolution, which smears the glasses.
  */
@@ -13,19 +13,21 @@ import avatar from '@/assets/avatar.png';
 export interface Props {
 	title: [string, string];
 	intro: string;
+	cta: { text: string; label: string };
+	linkedin: string;
 	facts: { label: string; value: string }[];
 	name: string;
 }
 
-const { title, intro, facts, name } = Astro.props;
+const { title, intro, cta, linkedin, facts, name } = Astro.props;
 ---
 
 <section aria-label="Introduction" class="pt-24 pb-6 motion-safe:animate-rise max-sm:pt-12">
 	<h1 class="m-0 text-3xl leading-tight font-semibold tracking-tight sm:text-4xl">
 		<span class="text-fg">{title[0]}</span> <span class="text-fade">{title[1]}</span>
 	</h1>
-	<div class="mt-11 after:clear-both after:table">
-		<span class="shape-circle float-left mr-4 mb-2 block size-24 overflow-hidden rounded-full bg-card2 ring-1 ring-line2">
+	<div class="mt-10 grid grid-cols-intro items-start gap-4 sm:gap-6">
+		<span class="block size-16 overflow-hidden rounded-full bg-card2 ring-1 ring-line2 sm:size-24">
 			<Image
 				src={avatar}
 				alt={`3D avatar of ${name}`}
@@ -35,12 +37,27 @@ const { title, intro, facts, name } = Astro.props;
 				quality={90}
 				loading="eager"
 				fetchpriority="high"
-				class="block size-24"
+				class="block size-full"
 			/>
 		</span>
-		<p class="m-0 text-base leading-relaxed text-mut">
-			<Inline text={intro} />
-		</p>
+		<div>
+			<p class="m-0 text-base leading-relaxed text-mut">
+				<Inline text={intro} />
+			</p>
+			<p class="mt-6 mb-0 text-base leading-7 text-mut">
+				{cta.text}{' '}
+				<a
+					href={linkedin}
+					target="_blank"
+					rel="noopener"
+					class="relative ml-1 inline-flex items-center gap-1.5 rounded-full border border-line2 bg-card px-2.5 py-0.5 text-sm font-medium whitespace-nowrap text-fg no-underline transition-colors duration-200 ease-out after:absolute after:-inset-x-1 after:-inset-y-2.5 hover:border-mut hover:bg-card2"
+				>
+					{cta.label}
+					<span class="sr-only">on LinkedIn (opens in a new tab)</span>
+					<span aria-hidden="true">↗</span>
+				</a>
+			</p>
+		</div>
 	</div>
 	<dl class="mt-14 mb-0 flex flex-wrap gap-x-10 gap-y-3 border-t border-line pt-5">
 		{facts.map((f) => (

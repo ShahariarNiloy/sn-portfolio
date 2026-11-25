@@ -1,86 +1,70 @@
 ---
 /**
- * Home — hero, Work, Now, Highlights, Latest posts, Stack, Experience +
- * Recognition, Guestbook (the two newest notes) and Contact.
+ * Home — hero, Work, Stack, Highlights, Latest posts, Career, Now and Contact.
  */
+import CareerRows from '@/components/content/CareerRows.astro';
 import ContactLine from '@/components/content/ContactLine.astro';
-import HighlightCard from '@/components/content/HighlightCard.astro';
+import HighlightGrid from '@/components/content/HighlightGrid.astro';
 import HomeIntro from '@/components/content/HomeIntro.astro';
-import HomeList from '@/components/content/HomeList.astro';
-import NoteWall from '@/components/content/NoteWall.astro';
+import NowList from '@/components/content/NowList.astro';
 import NumberedPosts from '@/components/content/NumberedPosts.astro';
-import StackStory from '@/components/content/StackStory.astro';
+import StackList from '@/components/content/StackList.astro';
 import WorkRow from '@/components/content/WorkRow.astro';
-import HighlightsCarousel from '@/components/islands/HighlightsCarousel.astro';
-import IllustrationReveal from '@/components/islands/IllustrationReveal.astro';
 import Link from '@/components/ui/Link.astro';
 import SectionLabel from '@/components/ui/SectionLabel.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getHighlights, getLatestPosts, getNow, getProjects, getSite, getStack } from '@/lib/content';
-import { formatMonth, getReadMinutes } from '@/lib/format';
-import { getApprovedNotes } from '@/lib/guestbook/approved';
+import { getHomeHighlights, getLatestPosts, getNow, getProjects, getSite, getStack } from '@/lib/content';
+import { formatMonth } from '@/lib/format';
 import { buildPersonJsonLd } from '@/lib/seo';
 
-const [site, projects, now, highlights, stack, posts, notes] = await Promise.all([
+const [site, projects, now, highlights, stack, posts] = await Promise.all([
 	getSite(),
 	getProjects(),
 	getNow(),
-	getHighlights(),
+	getHomeHighlights(),
 	getStack(),
 	getLatestPosts(4),
-	getApprovedNotes(),
 ]);
 const { home } = site;
-const more = 'inline-block mt-5 py-1.5';
+const more = 'mt-5 inline-flex min-h-11 items-center';
 ---
 
 <BaseLayout isHome jsonLd={[buildPersonJsonLd(site, Astro.site?.href ?? '/')]}>
-	<HomeIntro title={home.title} intro={home.intro} facts={home.facts} name={site.name} />
-	<section id="work" aria-labelledby="work-h" class="pt-16">
+	<HomeIntro title={home.title} intro={home.intro} cta={home.cta} linkedin={site.linkedin} facts={home.facts} name={site.name} />
+	<section id="work" aria-labelledby="work-h" class="section-gap">
 		<SectionLabel id="work-h">Work</SectionLabel>
 		{projects.map((p) => (
 			<WorkRow project={p} context="home" />
 		))}
-		<Link href="/work" class={more}>
-			All work →
-		</Link>
-	</section>
-	<section aria-labelledby="now-h" class="pt-16">
-		<SectionLabel id="now-h">Now</SectionLabel>
-		<HomeList variant="arrows" lines={now.home} />
-		<p class="mt-3.5 mb-0 font-mono text-xs text-mut">
-			Updated {formatMonth(now.updatedOn)} · <Link href="/now">More on the Now page →</Link>
+		<p class={more}>
+			<Link href="/work">All work →</Link>
 		</p>
 	</section>
-	<section id="highlights" aria-labelledby="highlights-h" class="pt-16">
-		<IllustrationReveal>
-			<HighlightsCarousel headingId="highlights-h">
-				{highlights.map((h) => (
-					<HighlightCard highlight={h} />
-				))}
-			</HighlightsCarousel>
-		</IllustrationReveal>
-	</section>
-	<section id="blog" aria-labelledby="blog-h" class="pt-16">
-		<SectionLabel id="blog-h">Latest posts</SectionLabel>
-		<NumberedPosts posts={posts.map((p) => ({ href: `/blog/${p.id}`, title: p.data.title, summary: p.data.summary, minutes: getReadMinutes(p.body ?? '') }))} />
-		<Link href="/blog" class={more}>
-			All posts →
-		</Link>
-	</section>
-	<section id="stack" aria-labelledby="stack-h" class="pt-16">
+	<section id="stack" aria-labelledby="stack-h" class="section-gap">
 		<SectionLabel id="stack-h">Stack</SectionLabel>
-		<StackStory paragraphs={home.stackStory} items={stack} />
-		<Link href="/stack" class={more}>
-			See the full stack →
-		</Link>
+		<StackList items={stack} />
+		<p class={more}>
+			<Link href="/stack">What I use each one for →</Link>
+		</p>
 	</section>
-	<section id="about" aria-labelledby="exp-h" class="pt-16">
-		<SectionLabel id="exp-h">Experience</SectionLabel>
-		<HomeList variant="rows" rows={home.experience.map((e) => ({ key: e.period, title: e.title, body: e.body }))} />
-		<SectionLabel as="h3" class="mt-14">
-			Recognition
-		</SectionLabel>
+	<section id="highlights" aria-labelledby="highlights-h" class="section-gap">
+		<SectionLabel id="highlights-h">Highlights</SectionLabel>
+		<HighlightGrid label="Highlights" items={highlights} />
+		<p class={more}>
+			<Link href="/highlights">All highlights →</Link>
+		</p>
+	</section>
+	<section id="blog" aria-labelledby="blog-h" class="section-gap">
+		<SectionLabel id="blog-h">Latest posts</SectionLabel>
+		<NumberedPosts posts={posts.map((p) => ({ href: `/blog/${p.id}`, title: p.data.title, summary: p.data.summary }))} />
+		<p class={more}>
+			<Link href="/blog">All posts →</Link>
+		</p>
+	</section>
+	<section id="about" aria-labelledby="career-h" class="section-gap">
+		<SectionLabel id="career-h">Career</SectionLabel>
+		<CareerRows rows={home.experience} />
+		<h3 class="mt-10 mb-4 text-base font-semibold tracking-tight text-head">Recognition</h3>
 		<ul class="m-0 flex list-none flex-col gap-2.5 p-0 text-mut">
 			{home.recognition.map((r) => (
 				<li>
@@ -88,18 +72,18 @@ const more = 'inline-block mt-5 py-1.5';
 				</li>
 			))}
 		</ul>
-		<Link href="/timeline" class={more}>
-			Full timeline →
-		</Link>
+		<p class={more}>
+			<Link href="/timeline">Full timeline →</Link>
+		</p>
 	</section>
-	<section id="guestbook" aria-labelledby="guestbook-h" class="pt-16">
-		<SectionLabel id="guestbook-h">Guestbook</SectionLabel>
-		<NoteWall notes={notes.slice(0, 2)} />
-		<Link href="/guestbook" class={more}>
-			Sign the wall →
-		</Link>
+	<section id="now" aria-labelledby="now-h" class="section-gap">
+		<SectionLabel id="now-h">Now</SectionLabel>
+		<NowList lines={now.home} />
+		<p class="mt-3.5 mb-0 font-mono text-xs text-mut">
+			Updated {formatMonth(now.updatedOn)} · <Link href="/now">More on the Now page →</Link>
+		</p>
 	</section>
-	<section id="contact" aria-labelledby="contact-h" class="pt-16 pb-6">
+	<section id="contact" aria-labelledby="contact-h" class="section-gap pb-6">
 		<SectionLabel id="contact-h">Contact</SectionLabel>
 		<ContactLine sentence={home.contact} email={site.email} github={site.github} linkedin={site.linkedin} />
 		<p class="mt-10 mb-0 text-sm text-mut">

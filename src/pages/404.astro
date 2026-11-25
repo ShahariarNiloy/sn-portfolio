@@ -3,20 +3,20 @@
  * 404 — "Nothing here." with links home and to the page menu.
  */
 import Button from '@/components/ui/Button.astro';
+import PaletteKey from '@/components/ui/PaletteKey.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Page not found" description="This page doesn't exist, or it moved." noindex>
 	<section class="pt-28 pb-10 motion-safe:animate-rise">
-		<p class="m-0 font-mono text-xs text-mut">404 · 0 KB of content</p>
+		<p class="m-0 font-mono text-xs text-mut">404 · page not found</p>
 		<h1 class="mt-4 mb-0 text-3xl leading-none font-semibold tracking-tighter text-head sm:text-4xl">
 			Nothing here.
 			<br />
-			<span class="text-mut">The lightest page on the site.</span>
+			<span class="text-mut">Not even a single byte of what you wanted.</span>
 		</h1>
 		<p class="mt-5 mb-0 text-base leading-relaxed text-mut">
-			This page doesn't exist, or it moved. Press <kbd class="rounded-md border border-line2 px-1.5 py-0.5 font-mono text-xs">⌘K</kbd> to jump anywhere, or
-			start from home.
+			This page doesn't exist, or it moved. Press <PaletteKey /> to jump anywhere, or start from home.
 		</p>
 		<div class="mt-8 flex flex-wrap gap-2.5">
 			<Button href="/">Go home</Button>

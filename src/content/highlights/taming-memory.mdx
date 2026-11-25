@@ -4,6 +4,9 @@ lede: 'How I tracked down why a large Next.js app kept running out of memory —
 card: 'Traced the heap out-of-memory crashes in a large Next.js app to their causes.'
 illustration: memory
 order: 3
+kicker: 'Debugging · Next.js'
+size: 2
+featuredOnHome: { order: 3, size: 2 }
 ---
 
 <MetaList
@@ -11,7 +14,6 @@ order: 3
 		{ label: 'Where', value: 'A large production Next.js app' },
 		{ label: 'Type', value: 'Production audit' },
 		{ label: 'Stack', value: 'Next.js, Node.js, containers' },
-		{ label: 'Read', value: '~4 min' },
 	]}
 />
 
@@ -55,17 +57,6 @@ I listed everything that could keep memory alive across a request, then ranked e
 - **A sitemap crawlers can't weaponise.** Crawlers working through a sitemap far larger than it needed to be were overloading the backend. Rebuilding it around canonical pages cut it by about 98%.
 
 <Caption>The long timeout stayed on purpose: the gateway already cuts requests off much sooner, so it is only a last-resort safety net.</Caption>
-
-## Finished, waiting to merge
-
-- **No more deep copies** of large responses on the server.
-- **No automatic retries for one-time actions** like payments, so a slow request can never be sent twice.
-
-## Still to do
-
-- A circuit breaker for slow dependencies.
-- Streaming files and images instead of buffering them whole.
-- Moving pages that never needed to be dynamic to incremental static regeneration.
 
 ## By the numbers
 

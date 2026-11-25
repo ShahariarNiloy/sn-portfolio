@@ -27,7 +27,7 @@ const isFirst = next?.data.order === 1;
 		<Content components={MDX_COMPONENTS} />
 	</div>
 	{next && (
-		<section class="pt-16">
+		<section class="section-gap">
 			<NextLink href={`/work/${next.id}`} kicker={isFirst ? 'Back to the start' : 'Next project'} title={next.data.name} />
 		</section>
 	)}

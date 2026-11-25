@@ -2,7 +2,8 @@
 /**
  * JsonTryIt — a live JSON formatter on the utilyx page, timing itself in the
  * browser. Without JavaScript the sample input and its formatted output are
- * shown as static text, formatted at build time.
+ * shown as static text, formatted at build time. Both panes keep a fixed height
+ * and scroll inside.
  */
 import { formatJson } from '@/lib/json';
 
@@ -15,15 +16,16 @@ const initial = formatJson(SAMPLE);
 		<span>JSON formatter</span>
 		<span>Edit the left side</span>
 	</div>
-	<div class="grid min-h-56 grid-cols-1 sm:grid-cols-2">
+	<div class="grid grid-cols-1 sm:grid-cols-2">
 		<textarea
-			class="min-h-56 resize-y border-0 border-b border-line bg-transparent p-3.5 font-mono text-xs leading-relaxed text-fg outline-none focus:bg-card2 sm:border-r sm:border-b-0"
+			class="h-64 resize-none overflow-auto border-0 border-b border-line bg-transparent p-3.5 font-mono text-xs leading-relaxed text-fg outline-none focus:bg-card2 sm:border-r sm:border-b-0"
 			spellcheck="false"
 			aria-label="JSON to format"
 			data-json-input
 		>{SAMPLE}</textarea>
-		<div class="overflow-auto p-3.5" aria-live="polite">
-			<pre class="m-0 font-mono text-xs leading-relaxed whitespace-pre-wrap text-prose" data-json-output>{initial.ok ? initial.output : ''}</pre>
+		{/* Focusable, so the keyboard can scroll it. */}
+		<div class="h-64 overflow-auto p-3.5 -outline-offset-2" tabindex="0" role="region" aria-label="Formatted JSON" aria-live="polite">
+			<pre class="m-0 font-mono text-xs leading-relaxed wrap-anywhere whitespace-pre-wrap text-prose" data-json-output>{initial.ok ? initial.output : ''}</pre>
 			<span class="font-mono text-xs text-bad" data-json-error></span>
 		</div>
 	</div>

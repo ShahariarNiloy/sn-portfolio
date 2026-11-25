@@ -1,32 +1,49 @@
 ---
 /**
- * HighlightCard — one card on Home's highlights carousel: illustration, title link
- * (the whole card is clickable through it) and a one-line summary.
+ * HighlightCard — one highlight in the bento grid: kicker, illustration, title
+ * link (the whole card is clickable through it) and one line. Wide cards (4, 6)
+ * use the wide drawing, narrow ones (2) the upright one; a full-width card puts
+ * the text left and the drawing right.
  */
 import type { CollectionEntry } from 'astro:content';
 
 import Illustration from '@/components/illustrations/Illustration.astro';
+import { cx } from '@/lib/cx';
 
 export interface Props {
 	highlight: CollectionEntry<'highlights'>;
+	/** Columns out of 6. */
+	size: 2 | 4 | 6;
+	/** Heading level for the title. */
+	as: 'h2' | 'h3';
 }
 
-const { highlight } = Astro.props;
+const { highlight, size, as: Heading } = Astro.props;
+const { title, card, kicker, illustration } = highlight.data;
+const SPAN = { 2: 'sm:col-span-2', 4: 'sm:col-span-4', 6: 'sm:col-span-6' } as const;
+const isFull = size === 6;
 ---
 
-<li class="relative flex w-64 shrink-0 snap-start flex-col gap-3.5 rounded-xl border border-line bg-card p-4 transition-colors duration-300 ease-out hover:border-line2">
-	<div class="flex h-36 items-center justify-center">
-		<Illustration name={highlight.data.illustration} size="card" />
+<li
+	class={cx(
+		'relative flex min-w-0 flex-col gap-4 rounded-xl border border-line bg-card p-5 transition-colors duration-200 ease-out focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-acc hover:border-line2 hover:bg-card2',
+		SPAN[size],
+		isFull && 'sm:grid sm:grid-cols-2 sm:items-center sm:gap-6',
+	)}
+>
+	<p class={cx('m-0 font-mono text-xs text-mut', isFull && 'sm:col-span-2')}>{kicker}</p>
+	<div class={cx('flex h-32 items-center justify-center overflow-hidden sm:h-40', isFull && 'sm:order-2')}>
+		<Illustration name={illustration} size={size === 2 ? 'tall' : 'wide'} />
 	</div>
 	<div>
-		<h3 class="m-0 text-sm font-semibold">
-			<a href={`/highlights/${highlight.id}`} class="text-fg no-underline after:absolute after:inset-0 after:rounded-xl">
-				{highlight.data.title}{' '}
+		<Heading class="m-0 text-base font-medium">
+			<a href={`/highlights/${highlight.id}`} class="text-fg no-underline outline-none after:absolute after:inset-0 after:rounded-xl">
+				{title}{' '}
 				<span class="text-mut" aria-hidden="true">
 					→
 				</span>
 			</a>
-		</h3>
-		<p class="mt-1 mb-0 text-sm leading-normal text-mut">{highlight.data.card}</p>
+		</Heading>
+		<p class="mt-1 mb-0 text-sm text-mut">{card}</p>
 	</div>
 </li>

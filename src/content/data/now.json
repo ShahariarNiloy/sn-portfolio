@@ -1,7 +1,7 @@
 [
 	{
 		"id": "now",
-		"updatedOn": "2026-11-23",
+		"updatedOn": "2026-11-25",
 		"place": "Dhaka",
 		"items": [
 			{
@@ -10,11 +10,11 @@
 			},
 			{
 				"label": "Building",
-				"body": "**[Repo Galaxy](/work/repo-galaxy)** — codebases as a 3D star map. And a redesign of [utilyx.dev](/work/utilyx), with a new set of SEO tools."
+				"body": "**[Repo Galaxy](/work/repo-galaxy)** — codebases as a 3D star map. And a redesign of [utilyx.dev](/work/utilyx)."
 			},
 			{
 				"label": "Learning",
-				"body": "**Rust and Go**, for speed beyond the browser."
+				"body": "**Rust and WebAssembly**, for speed beyond the browser."
 			},
 			{
 				"label": "Writing",
@@ -31,8 +31,8 @@
 		],
 		"home": [
 			"Building **Repo Galaxy**, a 3D codebase explorer with AI answers.",
-			"Redesigning **utilyx.dev** and adding a set of SEO tools.",
-			"Learning **Rust** and **Go** for even lighter tools."
+			"Redesigning **utilyx.dev**.",
+			"Learning **Rust** and **WebAssembly** for even lighter tools."
 		]
 	}
 ]

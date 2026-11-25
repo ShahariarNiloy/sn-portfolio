@@ -1,6 +1,6 @@
 ---
 /**
- * /timeline — CV download, the Career card and the year-by-year timeline.
+ * /timeline — the CV (view or download), the Career card and the year-by-year timeline.
  */
 import CareerCard from '@/components/content/CareerCard.astro';
 import Timeline from '@/components/content/Timeline.astro';
@@ -11,29 +11,29 @@ import PageLayout from '@/layouts/PageLayout.astro';
 import { getCareer, getTimeline } from '@/lib/content';
 
 const [years, career] = await Promise.all([getTimeline(), getCareer()]);
-// TODO(owner): upload the CV PDF to R2 and put its public URL here.
-const CV_URL: string | undefined = undefined;
+// The file in public/. Replace it under the same name to update the CV.
+const CV_URL = '/shahariar-niloy-cv.pdf';
 ---
 
 <PageLayout title="Timeline" active="timeline" lede="Newest first: roles, research, recognition and the steps in between.">
-	<div slot="after-lede" class="mt-6">
-		{CV_URL ? (
-			<Button href={CV_URL} download>
-				<Icon name="download" size={14} />
-				Download CV (PDF)
-			</Button>
-		) : (
-			<Button disabled>
-				<Icon name="download" size={14} />
-				Download CV (PDF) <span class="font-mono text-xs text-mut">[ADD FILE]</span>
-			</Button>
-		)}
+	<div slot="after-lede" class="mt-6 flex flex-wrap gap-2.5">
+		<Button href={CV_URL} target="_blank">
+			View CV
+			<Icon name="arrow-up-right" size={14} />
+			<span class="sr-only">(PDF, opens in a new tab)</span>
+		</Button>
+		<Button href={CV_URL} download>
+			<Icon name="download" size={14} />
+			<span>
+				Download CV<span class="sr-only"> (PDF)</span>
+			</span>
+		</Button>
 	</div>
-	<section class="pt-16" aria-labelledby="career-h">
+	<section class="section-gap" aria-labelledby="career-h">
 		<SectionLabel id="career-h">Career</SectionLabel>
 		<CareerCard companies={career} />
 	</section>
-	<section class="pt-16">
+	<section class="section-gap">
 		<SectionLabel>Year by year</SectionLabel>
 		<Timeline years={years} />
 	</section>

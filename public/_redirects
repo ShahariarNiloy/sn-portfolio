@@ -1,2 +1,3 @@
 # Permanent moves. Cloudflare reads this file at the edge.
 /experience /timeline 301
+/blog/rss.xml /rss.xml 301

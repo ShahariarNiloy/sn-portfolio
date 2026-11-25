@@ -1,7 +1,7 @@
 ---
 /**
  * ContactLine — Home's contact sentence, with `{email}`, `{github}` and
- * `{linkedin}` tokens rendered as links.
+ * `{linkedin}` tokens rendered as links, then links to the pages about me.
  */
 import Link from '@/components/ui/Link.astro';
 
@@ -26,4 +26,7 @@ const parts = sentence.split(/(\{email\}|\{github\}|\{linkedin\})/);
 		const link = LINKS[part.slice(1, -1)];
 		return link ? <Link href={link.href}>{link.text}</Link> : part;
 	})}
+</p>
+<p class="mt-6 mb-0 text-sm text-mut">
+	More about me: <Link href="/stack">Stack</Link> · <Link href="/now">Now</Link> · <Link href="/uses">Uses</Link> · <Link href="/guestbook">Guestbook</Link>
 </p>

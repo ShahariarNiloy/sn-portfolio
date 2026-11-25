@@ -1,9 +1,12 @@
 ---
 /**
- * Nav — the site header: logo, primary links and the ⌘K / Menu trigger. Below sm the links collapse into the Menu button, which opens the
+ * Nav — the site header: logo, primary links and the ⌘K / Ctrl K trigger.
+ * Below sm the links collapse into the Menu button, which opens the
  * command palette; without JavaScript it jumps to the footer links instead.
  */
 import { cx } from '@/lib/cx';
+
+import PaletteKey from '@/components/ui/PaletteKey.astro';
 
 import Container from './Container.astro';
 
@@ -43,15 +46,12 @@ const linkClass =
 			))}
 			<a
 				href="#site-links"
-				class="group inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center py-2 pl-3 text-mut max-sm:rounded-lg max-sm:border max-sm:border-line2 max-sm:px-4"
+				class="group inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center py-2 pl-3 text-mut transition-colors duration-200 ease-out hover:text-fg max-sm:rounded-lg max-sm:border max-sm:border-line2 max-sm:px-4"
 				data-palette-open
 				aria-haspopup="dialog"
-				aria-label="Open the page menu"
 			>
-				<kbd class="rounded-md border border-line2 px-1.5 py-0.5 font-mono text-xs text-mut transition-colors duration-200 ease-out group-hover:border-mut group-hover:text-fg max-sm:hidden">
-					⌘K
-				</kbd>
-				<span class="text-sm text-fg sm:hidden">Menu</span>
+				<span class="text-sm text-fg sm:sr-only">Menu</span>
+				<PaletteKey class="transition-colors duration-200 ease-out group-hover:border-mut group-hover:text-fg max-sm:hidden" />
 			</a>
 		</nav>
 	</Container>

@@ -1,6 +1,6 @@
 ---
 title: 'What people remember'
-excerpt: 'It’s funny that…'
+excerpt: 'We spend so much time trying to perfect our appearance that we sometimes forget what people actually remember.'
 topic: character
 order: 5
 ---

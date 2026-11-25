@@ -3,6 +3,7 @@ name: 'utilyx.dev'
 group: product
 lede: 'A growing collection of developer tools — formatters, encoders, generators and validators — that run entirely in your browser. Nothing is uploaded and there is no server to wait for.'
 url: 'https://utilyx.dev'
+sourceUrl: 'https://github.com/ShahariarNiloy/devtils'
 meta:
   - label: 'Type'
     value: 'Personal product'
@@ -12,6 +13,8 @@ meta:
     value: '50+ and growing'
   - label: 'Link'
     value: '[utilyx.dev](https://utilyx.dev)'
+  - label: 'Source'
+    value: '[GitHub](https://github.com/ShahariarNiloy/devtils)'
 lighthouse:
   device: mobile
   measuredOn: 2026-11
@@ -20,6 +23,7 @@ lighthouse:
   bestPractices: 100
   seo: 92
 order: 2
+thumbnail: '../../assets/work/utilyx-home.webp'
 # TODO(owner): approve — the fields below are not in the PRD schema but the mockup needs them.
 summary: 'Developer tools that run entirely in your browser. Zero servers, nothing uploaded.'
 period: 'Live'
@@ -32,6 +36,28 @@ import { lighthouseScores } from '@/lib/lighthouse';
 ## Why it exists
 
 Most online dev tools send your data to a server just to format some JSON or decode a token. That is slow and, for anything sensitive, risky. **utilyx does all of it on your machine**, so it is instant and private by design.
+
+## Categories
+
+<CategoryGrid
+	items={[
+		{
+			name: 'JSON',
+			href: 'https://www.utilyx.dev/tools/category/json',
+			body: 'Format, diff and schema; convert to CSV, XML, YAML, TypeScript, Go, Python, Rust and Zod',
+		},
+		{ name: 'Text', href: 'https://www.utilyx.dev/tools/category/text', body: 'Regex tester, diff checker, case converter, Markdown preview, word counter' },
+		{ name: 'Encoding', href: 'https://www.utilyx.dev/tools/category/encoding', body: 'Base64, URL and HTML entities, both ways' },
+		{ name: 'Image', href: 'https://www.utilyx.dev/tools/category/image', body: 'Compressor, blur placeholders' },
+		{ name: 'PDF', href: 'https://www.utilyx.dev/tools/category/pdf', body: 'Merge, split, compress, sign, and convert to and from images' },
+		{ name: 'Code', href: 'https://www.utilyx.dev/tools/category/code', body: 'Format SQL, XML and common languages' },
+		{ name: 'Design', href: 'https://www.utilyx.dev/tools/category/design', body: 'Colours and CSS units' },
+		{ name: 'Time and IDs', href: 'https://www.utilyx.dev/tools/category/calc', body: 'Timestamps, UUIDs and ULIDs, cron' },
+		{ name: 'Network', href: 'https://www.utilyx.dev/tools/category/network', body: 'cURL to code, cURL generator, URL parser' },
+		{ name: 'Security', href: 'https://www.utilyx.dev/tools/category/security', body: 'JWT decoder, password generator' },
+		{ name: 'SEO', href: 'https://www.utilyx.dev/tools/category/seo', body: 'Hreflang, canonicals, robots.txt, sitemaps, Open Graph, JSON-LD' },
+	]}
+/>
 
 ## How it's built
 
@@ -55,7 +81,6 @@ Most online dev tools send your data to a server just to format some JSON or dec
 ## Now
 
 - Redesigning the landing page, catalogue and tool pages.
-- Adding an SEO category: hreflang generator and validator, canonical and robots.txt generators, sitemap validator, Open Graph and JSON-LD generators, meta preview.
 
 ## Screens
 

@@ -22,7 +22,7 @@ const { Content } = await render(highlight);
 	variant="case"
 	title={highlight.data.title}
 	lede={highlight.data.lede}
-	trail={[{ label: 'Highlights', href: '/#highlights' }]}
+	trail={[{ label: 'Highlights', href: '/highlights' }]}
 	illustration={highlight.data.illustration}
 	next={next && { href: `/highlights/${next.id}`, kicker: 'Next highlight', title: next.data.title }}
 >

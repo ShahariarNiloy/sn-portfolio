@@ -1,0 +1,24 @@
+---
+/**
+ * CategoryGrid — a project's categories in two columns: a linked name and what it
+ * holds. One column below sm.
+ */
+import Link from '@/components/ui/Link.astro';
+
+export interface Props {
+	items: { name: string; href: string; body: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="m-0 grid list-none grid-cols-1 gap-x-8 p-0 sm:grid-cols-2">
+	{items.map((item) => (
+		<li class="border-t border-line py-3">
+			<Link href={item.href} class="inline-block py-1 font-medium">
+				{item.name}
+			</Link>
+			<span class="mt-1 block text-sm text-mut">{item.body}</span>
+		</li>
+	))}
+</ul>

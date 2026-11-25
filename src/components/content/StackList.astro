@@ -1,0 +1,46 @@
+---
+/**
+ * StackList — Home's Stack section: one row per kind of tool, a mono label then
+ * every tool as a grey logo and its name. Reads the same data as /stack.
+ */
+import type { CollectionEntry } from 'astro:content';
+
+import Icon from '@/components/ui/Icon.astro';
+import type { IconName } from '@/components/ui/icons';
+
+export interface Props {
+	items: CollectionEntry<'stack'>[];
+}
+
+const { items } = Astro.props;
+const GROUPS = [
+	{ id: 'languages', label: 'Languages' },
+	{ id: 'frameworks', label: 'Frameworks' },
+	{ id: 'libraries', label: 'Libraries' },
+	{ id: 'data', label: 'Data' },
+	{ id: 'runtime-hosting', label: 'Runtime & hosting' },
+	{ id: 'tooling', label: 'Tooling' },
+] as const;
+const rows = GROUPS.map((g) => ({
+	...g,
+	tools: items.filter((i) => i.data.home?.group === g.id).sort((a, b) => (a.data.home?.order ?? 0) - (b.data.home?.order ?? 0)),
+}));
+---
+
+<div class="flex flex-col">
+	{rows.map((row) => (
+		<div class="grid grid-cols-1 items-baseline gap-x-6 gap-y-3 py-5 sm:grid-cols-stack">
+			<h3 class="m-0 font-mono text-xs font-normal text-mut">{row.label}</h3>
+			<ul class="m-0 flex list-none flex-wrap gap-x-5 gap-y-3 p-0 text-sm">
+				{row.tools.map((tool) => (
+					<li class="inline-flex items-baseline gap-2 font-medium whitespace-nowrap text-fg">
+						<span class="self-center text-mut opacity-75 grayscale">
+							<Icon name={tool.data.icon as IconName} />
+						</span>
+						{tool.data.name}
+					</li>
+				))}
+			</ul>
+		</div>
+	))}
+</div>

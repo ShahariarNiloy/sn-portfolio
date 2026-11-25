@@ -1,0 +1,22 @@
+---
+/**
+ * CareerRows — Home's career: one row per company (period, name, one line).
+ */
+export interface Props {
+	rows: { period: string; title: string; body: string }[];
+}
+
+const { rows } = Astro.props;
+---
+
+<div class="border-b border-line">
+	{rows.map((row) => (
+		<div class="grid grid-cols-1 gap-0.5 border-t border-line py-3.5 sm:grid-cols-label sm:gap-4">
+			<span class="pt-0.5 font-mono text-xs text-mut">{row.period}</span>
+			<div>
+				<div class="font-medium">{row.title}</div>
+				<div class="text-sm text-mut">{row.body}</div>
+			</div>
+		</div>
+	))}
+</div>

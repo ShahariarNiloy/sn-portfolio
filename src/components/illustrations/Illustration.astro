@@ -1,27 +1,26 @@
 ---
 /**
  * Illustration — renders a named isometric illustration at its own aspect ratio.
- * `card` is the small version on Home's carousel; `hero` sits in a card under a
- * page title. Wrap it in IllustrationReveal for the draw-in effect.
+ * `hero` sits in a card under a page title; `wide` fills a highlight card's width;
+ * `tall` is the upright drawing for a narrow card. Wrap it in IllustrationReveal
+ * for the draw-in effect.
  */
 import { cx } from '@/lib/cx';
 
-import { ILLUSTRATIONS } from './index';
+import { ILLUSTRATIONS, TALL_ILLUSTRATIONS } from './index';
 import type { IllustrationName } from './names';
 
 export interface Props {
 	name: IllustrationName;
-	size?: 'card' | 'hero' | undefined;
+	size?: 'hero' | 'wide' | 'tall' | undefined;
 }
 
 const { name, size = 'hero' } = Astro.props;
-const { component: Drawing, width, height } = ILLUSTRATIONS[name];
+const drawing = size === 'tall' ? TALL_ILLUSTRATIONS[name] : ILLUSTRATIONS[name];
+if (!drawing) throw new Error(`No upright drawing for "${name}": add one, or give its card a wide size.`);
+const { component: Drawing, width, height } = drawing;
 ---
 
-<div
-	class={cx('ill', size === 'hero' && 'mx-auto max-w-lg', size === 'card' && 'w-full')}
-	style={`--ar: ${width} / ${height}`}
-	aria-hidden="true"
->
+<div class={cx('ill', size === 'hero' && 'mx-auto max-w-lg', size === 'tall' && 'ill-tall')} style={`--ar: ${width} / ${height}`} aria-hidden="true">
 	<Drawing />
 </div>

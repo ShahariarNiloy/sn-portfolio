@@ -1,0 +1,28 @@
+---
+/**
+ * HighlightGrid — highlights as a 6-column bento (one column below sm), used on
+ * Home and /highlights. Rows must fill: 4+2, 2+4 or 6.
+ */
+import type { CollectionEntry } from 'astro:content';
+
+import IllustrationReveal from '@/components/islands/IllustrationReveal.astro';
+
+import HighlightCard from './HighlightCard.astro';
+
+export interface Props {
+	items: { highlight: CollectionEntry<'highlights'>; size: 2 | 4 | 6 }[];
+	label: string;
+	/** Heading level for the card titles. */
+	headingLevel?: 'h2' | 'h3' | undefined;
+}
+
+const { items, label, headingLevel = 'h3' } = Astro.props;
+---
+
+<IllustrationReveal>
+	<ul class="m-0 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-6" aria-label={label}>
+		{items.map((item) => (
+			<HighlightCard {...item} as={headingLevel} />
+		))}
+	</ul>
+</IllustrationReveal>

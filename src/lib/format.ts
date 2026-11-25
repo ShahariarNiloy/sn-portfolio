@@ -1,12 +1,9 @@
 /**
- * format.ts — the one place dates, read times and inline text are formatted.
+ * format.ts — the one place dates and inline text are formatted.
  * Dates are handled in UTC. Used by pages and components; no DOM, no Astro.
  */
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as const;
-
-/** Reading speed used for read-time estimates, in words per minute. */
-export const WORDS_PER_MINUTE = 200;
 
 /** "Nov 2026". */
 export function formatMonth(date: Date): string {
@@ -21,21 +18,6 @@ export function formatDay(date: Date): string {
 /** ISO date without time: "2026-11-23". */
 export function formatIsoDay(date: Date): string {
 	return date.toISOString().slice(0, 10);
-}
-
-/** Counts words in Markdown or MDX source, ignoring JSX tags, comments and link targets. */
-export function countWords(source: string): number {
-	const text = source
-		.replace(/\{\/\*[\s\S]*?\*\/\}/g, ' ')
-		.replace(/<[^>]+>/g, ' ')
-		.replace(/\]\([^)]*\)/g, ' ')
-		.replace(/[#>*_`[\]\\-]/g, ' ');
-	return text.split(/\s+/).filter(Boolean).length;
-}
-
-/** Whole minutes to read, rounded up, never less than 1. */
-export function getReadMinutes(source: string): number {
-	return Math.max(1, Math.ceil(countWords(source) / WORDS_PER_MINUTE));
 }
 
 /** One piece of inline text after parsing. */

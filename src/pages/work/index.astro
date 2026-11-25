@@ -1,6 +1,6 @@
 ---
 /**
- * /work — every project, grouped: Company, Products (with Lighthouse badges), Building.
+ * /work — every project, grouped: Company, Products, Building.
  */
 import WorkRow from '@/components/content/WorkRow.astro';
 import SectionLabel from '@/components/ui/SectionLabel.astro';
@@ -18,7 +18,7 @@ const GROUPS = [
 <PageLayout
 	title="Work"
 	active="work"
-	lede="One company platform I help build, three products of my own, and one I'm building now. Each has its own page with the details."
+	lede="One company platform I help build, one product of my own, two I co-build, and one I'm building now. Each has its own page with the details."
 >
 	{GROUPS.map((g, i) => (
 		<section class={i === 0 ? 'pt-16' : 'pt-12'}>

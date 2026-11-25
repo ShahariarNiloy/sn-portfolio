@@ -11,10 +11,9 @@ export interface Props {
 	essay: CollectionEntry<'essays'>;
 	index: number;
 	topicLabel: string;
-	minutes: number;
 }
 
-const { essay, index, topicLabel, minutes } = Astro.props;
+const { essay, index, topicLabel } = Astro.props;
 ---
 
 <details class="group/essay border-b border-line" data-topic={essay.data.topic} id={essay.id}>
@@ -24,9 +23,7 @@ const { essay, index, topicLabel, minutes } = Astro.props;
 			<span class="font-serif text-2xl leading-tight text-fg transition-colors duration-200 group-hover/essay:text-acc">{essay.data.title}</span>
 			<span class="line-clamp-1 text-sm leading-relaxed whitespace-pre-line text-mut group-open/essay:hidden">{essay.data.excerpt}</span>
 		</span>
-		<span class="font-mono text-xs whitespace-nowrap text-mut max-sm:hidden">
-			{topicLabel} · {minutes} min
-		</span>
+		<span class="font-mono text-xs whitespace-nowrap text-mut max-sm:hidden">{topicLabel}</span>
 		<span class="text-xl leading-none text-mut transition-transform duration-300 group-open/essay:rotate-45" aria-hidden="true">
 			+
 		</span>

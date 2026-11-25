@@ -8,6 +8,7 @@ import RingSet from '@/components/ui/RingSet.astro';
 
 import BarChart from './BarChart.astro';
 import Caption from './Caption.astro';
+import CategoryGrid from './CategoryGrid.astro';
 import Compare from './Compare.astro';
 import DraftNote from './DraftNote.astro';
 import Flow from './Flow.astro';
@@ -27,6 +28,7 @@ export const MDX_COMPONENTS = {
 	a: Link,
 	BarChart,
 	Caption,
+	CategoryGrid,
 	Compare,
 	DraftNote,
 	Flow,

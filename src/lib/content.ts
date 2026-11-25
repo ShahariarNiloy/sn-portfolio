@@ -47,6 +47,15 @@ export async function getHighlights(): Promise<CollectionEntry<'highlights'>[]> 
 	return (await getCollection('highlights')).sort(byOrder);
 }
 
+/** Highlights shown on Home, in Home's order, each with its Home width. */
+export async function getHomeHighlights(): Promise<{ highlight: CollectionEntry<'highlights'>; size: 2 | 4 | 6 }[]> {
+	const featured = (await getHighlights()).flatMap((highlight) => {
+		const { featuredOnHome } = highlight.data;
+		return featuredOnHome ? [{ highlight, ...featuredOnHome }] : [];
+	});
+	return featured.sort((a, b) => a.order - b.order).map(({ highlight, size }) => ({ highlight, size }));
+}
+
 /** Published posts, in list order: the only posts that may be listed or linked. */
 export async function getPublishedPosts(): Promise<CollectionEntry<'blog'>[]> {
 	return (await getCollection('blog', (p) => p.data.status === 'published')).sort(byOrder);
@@ -123,6 +132,7 @@ export async function getPaletteEntries(): Promise<PaletteEntry[]> {
 	const pages: PaletteEntry[] = [
 		{ label: 'Home', href: '/', group: 'Page' },
 		{ label: 'Work', href: '/work', group: 'Page' },
+		{ label: 'Highlights', href: '/highlights', group: 'Page' },
 		{ label: 'Stack', href: '/stack', group: 'Page' },
 		{ label: 'Blog', href: '/blog', group: 'Page' },
 		{ label: 'Timeline', href: '/timeline', group: 'Page' },

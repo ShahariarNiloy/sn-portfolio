@@ -1,5 +1,5 @@
 /**
- * /blog/rss.xml — RSS feed of published posts (drafts never appear).
+ * /rss.xml — RSS feed of published posts (drafts never appear).
  */
 import rss from '@astrojs/rss';
 import type { APIRoute } from 'astro';

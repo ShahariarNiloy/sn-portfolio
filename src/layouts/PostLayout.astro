@@ -24,7 +24,7 @@ export interface Props {
 	trail: Crumb[];
 	crumbLabel?: string | undefined;
 	illustration: IllustrationName;
-	/** Mono line under the lede: topic, read time, author. Posts only. */
+	/** Mono line under the lede: topic, author. Posts only. */
 	meta?: string[] | undefined;
 	isDraft?: boolean | undefined;
 	related?: { href: string; label: string } | undefined;
@@ -76,7 +76,7 @@ const { variant, title, lede, trail, crumbLabel, illustration, meta, isDraft = f
 		</section>
 	)}
 	{next && (
-		<section class="pt-16">
+		<section class="section-gap">
 			<NextLink {...next} />
 		</section>
 	)}

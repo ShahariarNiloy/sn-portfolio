@@ -16,8 +16,8 @@ const uses = await getUses();
 	<p slot="after-lede" class="stamp">
 		Updated {formatDay(uses.updatedOn)}
 	</p>
-	{uses.groups.map((g, i) => (
-		<section class={i === 0 ? 'pt-12' : 'pt-14'}>
+	{uses.groups.map((g) => (
+		<section class="section-gap">
 			<SectionLabel>{g.title}</SectionLabel>
 			<KeyValueRows rows={g.rows} />
 		</section>

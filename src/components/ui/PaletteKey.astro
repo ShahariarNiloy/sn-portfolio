@@ -1,0 +1,17 @@
+---
+/**
+ * PaletteKey — the palette shortcut. Rendered as "Ctrl K"; an inline script next
+ * to it makes it "⌘K" on Apple devices before it is painted, in a box wide enough
+ * for both so nothing shifts.
+ */
+export interface Props {
+	class?: string | undefined;
+}
+
+const { class: className } = Astro.props;
+---
+
+<kbd class:list={['inline-block min-w-14 rounded-md border border-line2 px-1.5 py-0.5 text-center font-mono text-xs text-mut', className]}>Ctrl K</kbd>
+<script is:inline>
+	if (/mac|iphone|ipad/i.test(navigator.userAgentData?.platform ?? navigator.platform)) document.currentScript.previousElementSibling.textContent = '⌘K';
+</script>

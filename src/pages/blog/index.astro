@@ -1,6 +1,6 @@
 ---
 /**
- * /blog — posts grouped by topic, with read times, and a link to Off the clock.
+ * /blog — posts grouped by topic, and a link to Off the clock.
  * Drafts never appear in production builds.
  */
 import PostRow from '@/components/content/PostRow.astro';
@@ -8,7 +8,6 @@ import Link from '@/components/ui/Link.astro';
 import SectionLabel from '@/components/ui/SectionLabel.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getPublishedPosts } from '@/lib/content';
-import { getReadMinutes } from '@/lib/format';
 import { TOPICS } from '@/lib/topics';
 
 const posts = await getPublishedPosts();
@@ -20,12 +19,12 @@ const groups = TOPICS.map((t) => ({ ...t, posts: posts.filter((p) => p.data.topi
 	active="blog"
 	lede="Notes from work: making software lighter and faster, being found in search, and what I learn building my own products."
 >
-	{groups.map((g, i) => (
-		<section class={i === 0 ? 'pt-16' : 'pt-12'}>
+	{groups.map((g) => (
+		<section class="section-gap">
 			<SectionLabel>{g.label}</SectionLabel>
 			<div class="flex flex-col">
 				{g.posts.map((p) => (
-					<PostRow href={`/blog/${p.id}`} title={p.data.title} summary={p.data.summary} meta={`${getReadMinutes(p.body ?? '')} min read`} />
+					<PostRow href={`/blog/${p.id}`} title={p.data.title} summary={p.data.summary} />
 				))}
 			</div>
 		</section>

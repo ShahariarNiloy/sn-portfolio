@@ -1,0 +1,16 @@
+---
+/**
+ * /highlights — every case study, in the same bento grid as Home, paired by theme.
+ */
+import HighlightGrid from '@/components/content/HighlightGrid.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getHighlights } from '@/lib/content';
+
+const highlights = await getHighlights();
+---
+
+<PageLayout title="Highlights" lede="Problems I have worked through, each written up as a case study: what was wrong, what I tried, and what it fixed.">
+	<section class="pt-12" aria-label="All highlights">
+		<HighlightGrid label="All highlights" headingLevel="h2" items={highlights.map((highlight) => ({ highlight, size: highlight.data.size }))} />
+	</section>
+</PageLayout>

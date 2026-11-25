@@ -21,8 +21,8 @@ const lighthouse = z.object({
 
 const illustration = z.enum(ILLUSTRATION_NAMES);
 
-/** "Label: value" pairs; values may hold inline Markdown links. */
-const metaItem = z.object({ label: z.string(), value: z.string() });
+/** "Label: value" pairs; values may hold inline Markdown links, or show as a chip. */
+const metaItem = z.object({ label: z.string(), value: z.string(), chip: z.boolean().optional() });
 
 const blog = defineCollection({
 	loader: glob({ pattern: '**/*.mdx', base: './src/content/blog' }),
@@ -43,27 +43,33 @@ const blog = defineCollection({
 
 const projects = defineCollection({
 	loader: glob({ pattern: '**/*.mdx', base: './src/content/projects' }),
-	schema: z.object({
-		name: z.string(),
-		group: z.enum(['company', 'product', 'building']),
-		lede: z.string(),
-		url: z.url().optional(),
-		sourceUrl: z.url().optional(),
-		meta: z.array(metaItem),
-		lighthouse: lighthouse.optional(),
-		order: z.number().int(),
-		/** Owner approval pending: pill next to the name ("Company project", "In progress"). */
-		badge: z.string().optional(),
-		/** Owner approval pending: one-line description on /work. */
-		summary: z.string(),
-		/** Owner approval pending: shorter description on Home, when it differs. */
-		homeSummary: z.string().optional(),
-		/** Owner approval pending: the right-hand label in a work row ("Live", "2023 –"). */
-		period: z.string(),
-		/** Owner approval pending: that label on Home, when it differs. */
-		homePeriod: z.string().optional(),
-	}),
+	schema: ({ image }) =>
+		z.object({
+			name: z.string(),
+			group: z.enum(['company', 'product', 'building']),
+			lede: z.string(),
+			url: z.url().optional(),
+			sourceUrl: z.url().optional(),
+			meta: z.array(metaItem),
+			lighthouse: lighthouse.optional(),
+			order: z.number().int(),
+			/** Screenshot shown beside it on /work; without one, its badge fills the frame. */
+			thumbnail: image().optional(),
+			/** Owner approval pending: pill next to the name ("Company project", "In progress"). */
+			badge: z.string().optional(),
+			/** Owner approval pending: one-line description on /work. */
+			summary: z.string(),
+			/** Owner approval pending: shorter description on Home, when it differs. */
+			homeSummary: z.string().optional(),
+			/** Owner approval pending: the right-hand label in a work row ("Live", "2023 –"). */
+			period: z.string(),
+			/** Owner approval pending: that label on Home, when it differs. */
+			homePeriod: z.string().optional(),
+		}),
 });
+
+/** Columns a highlight card takes out of 6. */
+const highlightSize = z.union([z.literal(2), z.literal(4), z.literal(6)]);
 
 const highlights = defineCollection({
 	loader: glob({ pattern: '**/*.mdx', base: './src/content/highlights' }),
@@ -72,7 +78,14 @@ const highlights = defineCollection({
 		lede: z.string(),
 		card: z.string().max(140),
 		illustration,
+		/** Order on /highlights, in the palette and in "Next highlight". */
 		order: z.number().int(),
+		/** Mono line at the top of its card. */
+		kicker: z.string(),
+		/** Columns out of 6 on /highlights. Rows must fill: 4+2, 2+4 or 6. */
+		size: highlightSize,
+		/** Its place and width on Home, if it is shown there. */
+		featuredOnHome: z.object({ order: z.number().int(), size: highlightSize }).optional(),
 	}),
 });
 
@@ -118,6 +131,7 @@ const stack = defineCollection({
 	schema: z.object({
 		name: z.string(),
 		group: z.enum(['every-day', 'state-and-data', 'runtime-build-delivery', 'learning']),
+		/** What it is for, on /stack. */
 		description: z.string(),
 		icon: z.string(),
 		/** Chip and grid accent; a CSS colour used only as a custom property. */
@@ -131,6 +145,8 @@ const stack = defineCollection({
 			.optional(),
 		symbol: z.string().optional(),
 		category: z.string().optional(),
+		/** Its group and place in Home's Stack section. */
+		home: z.object({ group: z.enum(['languages', 'frameworks', 'libraries', 'data', 'runtime-hosting', 'tooling']), order: z.number().int() }).optional(),
 	}),
 });
 
@@ -149,7 +165,7 @@ const now = defineCollection({
 		updatedOn: z.coerce.date(),
 		place: z.string(),
 		items: z.array(z.object({ label: z.string(), body: z.string() })),
-		/** The three lines in Home's "Now" section. */
+		/** The lines in Home's "Now" section. */
 		home: z.array(z.string()),
 	}),
 });
@@ -174,10 +190,10 @@ const site = defineCollection({
 			title: z.tuple([z.string(), z.string()]),
 			intro: z.string(),
 			facts: z.array(metaItem),
+			/** The sentence under the intro, and its LinkedIn pill. */
+			cta: z.object({ text: z.string(), label: z.string() }),
 			experience: z.array(z.object({ period: z.string(), title: z.string(), body: z.string() })),
 			recognition: z.array(z.object({ title: z.string(), detail: z.string() })),
-			/** Paragraphs with `{stack-id}` tokens that render as logo chips. */
-			stackStory: z.array(z.string()),
 			/** Sentence with `{email}`, `{github}` and `{linkedin}` tokens. */
 			contact: z.string(),
 			offTheClock: z.string(),

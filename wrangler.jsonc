@@ -10,6 +10,8 @@
 		"directory": "./dist",
 		"binding": "ASSETS",
 		"not_found_handling": "404-page",
+		// Pages build as /page/index.html; serve them at /page, matching trailingSlash: "never".
+		"html_handling": "drop-trailing-slash",
 		// Browser navigations skip the Worker unless a path is listed here, so sign-in links would get the 404 page.
 		"run_worker_first": ["/api/*", "/guestbook/admin"],
 	},

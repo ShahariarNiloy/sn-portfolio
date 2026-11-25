@@ -1,12 +1,12 @@
 ---
 /**
- * Pill — small rounded mono label: project badges, draft markers, timeline kinds,
- * the Lighthouse badge (`good`, with a green dot).
+ * Pill — small rounded mono label: project badges, draft markers and
+ * timeline kinds.
  */
 import { cx } from '@/lib/cx';
 
 export interface Props {
-	tone?: 'neutral' | 'acc' | 'good' | undefined;
+	tone?: 'neutral' | 'acc' | undefined;
 	/** Dashed border, used for drafts. */
 	dashed?: boolean | undefined;
 	class?: string | undefined;
@@ -22,11 +22,9 @@ const { tone = 'neutral', dashed = false, class: className } = Astro.props;
 		tone === 'neutral' && 'border-line2 py-0.5 text-mut',
 		tone === 'neutral' && (dashed ? 'px-2' : 'px-1.5'),
 		tone === 'acc' && 'border-acc/45 px-2 text-acc',
-		tone === 'good' && 'border-line px-2 py-0.5 text-mut',
 		dashed && 'border-dashed',
 		className,
 	)}
 >
-	{tone === 'good' && <span class="size-1.5 rounded-full bg-good" aria-hidden="true" />}
 	<slot />
 </span>
