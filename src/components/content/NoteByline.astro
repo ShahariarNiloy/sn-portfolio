@@ -19,7 +19,7 @@ const { githubId, name, date } = Astro.props;
 	<b class="font-medium wrap-anywhere text-fg">{name}</b>
 	<span class="whitespace-nowrap">
 		<span aria-hidden="true">· </span>
-		<time datetime={formatIsoDay(date)} class="font-mono text-xs">
+		<time datetime={formatIsoDay(date)} class="font-mono text-meta">
 			{formatDay(date)}
 		</time>
 	</span>

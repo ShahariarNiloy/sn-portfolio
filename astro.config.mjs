@@ -21,6 +21,8 @@ export default defineConfig({
 	trailingSlash: 'never',
 	// Pages load on hover, so navigating feels instant without a client router.
 	prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
+	// Code samples are plain text: the highlighter would add inline styles.
+	markdown: { syntaxHighlight: false },
 	build: { format: 'directory' },
 	integrations: [
 		nowFreshness(),

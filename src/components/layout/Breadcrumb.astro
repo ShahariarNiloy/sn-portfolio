@@ -17,7 +17,10 @@ const { items } = Astro.props;
 		<>
 			{i > 0 && <span aria-hidden="true">/</span>}
 			{item.href ? (
-				<a href={item.href} class="inline-flex min-h-11 items-center py-2.5 text-mut no-underline transition-colors duration-200 hover:text-fg">
+				<a
+					href={item.href}
+					class="inline-flex -mx-2 min-h-11 min-w-11 items-center px-2 py-2.5 text-mut no-underline transition-colors duration-200 hover:text-fg"
+				>
 					{item.label}
 				</a>
 			) : (

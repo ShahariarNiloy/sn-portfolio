@@ -21,12 +21,13 @@ const LINKS: Record<string, { href: string; text: string }> = {
 const parts = sentence.split(/(\{email\}|\{github\}|\{linkedin\})/);
 ---
 
-<p class="m-0 text-base text-mut">
+<p class="m-0 text-base text-mut max-sm:leading-9">
 	{parts.map((part) => {
 		const link = LINKS[part.slice(1, -1)];
 		return link ? <Link href={link.href}>{link.text}</Link> : part;
 	})}
 </p>
 <p class="mt-6 mb-0 text-sm text-mut">
-	More about me: <Link href="/stack">Stack</Link> · <Link href="/now">Now</Link> · <Link href="/uses">Uses</Link> · <Link href="/guestbook">Guestbook</Link>
+	More about me: <Link href="/about" text="About" /> · <Link href="/stack" class="-mx-2 px-2" text="Stack" /> ·{' '}
+	<Link href="/now" class="-mx-2 px-2" text="Now" /> · <Link href="/uses" class="-mx-2 px-2" text="Uses" /> · <Link href="/guestbook" text="Guestbook" />
 </p>

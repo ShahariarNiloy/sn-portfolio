@@ -22,6 +22,8 @@ export const ROUTES = [
 	'/off-the-clock',
 	'/off-the-clock/words-last',
 	'/now',
+	'/about',
+	'/contact',
 	'/uses',
 	'/guestbook',
 ] as const;

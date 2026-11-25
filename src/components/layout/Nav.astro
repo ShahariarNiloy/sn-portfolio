@@ -11,22 +11,21 @@ import PaletteKey from '@/components/ui/PaletteKey.astro';
 import Container from './Container.astro';
 
 /** Which nav item is the current section. */
-export type NavSection = 'work' | 'stack' | 'blog' | 'timeline' | 'guestbook';
+export type NavSection = 'work' | 'stack' | 'blog' | 'timeline' | 'about' | 'guestbook';
 
 export interface Props {
 	active?: NavSection | undefined;
-	/** On Home, Contact is an in-page link and the logo links to the top. */
+	/** On Home the logo links to the top. */
 	isHome?: boolean | undefined;
 	siteName: string;
 }
 
 const { active, isHome = false, siteName } = Astro.props;
-const links: { key: NavSection | 'contact'; label: string; href: string }[] = [
+const links: { key: NavSection; label: string; href: string }[] = [
 	{ key: 'work', label: 'Work', href: '/work' },
-	{ key: 'stack', label: 'Stack', href: '/stack' },
 	{ key: 'blog', label: 'Blog', href: '/blog' },
 	{ key: 'timeline', label: 'Timeline', href: '/timeline' },
-	{ key: 'contact', label: 'Contact', href: isHome ? '#contact' : '/#contact' },
+	{ key: 'about', label: 'About', href: '/about' },
 	{ key: 'guestbook', label: 'Guestbook', href: '/guestbook' },
 ];
 const linkClass =
@@ -35,7 +34,7 @@ const linkClass =
 
 <header class="relative z-10">
 	<Container class="flex flex-nowrap items-center justify-between gap-3 py-5 sm:flex-wrap">
-		<a href={isHome ? '#main' : '/'} class="flex min-h-11 items-center py-2.5">
+		<a href={isHome ? '#main' : '/'} class="-mx-3 flex min-h-11 items-center px-3 py-2.5">
 			<img src="/images/logo.png" alt={`${siteName}, home`} width="23" height="20" class="block h-5 w-auto" />
 		</a>
 		<nav aria-label="Primary" class="vt-site-nav flex flex-wrap items-center">

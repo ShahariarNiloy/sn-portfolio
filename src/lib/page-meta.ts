@@ -74,6 +74,13 @@ export const PAGE_META: Record<string, PageMeta> = {
 		description:
 			'The career of Shahariar Niloy, newest first: roles at Adventure Dhaka Limited and Sheba Technologies, research, recognition and the steps between.',
 	},
+	'/about': {
+		description:
+			'How Shahariar Niloy went from machine learning research to leading a frontend department in Dhaka: the path, the way of working, and what matters along it.',
+	},
+	'/contact': {
+		description: 'How to reach Shahariar Niloy, a Senior Software Engineer in Dhaka: by email for roles, projects and questions, or on LinkedIn and GitHub.',
+	},
 	'/now': {
 		description: 'What Shahariar Niloy is focused on now: leading frontend on adventure.inc, building Repo Galaxy, redesigning utilyx.dev and learning Rust.',
 	},

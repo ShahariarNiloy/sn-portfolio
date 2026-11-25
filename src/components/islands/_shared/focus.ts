@@ -31,7 +31,7 @@ export function whenIdle(task: () => void): void {
 	else setTimeout(task, 200);
 }
 
-/** Runs `task` once `element` scrolls into view (or immediately without IntersectionObserver). */
+/** Runs `task` once `element` is about to scroll into view (160 px early) (or immediately without IntersectionObserver). */
 export function whenVisible(element: Element, task: () => void): void {
 	if (!('IntersectionObserver' in window)) {
 		task();
@@ -44,7 +44,7 @@ export function whenVisible(element: Element, task: () => void): void {
 				task();
 			}
 		},
-		{ threshold: 0.15 },
+		{ rootMargin: '0px 0px 160px' },
 	);
 	observer.observe(element);
 }

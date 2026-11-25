@@ -16,9 +16,11 @@ export interface Props {
 	size: 2 | 4 | 6;
 	/** Heading level for the title. */
 	as: 'h2' | 'h3';
+	/** Leaves the card out below sm. */
+	isHiddenOnMobile?: boolean | undefined;
 }
 
-const { highlight, size, as: Heading } = Astro.props;
+const { highlight, size, as: Heading, isHiddenOnMobile = false } = Astro.props;
 const { title, card, kicker, illustration } = highlight.data;
 const SPAN = { 2: 'sm:col-span-2', 4: 'sm:col-span-4', 6: 'sm:col-span-6' } as const;
 const isFull = size === 6;
@@ -28,6 +30,7 @@ const isFull = size === 6;
 	class={cx(
 		'relative flex min-w-0 flex-col gap-4 rounded-xl border border-line bg-card p-5 transition-colors duration-200 ease-out focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-acc hover:border-line2 hover:bg-card2',
 		SPAN[size],
+		isHiddenOnMobile && 'max-sm:hidden',
 		isFull && 'sm:grid sm:grid-cols-2 sm:items-center sm:gap-6',
 	)}
 >
@@ -38,7 +41,8 @@ const isFull = size === 6;
 	<div>
 		<Heading class="m-0 text-base font-medium">
 			<a href={`/highlights/${highlight.id}`} class="text-fg no-underline outline-none after:absolute after:inset-0 after:rounded-xl">
-				{title}{' '}
+				{/* No-break space: the arrow never wraps without the last word. */}
+				{`${title}\u00a0`}
 				<span class="text-mut" aria-hidden="true">
 					→
 				</span>

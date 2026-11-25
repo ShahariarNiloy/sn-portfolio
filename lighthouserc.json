@@ -13,6 +13,8 @@
 				"http://localhost:4330/timeline",
 				"http://localhost:4330/off-the-clock",
 				"http://localhost:4330/now",
+				"http://localhost:4330/about",
+				"http://localhost:4330/contact",
 				"http://localhost:4330/uses",
 				"http://localhost:4330/guestbook"
 			],

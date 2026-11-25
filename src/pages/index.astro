@@ -1,6 +1,6 @@
 ---
 /**
- * Home — hero, Work, Stack, Highlights, Latest posts, Career, Now and Contact.
+ * Home — hero, Work, Highlights, Latest posts, Stack, Career, Now and Contact.
  */
 import CareerRows from '@/components/content/CareerRows.astro';
 import ContactLine from '@/components/content/ContactLine.astro';
@@ -43,25 +43,28 @@ const more = 'mt-5 inline-flex min-h-11 items-center';
 			<Link href="/work">All work →</Link>
 		</p>
 	</section>
-	<section id="stack" aria-labelledby="stack-h" class="section-gap">
-		<SectionLabel id="stack-h">Stack</SectionLabel>
-		<StackList items={stack} />
-		<p class={more}>
-			<Link href="/stack">What I use each one for →</Link>
-		</p>
-	</section>
 	<section id="highlights" aria-labelledby="highlights-h" class="section-gap">
 		<SectionLabel id="highlights-h">Highlights</SectionLabel>
-		<HighlightGrid label="Highlights" items={highlights} />
+		<HighlightGrid label="Highlights" mobileLimit={2} items={highlights} />
 		<p class={more}>
 			<Link href="/highlights">All highlights →</Link>
 		</p>
 	</section>
 	<section id="blog" aria-labelledby="blog-h" class="section-gap">
 		<SectionLabel id="blog-h">Latest posts</SectionLabel>
-		<NumberedPosts posts={posts.map((p) => ({ href: `/blog/${p.id}`, title: p.data.title, summary: p.data.summary, date: p.data.publishedOn }))} />
+		<NumberedPosts
+			mobileLimit={3}
+			posts={posts.map((p) => ({ href: `/blog/${p.id}`, title: p.data.title, summary: p.data.summary, date: p.data.publishedOn }))}
+		/>
 		<p class={more}>
 			<Link href="/blog">All posts →</Link>
+		</p>
+	</section>
+	<section id="stack" aria-labelledby="stack-h" class="section-gap">
+		<SectionLabel id="stack-h">Stack</SectionLabel>
+		<StackList items={stack} />
+		<p class={more}>
+			<Link href="/stack">What I use each one for →</Link>
 		</p>
 	</section>
 	<section id="about" aria-labelledby="career-h" class="section-gap">
@@ -82,7 +85,7 @@ const more = 'mt-5 inline-flex min-h-11 items-center';
 	<section id="now" aria-labelledby="now-h" class="section-gap">
 		<SectionLabel id="now-h">Now</SectionLabel>
 		<NowList lines={now.home} />
-		<p class="mt-3.5 mb-0 font-mono text-xs text-mut">
+		<p class="mt-3.5 mb-0 font-mono text-meta text-mut">
 			Updated {formatMonth(now.updatedOn)} · <Link href="/now">More on the Now page →</Link>
 		</p>
 	</section>

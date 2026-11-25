@@ -102,7 +102,7 @@ const structured = [...jsonLd, ...(crumbs ? [buildBreadcrumbJsonLd(crumbs, canon
 		<main id="main" tabindex="-1" class="relative mx-auto w-full max-w-screen-sm px-6 outline-none">
 			<slot />
 		</main>
-		<Footer siteName={site.name} email={site.email} github={site.github} linkedin={site.linkedin} location={site.location} isHome={isHome} />
+		<Footer siteName={site.name} github={site.github} linkedin={site.linkedin} location={site.location} isHome={isHome} />
 		<CommandPalette entries={paletteEntries} />
 	</body>
 </html>

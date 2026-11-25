@@ -22,7 +22,7 @@ const items = rows.map((row) => {
 <div class="border-b border-line">
 	{items.map((row) => (
 		<div class="grid grid-cols-1 gap-0.5 border-t border-line py-3.5 sm:grid-cols-label sm:gap-4">
-			<span class="pt-0.5 font-mono text-xs text-mut">{row.period}</span>
+			<span class="pt-0.5 font-mono text-meta text-mut">{row.period}</span>
 			<div>
 				<div class="font-medium">{row.title}</div>
 				<div class="text-sm text-mut">{row.body}</div>
@@ -36,7 +36,7 @@ const items = rows.map((row) => {
 									</span>
 								)}
 								<span class="whitespace-nowrap text-fg">
-									{step.label} <span class="font-mono text-xs text-mut">{step.year}</span>
+									{step.label} <span class="font-mono text-meta text-mut">{step.year}</span>
 								</span>
 							</li>
 						))}

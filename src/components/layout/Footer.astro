@@ -1,7 +1,7 @@
 ---
 /**
  * Footer — copyright, the live page-weight line and the site links
- * (Now · Uses · Guestbook · Email · GitHub · LinkedIn). `#site-links` is where
+ * (About · Stack · Now · Uses · Guestbook · Contact · GitHub · LinkedIn). `#site-links` is where
  * the mobile Menu link lands when JavaScript is off.
  */
 import PageWeight from '@/components/islands/PageWeight.astro';
@@ -11,7 +11,6 @@ import Container from './Container.astro';
 
 export interface Props {
 	siteName: string;
-	email: string;
 	github: string;
 	linkedin: string;
 	/** Home adds "Built light, in Dhaka." after the copyright. */
@@ -19,13 +18,15 @@ export interface Props {
 	location: string;
 }
 
-const { siteName, email, github, linkedin, isHome = false, location } = Astro.props;
+const { siteName, github, linkedin, isHome = false, location } = Astro.props;
 const year = new Date().getUTCFullYear();
 const links = [
+	{ label: 'About', href: '/about' },
+	{ label: 'Stack', href: '/stack' },
 	{ label: 'Now', href: '/now' },
 	{ label: 'Uses', href: '/uses' },
 	{ label: 'Guestbook', href: '/guestbook' },
-	{ label: 'Email', href: `mailto:${email}` },
+	{ label: 'Contact', href: '/contact' },
 	{ label: 'GitHub', href: github },
 	{ label: 'LinkedIn', href: linkedin },
 ];
@@ -40,9 +41,9 @@ const links = [
 			</span>
 			<PageWeight />
 		</span>
-		<nav id="site-links" aria-label="Site" class="flex flex-wrap items-start gap-x-3">
+		<nav id="site-links" aria-label="Site" class="-mx-1.5 flex flex-wrap items-start">
 			{links.map((l) => (
-				<Link href={l.href} variant="muted" class="inline-flex min-h-11 items-center text-sm">
+				<Link href={l.href} variant="muted" class="inline-flex min-h-11 min-w-11 items-center px-1.5 text-sm">
 					{l.label}
 				</Link>
 			))}

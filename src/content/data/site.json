@@ -11,7 +11,7 @@
 		"description": "Shahariar Niloy makes software lighter and faster. Senior Software Engineer in Dhaka, leading frontend on a platform used by millions.",
 		"home": {
 			"title": ["Building software that's", "lighter and faster."],
-			"intro": "Hey, I'm Niloy. I love to make software lighter and faster. At Adventure Dhaka Limited, I lead the frontend team behind a travel booking platform used by millions. [Off the clock](/off-the-clock), I build [small, fast tools](/work) and write about people — usually over tea.",
+			"intro": "Hey, I'm Niloy. I love to make software lighter and faster. At Adventure Dhaka Limited, I lead the frontend team behind a travel booking platform used by millions, and work on the type-safe backend-for-frontend layer that feeds it. [Off the clock](/off-the-clock), I build [tools and products](/work), front to back, and write about people — usually over tea.",
 			"facts": [
 				{
 					"label": "Focus",
@@ -36,7 +36,7 @@
 				{
 					"period": "2023 – Present",
 					"title": "Adventure Dhaka Limited",
-					"body": "Senior Software Engineer · frontend, performance, search and SEO. Head of the frontend department."
+					"body": "Senior Software Engineer · frontend, the backend-for-frontend and data layer, performance, search and SEO. Head of the frontend department."
 				},
 				{
 					"period": "2022 – 2023",

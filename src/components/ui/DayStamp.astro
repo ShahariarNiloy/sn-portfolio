@@ -13,6 +13,6 @@ export interface Props {
 const { date, class: className } = Astro.props;
 ---
 
-<time datetime={formatIsoDay(date)} class={cx('font-mono text-xs whitespace-nowrap text-mut', className)}>
+<time datetime={formatIsoDay(date)} class={cx('font-mono text-meta whitespace-nowrap text-mut', className)}>
 	{formatDay(date)}
 </time>

@@ -4,18 +4,21 @@
  * the post summary and its date. Each whole row is the link.
  */
 import DayStamp from '@/components/ui/DayStamp.astro';
+import { cx } from '@/lib/cx';
 import { padIndex } from '@/lib/format';
 
 export interface Props {
+	/** Rows shown below sm; the rest are one tap away on /blog. */
+	mobileLimit?: number | undefined;
 	posts: { href: string; title: string; summary: string; date?: Date | undefined }[];
 }
 
-const { posts } = Astro.props;
+const { posts, mobileLimit = posts.length } = Astro.props;
 ---
 
 <ol class="m-0 list-none border-b border-line p-0">
 	{posts.map((post, i) => (
-		<li class="border-t border-line">
+		<li class={cx('border-t border-line', i >= mobileLimit && 'max-sm:hidden')}>
 			<a href={post.href} class="group grid grid-cols-post gap-x-2 py-4 no-underline">
 				<span class="pt-0.5 font-mono text-xs text-acc" aria-hidden="true">
 					{padIndex(i + 1)}

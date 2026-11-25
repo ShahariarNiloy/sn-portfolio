@@ -36,7 +36,7 @@ const DECISIONS: Record<NoteStatus, { label: string; value: ModerationDecision; 
 		{notes.map((note) => (
 			<li class="rounded-xl border border-line bg-card p-4">
 				<p class="m-0 wrap-anywhere text-fg">{note.body}</p>
-				<p class="mt-2 mb-3 font-mono text-xs text-mut">
+				<p class="mt-2 mb-3 font-mono text-meta text-mut">
 					{note.githubName} · {formatDay(parseUtcTimestamp(note.createdAt))}
 				</p>
 				<form method="post" action="/api/guestbook/moderate" class="flex flex-wrap items-start gap-2">

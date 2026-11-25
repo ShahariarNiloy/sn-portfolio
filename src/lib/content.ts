@@ -137,6 +137,8 @@ export async function getPaletteEntries(): Promise<PaletteEntry[]> {
 		{ label: 'Blog', href: '/blog', group: 'Page' },
 		{ label: 'Timeline', href: '/timeline', group: 'Page' },
 		{ label: 'Now', href: '/now', group: 'Page' },
+		{ label: 'About', href: '/about', group: 'Page' },
+		{ label: 'Contact', href: '/contact', group: 'Page' },
 		{ label: 'Uses', href: '/uses', group: 'Page' },
 		{ label: 'Guestbook — sign the wall', href: '/guestbook', group: 'Personal' },
 		{

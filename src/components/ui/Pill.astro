@@ -17,7 +17,7 @@ const { tone = 'neutral', dashed = false, class: className } = Astro.props;
 
 <span
 	class={cx(
-		'inline-flex items-center gap-1.5 rounded-full border align-middle font-mono text-xs font-normal tracking-normal whitespace-nowrap',
+		'inline-flex items-center gap-1.5 rounded-full border align-middle font-mono text-meta font-normal tracking-normal whitespace-nowrap',
 		// Colour and padding live in the tones only: two competing utilities would be settled by CSS order.
 		tone === 'neutral' && 'border-line2 py-0.5 text-mut',
 		tone === 'neutral' && (dashed ? 'px-2' : 'px-1.5'),
