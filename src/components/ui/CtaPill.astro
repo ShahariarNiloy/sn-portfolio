@@ -1,0 +1,31 @@
+---
+/**
+ * CtaPill — the small rounded "Let's talk ↗" link that sits at the end of a
+ * sentence (Home intro, About). Opens in a new tab and says so to screen
+ * readers; its tap area is padded past the pill with ::after.
+ */
+import { cx } from '@/lib/cx';
+
+export interface Props {
+	href: string;
+	/** Read after the label by screen readers, e.g. "on LinkedIn". */
+	srSuffix?: string | undefined;
+	class?: string | undefined;
+}
+
+const { href, srSuffix, class: className } = Astro.props;
+---
+
+<a
+	href={href}
+	target="_blank"
+	rel="noopener"
+	class={cx(
+		'relative inline-flex items-center gap-1.5 rounded-full border border-line2 bg-card px-2.5 py-0.5 text-sm font-medium whitespace-nowrap text-fg no-underline transition-colors duration-200 ease-out after:absolute after:-inset-x-1 after:-inset-y-2.5 hover:border-mut hover:bg-card2',
+		className,
+	)}
+>
+	<slot />
+	<span class="sr-only">{srSuffix ? `${srSuffix} (opens in a new tab)` : '(opens in a new tab)'}</span>
+	<span aria-hidden="true">↗</span>
+</a>

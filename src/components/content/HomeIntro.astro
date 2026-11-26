@@ -7,6 +7,7 @@
  */
 import { Image } from 'astro:assets';
 
+import CtaPill from '@/components/ui/CtaPill.astro';
 import Inline from '@/components/ui/Inline.astro';
 import avatar from '@/assets/avatar.png';
 
@@ -47,16 +48,9 @@ const { title, intro, cta, linkedin, facts, name } = Astro.props;
 			</p>
 			<p class="mt-6 mb-0 text-base leading-7 text-mut">
 				{cta.text}{' '}
-				<a
-					href={linkedin}
-					target="_blank"
-					rel="noopener"
-					class="relative inline-flex items-center max-sm:mt-2 sm:ml-1 gap-1.5 rounded-full border border-line2 bg-card px-2.5 py-0.5 text-sm font-medium whitespace-nowrap text-fg no-underline transition-colors duration-200 ease-out after:absolute after:-inset-x-1 after:-inset-y-2.5 hover:border-mut hover:bg-card2"
-				>
+				<CtaPill href={linkedin} srSuffix="on LinkedIn" class="max-sm:mt-2 sm:ml-1">
 					{cta.label}
-					<span class="sr-only">on LinkedIn (opens in a new tab)</span>
-					<span aria-hidden="true">↗</span>
-				</a>
+				</CtaPill>
 			</p>
 		</div>
 	</div>

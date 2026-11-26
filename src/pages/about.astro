@@ -1,16 +1,55 @@
 ---
 /**
- * /about — how I got here, how I work, how I lead and what I care about, as
- * short prose. The dates themselves live on /timeline.
+ * /about — the longer version: a short intro beside the avatar, how I work (three
+ * numbered cards), the facts at a glance, the story in prose, links to the rest of
+ * me, and a "Say hello" line. The dates themselves live on /timeline.
  */
+import { Image } from 'astro:assets';
+
+import KeyValueRows from '@/components/content/KeyValueRows.astro';
+import CtaPill from '@/components/ui/CtaPill.astro';
 import Inline from '@/components/ui/Inline.astro';
+import Link from '@/components/ui/Link.astro';
+import SectionLabel from '@/components/ui/SectionLabel.astro';
+import avatar from '@/assets/avatar.png';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getSite } from '@/lib/content';
 import { buildPersonJsonLd } from '@/lib/seo';
 
 const site = await getSite();
 
-const sections: { title: string; body: string[] }[] = [
+const intro = [
+	"I'm Niloy, a software engineer in Dhaka. I started with machine learning research, moved to the web, and now lead a frontend department.",
+	'At Adventure Dhaka Limited I lead the frontend team behind [a travel booking platform in 26 languages](/work/adventure-inc), used by millions: about fourteen engineers. I still write code.',
+	'Outside work I build my own products end to end: [utilyx.dev](/work/utilyx), [Truly Remote Work](/work/truly-remote-work) and [GeoRenus](/work/georenus).',
+];
+
+const principles = [
+	{
+		title: 'Find the cause first',
+		body: 'When servers kept running out of memory, I ranked what could be holding on and [worked down from the top](/highlights/taming-memory), rather than buying more.',
+	},
+	{
+		title: 'Measure before and after',
+		body: "A change that feels faster isn't a result yet. Work ships in stages, so when a score moves we know what moved it.",
+	},
+	{
+		title: 'Remove, rather than add',
+		body: 'About half the JavaScript in [a design system](/highlights/design-system), and developer tools with [no server at all](/highlights/zero-server).',
+	},
+];
+
+const facts = [
+	{ label: 'Based in', value: 'Dhaka, Bangladesh' },
+	{ label: 'Role', value: `${site.role} and head of frontend, Adventure Dhaka Limited` },
+	{ label: 'In production', value: 'Since 2022' },
+	{ label: 'Education', value: 'BSc in Computer Science & Engineering, East West University' },
+	{ label: 'Research', value: '[First-author IEEE paper](/highlights/research) on handwritten Bangla, 2022' },
+	{ label: 'Speaks', value: 'English, Bengali' },
+	{ label: 'Recognition', value: 'Best Employee of the Year, FY 2023–24 and FY 2025–26' },
+];
+
+const story: { title: string; body: string[] }[] = [
 	{
 		title: 'How I got here',
 		body: [
@@ -18,15 +57,6 @@ const sections: { title: string; body: string[] }[] = [
 			"By then I was already working. I joined Sheba Technologies as an intern in February 2022 and became a junior engineer that May. I worked on learning platforms for BRAC, one of the world's largest NGOs, built the admin panel of an attendance system from scratch, and brought TypeScript into the codebase.",
 			'In October 2023 I joined Adventure Dhaka Limited, again as a junior, on [a travel booking platform in 26 languages](/work/adventure-inc). A year later I was a Software Engineer, working on search, one module for hotels and vacation rentals, and faster pages. A year after that, a Senior Software Engineer and head of the frontend department.',
 			"It wasn't a straight line from reading handwriting to building booking pages. The dates are on [the timeline](/timeline).",
-		],
-	},
-	{
-		title: 'How I work',
-		body: [
-			'**I look for the cause first.** When servers kept running out of memory, the tempting fix was to give them more. I listed everything that could be holding on to memory, ranked it, and [worked down from the top](/highlights/taming-memory).',
-			"**I measure before and after.** A change that feels faster isn't a result yet. Work ships in stages, so when a score moves we know what moved it.",
-			"**I'd rather remove than add.** About half the JavaScript in [a design system](/highlights/design-system), about 90% less translation text [in a page](/highlights/localization), developer tools with [no server at all](/highlights/zero-server).",
-			'The tools I reach for, and what I use each one for, are on [the Stack page](/stack).',
 		],
 	},
 	{
@@ -41,20 +71,65 @@ const sections: { title: string; body: string[] }[] = [
 		body: [
 			"Software that doesn't waste people's time, their data or their patience. Pages that work with a keyboard, in any language, on a slow connection.",
 			"And people, more than software. [Off the clock](/off-the-clock) I write short essays about gratitude, character and the way we treat each other. One of them is about arguments: go in with something to learn, rather than something to prove. It's as useful in a code review as anywhere else.",
-			"The rest is long walks, slow mornings, and a debate between tea and coffee that neither side is losing. What I'm doing lately is on [the Now page](/now), and [my inbox](/contact) is open.",
+			'The rest is long walks, slow mornings, and a debate between tea and coffee that neither side is losing.',
 		],
 	},
+];
+
+const more = [
+	{ label: 'Timeline', note: 'Year by year', href: '/timeline' },
+	{ label: 'Now', note: "What I'm doing lately", href: '/now' },
+	{ label: 'Stack', note: 'What I build with', href: '/stack' },
+	{ label: 'Uses', note: 'My setup', href: '/uses' },
+	{ label: 'Guestbook', note: 'Leave a note', href: '/guestbook' },
+	{ label: 'CV', note: 'PDF', href: '/shahariar-niloy-cv.pdf' },
 ];
 ---
 
 <PageLayout
 	title="About"
 	active="about"
-	lede="I'm Niloy, a software engineer in Dhaka. I started with machine learning research, moved to the web, and now lead a frontend department."
+	lede="The longer version: who I am, how I work, and where to find the rest."
+	description="I'm Niloy, a software engineer in Dhaka. I started with machine learning research, moved to the web, and now lead a frontend department."
 	jsonLd={[buildPersonJsonLd(site, Astro.site?.href ?? '/')]}
 >
+	<div class="mt-10 grid grid-cols-[4rem_minmax(0,1fr)] items-start gap-4 motion-safe:animate-rise sm:grid-cols-[6rem_minmax(0,1fr)] sm:gap-6">
+		<span class="block size-16 overflow-hidden rounded-full bg-card2 ring-1 ring-line2 sm:size-24">
+			<Image src={avatar} alt={`3D avatar of ${site.name}`} width={avatar.width} height={avatar.height} format="avif" quality={90} class="block size-full" />
+		</span>
+		<div class="flex flex-col gap-4">
+			{intro.map((text, i) => (
+				<p class:list={['m-0 text-base leading-relaxed', i === 0 ? 'text-fg' : 'text-mut']}>
+					<Inline text={text} />
+				</p>
+			))}
+		</div>
+	</div>
+
+	<section aria-labelledby="about-work" class="pt-16">
+		<SectionLabel id="about-work">How I work</SectionLabel>
+		<ol class="m-0 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-3">
+			{principles.map((p, i) => (
+				<li class="flex flex-col gap-2 rounded-xl border border-line bg-card p-5">
+					<span class="font-mono text-xs text-mut" aria-hidden="true">
+						{String(i + 1).padStart(2, '0')}
+					</span>
+					<b class="font-medium text-fg">{p.title}</b>
+					<span class="text-sm leading-relaxed text-mut">
+						<Inline text={p.body} />
+					</span>
+				</li>
+			))}
+		</ol>
+	</section>
+
+	<section aria-labelledby="about-facts" class="pt-16">
+		<SectionLabel id="about-facts">At a glance</SectionLabel>
+		<KeyValueRows rows={facts} />
+	</section>
+
 	<div class="post">
-		{sections.map((s) => (
+		{story.map((s) => (
 			<section class="pt-6">
 				<h2>{s.title}</h2>
 				{s.body.map((text) => (
@@ -65,4 +140,33 @@ const sections: { title: string; body: string[] }[] = [
 			</section>
 		))}
 	</div>
+
+	<section aria-labelledby="about-more" class="pt-16">
+		<SectionLabel id="about-more">More about me</SectionLabel>
+		<ul class="m-0 grid list-none grid-cols-1 gap-x-8 border-t border-line p-0 sm:grid-cols-2">
+			{more.map((l) => (
+				<li class="border-b border-line">
+					<a href={l.href} class="group flex min-h-12 items-center justify-between gap-3 py-2 font-medium text-fg no-underline">
+						{l.label}
+						<span class="text-right text-sm font-normal text-mut transition-colors duration-200 ease-out group-hover:text-fg">
+							{l.note} <span aria-hidden="true">→</span>
+						</span>
+					</a>
+				</li>
+			))}
+		</ul>
+	</section>
+
+	<section aria-labelledby="about-hello" class="pt-16">
+		<SectionLabel id="about-hello">Say hello</SectionLabel>
+		<p class="m-0 text-base leading-7 text-mut">
+			{site.home.cta.text}{' '}
+			<CtaPill href={site.linkedin} srSuffix="on LinkedIn" class="max-sm:mt-2 sm:ml-1">
+				{site.home.cta.label}
+			</CtaPill>
+		</p>
+		<p class="mt-4 mb-0 text-base leading-7 text-mut">
+			Or <Link href="/contact">write to me</Link>, and see what I'm up to on <Link href="/now">the Now page</Link>.
+		</p>
+	</section>
 </PageLayout>
