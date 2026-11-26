@@ -2,14 +2,11 @@
 /**
  * HomeIntro — Home's hero: the title, the round avatar beside the intro text (which wraps around it on phones),
  * the sentence with the LinkedIn pill, and the facts row. The only animated block on Home. The avatar
- * file is cropped to what the circle shows and served at its native 258 px (2.7×)
- * as AVIF: WebP halves colour resolution, which smears the glasses.
+ * is the shared Avatar component (one cached file for Home and About).
  */
-import { Image } from 'astro:assets';
-
+import Avatar from '@/components/ui/Avatar.astro';
 import CtaPill from '@/components/ui/CtaPill.astro';
 import Inline from '@/components/ui/Inline.astro';
-import avatar from '@/assets/avatar.png';
 
 export interface Props {
 	title: [string, string];
@@ -29,19 +26,10 @@ const { title, intro, cta, linkedin, facts, name } = Astro.props;
 	</h1>
 	<div class="mt-8 items-start max-sm:flow-root sm:mt-10 sm:grid sm:grid-cols-intro sm:gap-6">
 		{/* On phones the text hugs the circle (shape-outside) instead of the square box around it. */}
-		<span class="block size-24 overflow-hidden rounded-full bg-card2 ring-1 ring-line2 max-sm:float-left max-sm:mr-4 max-sm:mb-2 max-sm:[shape-margin:0.875rem] max-sm:[shape-outside:circle(50%_at_50%_50%)_border-box]">
-			<Image
-				src={avatar}
-				alt={`3D avatar of ${name}`}
-				width={avatar.width}
-				height={avatar.height}
-				format="avif"
-				quality={90}
-				loading="eager"
-				fetchpriority="high"
-				class="block size-full"
-			/>
-		</span>
+		<Avatar
+			name={name}
+			class="size-24 max-sm:float-left max-sm:mr-4 max-sm:mb-2 max-sm:[shape-margin:0.875rem] max-sm:[shape-outside:circle(50%_at_50%_50%)_border-box]"
+		/>
 		<div>
 			<p class="m-0 text-base leading-relaxed text-mut">
 				<Inline text={intro} />

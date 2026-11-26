@@ -1,0 +1,33 @@
+---
+/**
+ * Avatar — my round avatar, the same file on every page (Home and About), so it
+ * is downloaded once and cached. Served as is: src/assets/avatar.avif is already
+ * sized (258 px, 2.7× its largest circle) and compressed, and re-encoding it would
+ * only add bytes and blur. It loads eagerly and decodes before the page paints,
+ * so it never flashes empty during the page-to-page transition.
+ */
+import avatar from '@/assets/avatar.avif';
+import { cx } from '@/lib/cx';
+
+export interface Props {
+	/** Used in the alt text. */
+	name: string;
+	/** Size and layout classes for the circle. */
+	class?: string | undefined;
+}
+
+const { name, class: className } = Astro.props;
+---
+
+<span class={cx('block overflow-hidden rounded-full bg-card2 ring-1 ring-line2', className)}>
+	<img
+		src={avatar.src}
+		alt={`3D avatar of ${name}`}
+		width={avatar.width}
+		height={avatar.height}
+		loading="eager"
+		fetchpriority="high"
+		decoding="sync"
+		class="block size-full"
+	/>
+</span>

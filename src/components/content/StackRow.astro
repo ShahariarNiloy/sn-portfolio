@@ -17,7 +17,7 @@ const { item } = Astro.props;
 <div class="stack-row grid grid-cols-icon items-center gap-x-3.5 gap-y-1 border-t border-line py-3.5" style={`--c: ${item.data.colour}`}>
 	<dt class="contents">
 		<span class="stack-row-logo inline-flex size-7 items-center justify-center self-center rounded-md">
-			<Icon name={item.data.icon as IconName} />
+			<Icon name={item.data.icon as IconName} shared />
 		</span>
 		<span class="font-medium text-fg">{item.data.name}</span>
 	</dt>

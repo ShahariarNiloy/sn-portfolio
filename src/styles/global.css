@@ -4,7 +4,15 @@
  * hand (MDX bodies and SVG illustrations). Imported once, by BaseLayout.
  * Every colour pair used for text is checked at 7:1 or more (WCAG AAA).
  */
-@import 'tailwindcss';
+/*
+ * Tailwind scans src/ only (not the README, lock file, migrations or scripts), and not
+ * src/content: posts, essays and data files are prose, where words like "fixed" or
+ * "blur" aren't classes.
+ */
+@import 'tailwindcss' source('../');
+@source not '../content';
+/* Words in code and comments that no element uses as a class. */
+@source not inline('collapse container inline outline rounded static transform underline');
 
 @theme {
 	/* Surfaces */
@@ -33,9 +41,10 @@
 	/* 13 px: dates and status labels, between the default xs and sm. */
 	--text-meta: 0.8125rem;
 	--text-meta--line-height: 1.5;
-	--font-sans: 'Geist', system-ui, sans-serif;
-	--font-mono: 'Geist Mono', ui-monospace, monospace;
-	--font-serif: 'Instrument Serif', Georgia, serif;
+	/* From Astro's Fonts API (fonts.config.mjs): each includes its size-matched fallback. */
+	--font-sans: var(--font-geist);
+	--font-mono: var(--font-geist-mono);
+	--font-serif: var(--font-instrument-serif);
 	/* Named grids */
 	--grid-template-columns-row: minmax(0, 1fr) auto;
 	--grid-template-columns-label: 112px minmax(0, 1fr);
@@ -104,6 +113,15 @@
 			scroll-behavior: auto !important;
 		}
 	}
+}
+
+/* Breaks out of the text column to max-w-6xl, centred, with no padding (the /stack grid). */
+@utility breakout-wide {
+	position: relative;
+	left: 50%;
+	width: 100vw;
+	max-width: var(--container-6xl);
+	translate: -50%;
 }
 
 /* Breaks out of the text column to max-w-5xl, centred, keeping the page's side gutter. */
@@ -415,8 +433,8 @@
 	}
 }
 
-/* Lighthouse ring: a conic fill from --v (0–100) in the score's colour band. */
-.ring {
+/* Lighthouse score ring (not Tailwind's `ring` utility): a conic fill from --v (0–100) in the score's colour band. */
+.score-ring {
 	--rc: var(--color-good);
 	position: relative;
 	display: flex;
@@ -429,20 +447,20 @@
 	color: var(--rc);
 	background: conic-gradient(var(--rc) calc(var(--v) * 1%), color-mix(in srgb, var(--rc) 16%, transparent) 0);
 }
-.ring[data-tone='warn'] {
+.score-ring[data-tone='warn'] {
 	--rc: var(--color-warn);
 }
-.ring[data-tone='bad'] {
+.score-ring[data-tone='bad'] {
 	--rc: var(--color-bad);
 }
-.ring::before {
+.score-ring::before {
 	content: '';
 	position: absolute;
 	inset: 4px;
 	border-radius: 9999px;
 	background: var(--color-card);
 }
-.ring-label {
+.score-ring-label {
 	position: absolute;
 	top: 100%;
 	left: 50%;
@@ -453,7 +471,7 @@
 	white-space: nowrap;
 }
 @media (width >= 40rem) {
-	.ring {
+	.score-ring {
 		width: 4rem;
 		height: 4rem;
 	}
@@ -691,4 +709,14 @@
 }
 .sign-card {
 	background: linear-gradient(160deg, color-mix(in srgb, var(--color-acc) 10%, var(--color-card)), var(--color-card) 70%);
+}
+
+/* The page menu: one shadow and a blurred backdrop, written out instead of
+   Tailwind's shadow and backdrop-blur utilities, which each pull in a dozen variables. */
+.palette-panel {
+	box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+#palette::backdrop {
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
 }

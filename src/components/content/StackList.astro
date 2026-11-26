@@ -35,7 +35,7 @@ const rows = GROUPS.map((g) => ({
 				{row.tools.map((tool) => (
 					<li class="inline-flex items-baseline gap-2 font-medium whitespace-nowrap text-fg">
 						<span class="self-center text-mut opacity-75 grayscale">
-							<Icon name={tool.data.icon as IconName} />
+							<Icon name={tool.data.icon as IconName} shared />
 						</span>
 						{tool.data.name}
 					</li>

@@ -4,15 +4,9 @@
  * description, canonical, Open Graph, JSON-LD, fonts), the skip link, backdrop,
  * nav, footer and command palette. Titles and descriptions come from lib/seo.ts.
  */
-import '@fontsource/geist/latin-400.css';
-import '@fontsource/geist/latin-500.css';
-import '@fontsource/geist/latin-600.css';
-import '@fontsource/geist-mono/latin-400.css';
-import '@fontsource/geist-mono/latin-500.css';
-import '@fontsource/instrument-serif/latin-400.css';
-import '@fontsource/instrument-serif/latin-400-italic.css';
-import geist400 from '@fontsource/geist/files/geist-latin-400-normal.woff2?url';
 import '@/styles/global.css';
+
+import { Font } from 'astro:assets';
 
 import CommandPalette from '@/components/islands/CommandPalette.astro';
 import MobileMenu from '@/components/islands/MobileMenu.astro';
@@ -71,7 +65,9 @@ const structured = [...jsonLd, ...(crumbs ? [buildBreadcrumbJsonLd(crumbs, canon
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="alternate" type="application/rss+xml" title={`${site.name} — Blog`} href="/rss.xml" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
-		<link rel="preload" href={geist400} as="font" type="font/woff2" crossorigin />
+		<Font cssVariable="--font-geist" />
+		<Font cssVariable="--font-geist-mono" />
+		<Font cssVariable="--font-instrument-serif" />
 		<meta property="og:type" content={ogType} />
 		<meta property="og:site_name" content={site.name} />
 		<meta property="og:title" content={pageTitle} />

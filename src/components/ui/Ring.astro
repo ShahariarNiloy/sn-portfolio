@@ -16,11 +16,11 @@ const { value, label } = Astro.props;
 const tone = getScoreTone(value);
 ---
 
-<div class="ring" data-tone={tone} style={`--v: ${value}`} role="img" aria-label={`${label}: ${value}`}>
+<div class="score-ring" data-tone={tone} style={`--v: ${value}`} role="img" aria-label={`${label}: ${value}`}>
 	<span class="relative font-mono text-base font-medium" aria-hidden="true">
 		{value}
 	</span>
-	<span class="ring-label" aria-hidden="true">
+	<span class="score-ring-label" aria-hidden="true">
 		{label}
 	</span>
 </div>

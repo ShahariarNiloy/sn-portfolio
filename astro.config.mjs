@@ -10,6 +10,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
+import { FONTS } from './fonts.config.mjs';
 import nowFreshness from './scripts/now-freshness.mjs';
 
 export default defineConfig({
@@ -24,6 +25,7 @@ export default defineConfig({
 	// Code samples are plain text: the highlighter would add inline styles.
 	markdown: { syntaxHighlight: false },
 	build: { format: 'directory' },
+	fonts: FONTS,
 	integrations: [
 		nowFreshness(),
 		mdx(),

@@ -6,7 +6,7 @@
  */
 ---
 
-<span class="hidden items-center gap-2 font-mono text-xs text-mut" data-page-weight title="Measured in your browser when this page loaded">
+<span class="inline-flex items-center gap-2 font-mono text-xs text-mut" data-page-weight title="Measured in your browser when this page loaded">
 	<span class="size-1.5 rounded-full bg-good" aria-hidden="true"></span>
 	<span>
 		This page: <span data-page-weight-value>measuring…</span>
@@ -26,7 +26,6 @@
 		const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
 		const bytes = [nav, ...resources].reduce((sum, e) => sum + (e ? e.transferSize || e.encodedBodySize : 0), 0);
 		value.textContent = formatPageWeight(bytes, nav && nav.loadEventEnd ? nav.loadEventEnd : performance.now());
-		line.classList.replace('hidden', 'inline-flex');
 	}
 
 	onPageLoad(() => {

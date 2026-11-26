@@ -1,9 +1,10 @@
 ---
 /**
- * Icon — every icon on the site, as inline SVG from icons.ts.
+ * Icon — every icon on the site, as inline SVG from icons.ts, or with `shared`
+ * as a <use> into the cached /icons.svg sprite.
  * Decorative by default (aria-hidden); pass `label` when the icon carries meaning.
  */
-import { ICONS, type IconName } from './icons';
+import { ICONS, type IconName, SPRITE_VERSION } from './icons';
 
 export interface Props {
 	/** Which icon to draw. */
@@ -13,24 +14,40 @@ export interface Props {
 	/** Accessible name; omit for decorative icons. */
 	label?: string | undefined;
 	class?: string | undefined;
+	/** Points into the cached /icons.svg sprite instead of inlining the paths; for logos repeated across pages. */
+	shared?: boolean | undefined;
 }
 
-const { name, size = 16, label, class: className } = Astro.props;
+const { name, size = 16, label, class: className, shared = false } = Astro.props;
 const icon = ICONS[name];
 ---
 
-<svg
-	viewBox="0 0 24 24"
-	width={size}
-	height={size}
-	class={className}
-	fill={icon.stroke ? 'none' : 'currentColor'}
-	stroke={icon.stroke ? 'currentColor' : undefined}
-	stroke-width={icon.stroke ? 1.6 : undefined}
-	stroke-linecap={icon.stroke ? 'round' : undefined}
-	stroke-linejoin={icon.stroke ? 'round' : undefined}
-	role={label ? 'img' : undefined}
-	aria-label={label}
-	aria-hidden={label ? undefined : 'true'}
-	set:html={icon.paths}
-/>
+{shared ? (
+	<svg
+		viewBox="0 0 24 24"
+		width={size}
+		height={size}
+		class={className}
+		role={label ? 'img' : undefined}
+		aria-label={label}
+		aria-hidden={label ? undefined : 'true'}
+	>
+		<use href={`/icons.svg?v=${SPRITE_VERSION}#${name}`} />
+	</svg>
+) : (
+	<svg
+		viewBox="0 0 24 24"
+		width={size}
+		height={size}
+		class={className}
+		fill={icon.stroke ? 'none' : 'currentColor'}
+		stroke={icon.stroke ? 'currentColor' : undefined}
+		stroke-width={icon.stroke ? 1.6 : undefined}
+		stroke-linecap={icon.stroke ? 'round' : undefined}
+		stroke-linejoin={icon.stroke ? 'round' : undefined}
+		role={label ? 'img' : undefined}
+		aria-label={label}
+		aria-hidden={label ? undefined : 'true'}
+		set:html={icon.paths}
+	/>
+)}
