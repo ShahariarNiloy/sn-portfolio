@@ -90,14 +90,18 @@ const structured = [...jsonLd, ...(crumbs ? [buildBreadcrumbJsonLd(crumbs, canon
 		</script>
 	</head>
 	<body class="page-grain relative isolate min-h-screen before:pointer-events-none before:fixed before:inset-0 before:-z-10 before:opacity-10 before:mix-blend-overlay">
-		<a href="#main" class="sr-only z-50 rounded-lg bg-fg px-4 py-2.5 text-sm font-medium text-bg focus:not-sr-only focus:fixed focus:top-4 focus:left-4">
+		<a
+			href="#main"
+			class="fixed top-3 left-1/2 z-50 flex -translate-x-1/2 whitespace-nowrap -translate-y-20 items-center gap-3 rounded-full border border-line2 bg-card2/95 py-1.5 pr-1.5 pl-4 text-sm font-medium text-head shadow-lg shadow-black/40 backdrop-blur transition-transform duration-200 ease-out focus:translate-y-0 motion-reduce:transition-none"
+		>
 			Skip to content
+			<kbd class="rounded-full border border-line2 px-2 py-0.5 font-mono text-xs text-mut" aria-hidden="true">↵ Enter</kbd>
 		</a>
 		<div class:list={['backdrop-fade pointer-events-none absolute inset-x-0 top-0 -z-10 overflow-hidden', isHome ? 'h-160' : 'h-112']} aria-hidden="true">
 			<div class:list={['backdrop-glow absolute inset-x-0 h-168', isHome ? '-top-80' : '-top-96']}></div>
 		</div>
 		<Nav active={active} isHome={isHome} siteName={site.name} />
-		<main id="main" tabindex="-1" class="relative mx-auto w-full max-w-screen-sm px-6 outline-none">
+		<main id="main" class="relative mx-auto w-full max-w-screen-sm px-6">
 			<slot />
 		</main>
 		<Footer siteName={site.name} github={site.github} linkedin={site.linkedin} location={site.location} isHome={isHome} />

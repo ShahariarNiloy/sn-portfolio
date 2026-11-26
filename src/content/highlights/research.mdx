@@ -1,26 +1,32 @@
 ---
 title: 'Published research'
-lede: 'Before frontend took over, I worked on machine learning. My first-author paper on recognising Bangla handwritten characters with a convolutional neural network was published by IEEE.'
+lede: 'Before I moved into software engineering, I worked on machine learning research. My first-author paper on recognising Bangla handwritten characters with a convolutional neural network was published by IEEE.'
 card: 'First-author IEEE paper on Bangla handwritten character recognition.'
 illustration: research
-order: 7
+order: 6
 kicker: 'Research · IEEE 2022'
 size: 6
-featuredOnHome: { order: 2, size: 2 }
+featuredOnHome: { order: 3, size: 2 }
 paper:
   title: 'Machine Learning Based Recognition of Bangla Handwritten Characters'
   doi: '10.1109/ICIRCA54612.2022.9985714'
   url: 'https://ieeexplore.ieee.org/document/9985714'
   venue: 'ICIRCA 2022'
-  publishedOn: '2022-12'
+  publishedOn: '2022-12-29'
+  authors:
+    - 'Shahriar Alam Niloy'
+    - 'Tahmid Shahriar Bhuiyan'
+    - 'Faria Islam Leha'
+    - 'Shahriar Imon'
+    - 'Musharrat Khan'
 ---
 
 <PaperTitle>“Machine Learning Based Recognition of Bangla Handwritten Characters”</PaperTitle>
 
 <MetaList
 	items={[
-		{ label: 'Venue', value: 'IEEE ICIRCA 2022 · Coimbatore, India' },
-		{ label: 'Role', value: 'First author' },
+		{ label: 'Venue', value: 'IEEE ICIRCA 2022 · Coimbatore, India, 21–23 September 2022' },
+		{ label: 'Role', value: 'First author of five' },
 		{ label: 'Field', value: 'Handwritten character recognition' },
 		{ label: 'Paper', value: '[IEEE Xplore ↗](https://ieeexplore.ieee.org/document/9985714)' },
 	]}
@@ -40,6 +46,14 @@ paper:
 
 Bangla script has many similar-looking characters, which makes handwriting hard for machines to read. We built a **CNN-based model** that takes an image of a single handwritten character and recognises it, across **73 classes**: 50 basic letters, 10 digits and 13 special characters.
 
-It was trained and tested on **24,231 images** from the CMATERdb dataset. The longer-term goal is a complete system for recognising handwritten Bangla.
+It was trained and tested on **24,231 images** from the CMATERdb dataset. The paper's next step was a full Bangla handwriting recognition system.
 
-<Caption mono>DOI [10.1109/ICIRCA54612.2022.9985714](https://doi.org/10.1109/ICIRCA54612.2022.9985714)</Caption>
+{/* TODO(owner): add my role in the work, the train/test split, model details and any prior-work comparison. */}
+
+<Caption mono>Published as Shahriar Alam Niloy, with Tahmid Shahriar Bhuiyan, Faria Islam Leha, Shahriar Imon and Musharrat Khan. IEEE Xplore, 29 December 2022. DOI [10.1109/ICIRCA54612.2022.9985714](https://doi.org/10.1109/ICIRCA54612.2022.9985714)</Caption>
+
+{/* TODO(owner): draft — edit "What carried over" in your own words. */}
+
+## What carried over
+
+Research taught me not to trust a number I can't reproduce. An accuracy figure means little without data the model never saw, and a speed-up means little without a before and after measured the same way. That habit came with me into software engineering: the [design system](/highlights/design-system) was measured component by component, and [performance work](/highlights/performance) ships in stages so every change in a score can be traced to its cause.

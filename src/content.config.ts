@@ -88,8 +88,13 @@ const highlights = defineCollection({
 		size: highlightSize,
 		/** Its place and width on Home, if it is shown there. */
 		featuredOnHome: z.object({ order: z.number().int(), size: highlightSize }).optional(),
-		/** For a published paper: its DOI, where it's published and when, for ScholarlyArticle JSON-LD. */
-		paper: z.object({ title: z.string(), doi: z.string(), url: z.url(), venue: z.string(), publishedOn: z.string() }).optional(),
+		/**
+		 * For a published paper: its DOI, where it's published and when, for ScholarlyArticle JSON-LD.
+		 * `authors` lists names as published, in order; the first is the site owner.
+		 */
+		paper: z
+			.object({ title: z.string(), doi: z.string(), url: z.url(), venue: z.string(), publishedOn: z.string(), authors: z.array(z.string()).min(1) })
+			.optional(),
 	}),
 });
 

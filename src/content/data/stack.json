@@ -371,7 +371,7 @@
 		"id": "webassembly",
 		"name": "WebAssembly",
 		"group": "learning",
-		"description": "Near-native speed in the browser — a natural fit for zero-server tools.",
+		"description": "Near-native speed in the browser — a natural fit for browser-first tools.",
 		"icon": "webassembly",
 		"colour": "#7C8CFF",
 		"logoColour": "#654FF0",

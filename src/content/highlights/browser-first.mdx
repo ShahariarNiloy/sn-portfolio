@@ -1,0 +1,126 @@
+---
+title: 'Browser-first tools'
+lede: 'utilyx.dev is a growing set of developer tools that do their work in your browser. What you paste stays on your device, and the server only steps in for the few jobs a browser can’t do.'
+card: 'Developer tools that do their work in your browser, even on a 50 MB file.'
+illustration: browser-first
+order: 2
+kicker: 'Architecture'
+size: 2
+featuredOnHome: { order: 2, size: 2 }
+---
+
+<MetaList
+	items={[
+		{ label: 'Product', value: '[utilyx.dev](/work/utilyx)' },
+		{ label: 'Role', value: 'Designed and built solo' },
+		{ label: 'Stack', value: 'Next.js, TypeScript, Web Workers, WebAssembly' },
+		{ label: 'Tools', value: '50+ and growing' },
+	]}
+/>
+
+## The easy part and the hard part
+
+Many online formatters, decoders and generators **send what you paste to a server**, just to format some JSON or decode a token. That adds a round trip to every click, and the things developers paste — tokens, API responses, config files — are often exactly what shouldn't leave their machine.
+
+So utilyx does the work in the browser. For a small input, that's the easy part. Formatting a few kilobytes of JSON takes no effort at all.
+
+The hard part is the input nobody plans for: a 50 MB log export, or twenty photos straight off a phone. A browser tab has one main thread, and it also draws the page and answers every click. Give it a heavy job and the whole tab freezes. A browser-first tool only works if it stays usable at the size people actually bring.
+
+Two of the tools show how that plays out.
+
+<Flow
+	rows={[
+		{
+			label: 'A server-side tool',
+			good: false,
+			chips: [
+				{ text: 'Paste', dim: false },
+				{ text: 'Upload', dim: true },
+				{ text: 'Server', dim: true },
+				{ text: 'Download', dim: true },
+				{ text: 'Result', dim: false },
+			],
+		},
+		{
+			label: 'utilyx',
+			good: true,
+			chips: [
+				{ text: 'Paste', dim: false },
+				{ text: 'Result', dim: false },
+			],
+		},
+	]}
+/>
+
+<StatGrid
+	columns={2}
+	items={[
+		{ value: '50 MB', label: 'the largest JSON file or image the tools accept' },
+		{ value: '7.4×', label: 'faster AVIF encoding, for 1.8% more bytes' },
+		{ value: '0', label: 'network requests from the image compressor' },
+		{ value: '99', label: 'Lighthouse performance score on mobile' },
+	]}
+/>
+
+## A JSON formatter that doesn't freeze
+
+The formatter has six views (code, tree, table, graph, diff and path) and can repair broken JSON, validate it against a schema and convert it to nine other formats. All of that has to keep working on a 50 MB file.
+
+**Small files stay on the main thread.** Below 256,000 characters the work runs straight away, because at that size validating and formatting takes about 5 ms on an i7 laptop. Above it, the work moves to a web worker, a background thread that can't freeze the page.
+
+**Two lanes, not one.** There are two copies of the worker. One does speculative background work, like checking whether a paste is really JavaScript. The other handles what you click. On a broken 50 MB file, that background check can take seconds, and a click shouldn't wait behind it. When a new action replaces an old one, the action lane is terminated and restarted, so the old work really stops.
+
+**Send back strings, not trees.** Copying a large parsed object from a worker to the page costs more than parsing it did. So actions send back text. When a view does need the parsed tree, files above 4 million characters arrive as a skeleton followed by slices of about 2 million characters, so no single message blocks the page.
+
+**Replace the text box.** A plain textarea re-lays out the whole document on every keystroke: 100–200 ms per key at about 2 MB, and up to about 900 ms at 9 MB. The editor is now CodeMirror 6, loaded only when needed, with syntax highlighting turned off above a million characters.
+
+**Don't change the data.** JavaScript can't represent integers beyond 2⁵³ exactly, so a naive formatter quietly rounds them. When the input contains numbers like that, the formatter switches to a lossless path that keeps every digit and the original spelling.
+
+### What went wrong
+
+The repair feature could hang forever. Inside an array, a character that can't start a value, like `:` or `@`, was never consumed, so the parser looped back to the same spot again and again. The fix drops the character and reports it as a lossy repair. The same change found a second problem: working out the line and column of each repair rescanned the input every time, which made large inputs with many repairs O(n²). A newline index and a binary search fixed it.
+
+## An image compressor with no upload
+
+The compressor reads JPEG, PNG, WebP, AVIF, GIF and HEIC, and writes AVIF, WebP, JPEG or PNG. It makes no network requests at all. Everything a server would normally do happens in the tab.
+
+**Codecs in WebAssembly.** Each format's encoder is compiled to WebAssembly and loaded only when that format is used. The HEIC decoder is about 1.4 MB, so it loads the first time someone drops in an iPhone photo, and not before.
+
+**A pool of workers, sized to the device.** Encoding runs in a small pool of workers, and the pool size is a single line:
+
+```ts
+// Leave two cores for the page, and cap at four so codec memory can't balloon.
+const WORKER_POOL_SIZE = Math.max(1, Math.min(4, (navigator.hardwareConcurrency ?? 4) - 2));
+```
+
+Workers start only when there's work, so an empty page holds no codec memory. Jobs have priorities, so the "what changed" view jumps ahead of background size estimates. A worker that crashes is replaced, and cancelling a big image terminates its worker instead of letting it finish.
+
+**Measure the trade-offs.** The defaults come from measurements, not guesses:
+
+- **AVIF:** smaller images used to get the slower encoder speed 4. Moving every image to speed 6 made AVIF 7.4× faster in total on 34 images (median 4.7 s → 0.6 s per image), for a median 1.8% more bytes. Speed 8 drifted up to 184% bigger on graphics with transparency, so it was ruled out.
+- **PNG:** OxiPNG at level 6 took about 157 s on a 16 MP image. Level 2 took about 11 s for 1–3% more bytes.
+- **Quality:** the presets were calibrated with SSIMULACRA2, a measure of how close an image looks to the original, on standard photos, screenshots and transparent graphics. A quality preset means one encode per image, with no trial and error. Aiming for a file size instead takes four to six encodes, and never more than seven.
+
+**Do what the browser won't.** The JPEG decoder ignores the EXIF orientation, so photos are rotated by hand. Colour profiles are carried over, and Display P3 images are converted to sRGB when the new format would drop the profile. Location and camera data are removed by re-encoding, and the tool says so instead of doing it silently.
+
+### What went wrong
+
+Photos were coming out of the JPEG encoder looking distorted. For each JPEG, the compressor decides whether to store colour at a lower resolution than brightness, which makes photos about 9% smaller at the same perceived quality but smears coloured text in screenshots. But the check measured the overall amount of colour, and natural photos often fell below the line and had their colour degraded. The fix measures fine colour detail instead, which is what actually suffers.
+
+## The one exception
+
+A browser can't fetch another site's pages for you, so the SEO checker sends the address you enter to a small server route that fetches it. It's rate-limited, and nothing is stored or logged. That's the exception, and it has to earn its place.
+
+Everything else stays on your device. The JSON formatter's history lives in your browser's own storage. Share links put the JSON in the part of the URL after the `#`, which browsers never send to a server, so it stays out of logs and analytics.
+
+## Try it
+
+There's a live JSON formatter on the [utilyx.dev project page](/work/utilyx). It runs the same way, right on that page.
+
+## What I took from it
+
+**Browser-first is a performance problem, not a hosting choice.** Moving work off the server is easy. Keeping the tab responsive at 50 MB is the actual job.
+
+**Measure before picking a default.** A 7.4× speed-up for 1.8% more bytes is an easy call once you have the numbers, and the faster setting that looked better was rejected for the same reason.
+
+**The best backend is the one you don't need.** If the data is already on the user's machine, the work belongs there too, and a server has to earn its place.

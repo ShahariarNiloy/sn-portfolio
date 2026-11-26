@@ -20,13 +20,17 @@ featuredOnHome: { order: 1, size: 4 }
 
 ## The search box that waits
 
-Picture someone opening a travel site on a phone. They know where they want to go. They have dates in mind. All they need from us is a search box that works.
+On our booking site, antd's config and styling runtime came to about 30 KB of JavaScript before a single button rendered.
 
-Between them and that search box sits everything the browser has to download, read and run first. Some of it is the page. A lot of it is the toolbox the page was built with: the buttons, the selects, the date picker, and the machinery that styles them.
+Behind that number is someone on a phone. They know where they want to go, and they have dates in mind. All they need from us is a search box that works. Between them and that box sits everything the browser has to download, read and run first, and a lot of it was the toolbox the page was built with.
 
 On a booking site, **bundle size is conversion**. Every kilobyte delays the one thing the visitor came to do, and they can always go and do it somewhere else.
 
-Our toolbox was a component library, and it was heavy. It carried a styling runtime, which is JavaScript that works out the styles in the browser, and far more code than the platform needed. And a component library is awkward to replace, because screens depend on how it behaves as well as how it looks.
+Our toolbox was antd, and for us it was heavy. Bundled together, the 46 antd components the platform used came to 407 KB gzipped. That isn't a knock on antd. It's a good library, built to cover every product, and we only needed to cover ours. Its styles are CSS-in-JS, which is JavaScript that works out the styles in the browser. And a component library is awkward to replace, because screens depend on how it behaves as well as how it looks.
+
+## Why not a headless library
+
+Radix, React Aria and shadcn would all have been reasonable starting points, and headless libraries already leave the styling to you. So styling wasn't the deciding factor; scope, integration and dependencies were. We didn't need every feature of every component, and building our own meant shipping only the behaviour we use. We wanted everything from colour tokens to translation to accessibility controlled inside one system, rather than wrapped around someone else's components. And in-house means fewer dependencies, which on a site this large is a must.
 
 ## The rule
 
@@ -36,11 +40,11 @@ So I worked from one rule: **keep everything the team relies on, and drop everyt
 
 Keep the props. Keep the hover and focus states, the keyboard behaviour, and the density of the layout. Drop the styling runtime, and the code the platform didn't need.
 
-Keeping the API meant that moving a screen over was mostly **an import swap**. Change where the component comes from, and leave the rest of the screen alone. The names here are made up, but the shape is the point:
+Keeping the API meant that moving a screen over was mostly **an import swap**. Change where the component comes from, and leave the rest of the screen alone. The new path is simplified, but the shape is the point:
 
 ```tsx
 // Before
-import { Select } from 'previous-library';
+import { Select } from 'antd';
 
 // After: same props, same behaviour
 import { Select } from '@/design-system';
@@ -52,11 +56,11 @@ That rule has a cost. When you promise the same API, you inherit someone else's 
 
 ## Building it from the inside out
 
-The components are React and TypeScript, styled with Tailwind CSS. They lean on a few small helpers, and almost nothing else. Styles live in a stylesheet, so there's no runtime working them out while someone waits.
+The components are React and TypeScript, styled with Tailwind CSS. They lean on clsx and tailwind-merge for class names, dayjs for dates and react-hook-form for forms, and almost nothing else. Styles live in a stylesheet, so there's no runtime working them out while someone waits.
 
 The simple pieces are easy to picture. A button is a button. The harder ones are the widgets a travel site depends on: the date picker, the time picker, the select, the data table. Each has a lot to remember: what is open, what is highlighted, what the arrow keys do, where focus goes when it closes.
 
-Those are built **headless first**. The logic lives in hooks, and the styles are layered on top. The hook knows how a select behaves; it doesn't know what one looks like. A simplified sketch:
+Those are built **headless first**. The logic lives in our own hooks (`useDatePicker`, `useTabs`, `useSlider`, `useOtp` and the rest), and the styles are layered on top. The hook knows how a select behaves; it doesn't know what one looks like. A simplified sketch:
 
 ```tsx
 function Select({ options, value, onChange }) {
@@ -78,7 +82,7 @@ The last structural choice was about loading. Everything is tree-shakeable, so a
 
 Size was the reason to start. It wasn't allowed to be the only thing that mattered, because it's easy to make a component smaller by leaving out the parts most people don't notice.
 
-Accessibility is the first thing that gets left out that way. Here it was part of the definition of finished: WCAG AA as the baseline, standard ARIA patterns, full keyboard support and managed focus. **If it isn't accessible, it isn't done.** Putting that in the component means nobody has to remember it on every screen.
+Accessibility is the first thing that gets left out that way. Here it was part of the definition of finished. Every component targets WCAG 2.2 AA, with standard ARIA patterns, full keyboard support and managed focus. Every Storybook story runs through axe, and components are tested with VoiceOver, NVDA and the keyboard alone. **If it isn't accessible, it isn't done.** Putting that in the component means nobody has to remember it on every screen.
 
 Travel brings its own demands. The platform runs in 26 languages, so right-to-left text and long translations can't be edge cases. A label that fits neatly in English may need a lot more room somewhere else. Booking screens are also dense, with prices, dates and rooms all competing for space. The components handle these from the start.
 
@@ -86,22 +90,22 @@ Motion got the same treatment. The language is calm: purposeful, brief, never bo
 
 ## Was it lighter?
 
-"It feels faster" isn't a result, so each component was measured against the one it replaced. Both were bundled on their own, then minified, tree-shaken and compressed, in the same way. Framework code was left out, since the app ships it either way.
+"It feels faster" isn't a result, so each component was measured against its closest antd equivalent. Both were bundled with esbuild on their own, with everything they import, then minified and gzipped in the same way. React was left out, since the app ships it either way. The figures are from 15 November 2026, against antd 5.29.3.
 
 <StatGrid
 	columns={2}
 	items={[
-		{ value: '60+', label: 'components, all production-ready' },
-		{ value: '~½', label: 'the JavaScript of the library it replaced' },
-		{ value: '~6×', label: 'smaller, for a typical component' },
-		{ value: '~⅓', label: 'the size of the shared base code' },
+		{ value: '186 KB', label: 'every component together, gzipped, against 407 KB for antd' },
+		{ value: '54%', label: 'smaller across the whole library' },
+		{ value: '~6×', label: 'smaller for the median component: 12.9 KB against 74.9 KB' },
+		{ value: '9 KB', label: 'of shared base code, against about 30 KB' },
 	]}
 />
 
 ### Component by component
 
 <BarChart
-	legend={['New design system', 'Previous library']}
+	legend={['New design system', 'antd']}
 	items={[
 		{ label: 'Data table', now: 9.5, before: 100.0, change: '−91%' },
 		{ label: 'Time picker', now: 9.6, before: 60.1, change: '−84%' },
@@ -114,21 +118,33 @@ Motion got the same treatment. The language is calm: purposeful, brief, never bo
 	]}
 />
 
-<Caption>Download size of each component, compared with its closest equivalent before. The longest bar is 100.</Caption>
+<Caption>KB, minified + gzipped. Each component measured on its own with everything it imports; React excluded. Bars are scaled to the largest, antd's table at 203 KB (ours is 19.2 KB).</Caption>
 
 ### Reading the numbers
 
-The data table came down by 91%. Even the button, about as simple as a component gets, came down by 75%.
+Some of the gap is paid before any component loads. antd needs about 30 KB for its config and styling runtime. This design system needs about 9 KB, almost all of it tailwind-merge.
 
-Two things are worth saying about those numbers. The first is that "about half" and "around six times smaller" are both true, because they answer different questions. One is the whole library; the other is a typical component on its own.
+Two more things are worth saying about the numbers. The first is that "54% smaller" and "about six times smaller" are both true, because they answer different questions. One is the whole library, with shared code counted once. The other is the median component on its own, across the 53 that have an antd equivalent.
 
 The second is that the comparison has a tilt. Styles in a shared stylesheet aren't counted in a per-component bundle, while a library that styles with JavaScript carries its runtime in the total. The runtime is a real cost, so it belongs there. But the stylesheet is a cost too, and anyone reading the chart should know it isn't in it.
+
+## The bug that only appeared in Japanese
+
+Not everything worked the first time. Japanese users found that after clearing the destination field and typing, a destination they had searched for before came back.
+
+Japanese is typed through an input method editor: you compose the characters, then confirm them. Autocomplete's Enter handler, its arrow-key backfill and its search trigger all ran during that composition, so confirming the text selected the auto-highlighted suggestion instead.
+
+The fix was to guard those three with `isComposing`, plus a matching guard on Input's `onPressEnter`. The first version of that fix broke English typing for a while, until it was corrected too.
+
+What it taught me: a component that serves 26 languages has to be tested the way people type them, not only the way they read them.
 
 ## Becoming the default
 
 A design system isn't finished when its components are. It's finished when people stop choosing whether to use it.
 
-It's now **the standard for all new UI** on the platform, and [one part of a wider performance effort](/highlights/performance). It sits beside lighter media, third-party scripts that wait their turn, and a monthly review that catches pages when they drift. I wouldn't credit it with those results on its own. What it does is lower the starting point: a new screen begins lighter, before anyone has optimised anything.
+It's now **the only component library in the app**. antd and every other component library were removed, so nobody has that choice to make any more. The migration is finished.
+
+It's also [one part of a wider performance effort](/highlights/performance). It sits beside lighter media, third-party scripts that wait their turn, and a monthly review that catches pages when they drift. I wouldn't credit it with those results on its own. What it does is lower the starting point: a new screen begins lighter, before anyone has optimised anything.
 
 That's the part I like most. Most performance work has to be remembered. Someone has to notice a slow page, find the cause and fix it, and then do it again when the next feature lands. This is different. The light version is simply the one you get when you import a button.
 

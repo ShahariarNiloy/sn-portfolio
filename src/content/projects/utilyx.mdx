@@ -1,7 +1,7 @@
 ---
 name: 'utilyx.dev'
 group: product
-lede: 'A growing collection of developer tools — formatters, encoders, generators and validators — that run entirely in your browser. Nothing is uploaded and there is no server to wait for.'
+lede: 'A growing collection of developer tools — formatters, encoders, generators and validators — that do their work in your browser. What you paste stays on your device.'
 url: 'https://utilyx.dev'
 sourceUrl: 'https://github.com/ShahariarNiloy/devtils'
 meta:
@@ -25,9 +25,9 @@ lighthouse:
 order: 2
 thumbnail: '../../assets/work/utilyx-home.webp'
 # TODO(owner): approve — the fields below are not in the PRD schema but the mockup needs them.
-summary: 'Developer tools that run entirely in your browser. Zero servers, nothing uploaded.'
+summary: 'Developer tools that do their work in your browser. What you paste stays on your device.'
 period: 'Live'
-homeSummary: '50+ developer tools that run entirely in your browser. Zero servers.'
+homeSummary: '50+ developer tools that do their work in your browser.'
 ---
 
 import utilyxHome from '@/assets/work/utilyx-home.webp';
@@ -35,7 +35,7 @@ import { lighthouseScores } from '@/lib/lighthouse';
 
 ## Why it exists
 
-Most online dev tools send your data to a server just to format some JSON or decode a token. That is slow and, for anything sensitive, risky. **utilyx does all of it on your machine**, so it is instant and private by design.
+Many online dev tools send your data to a server just to format some JSON or decode a token. That is slow and, for anything sensitive, risky. **utilyx does that work on your machine**, so it is quick and private by design.
 
 ## Categories
 
@@ -61,8 +61,8 @@ Most online dev tools send your data to a server just to format some JSON or dec
 
 ## How it's built
 
-- **Zero-server architecture.** Every tool runs client-side; the site is static. [Read more](/highlights/zero-server)
-- **Works offline.** Once loaded, the tools keep working without a connection, and most operations finish in under a millisecond.
+- **Browser-first.** Every tool does its work client-side, and tool pages are built ahead of time. The server only steps in where a browser can't, like fetching a page for the SEO checker. [Read more](/highlights/browser-first)
+- **Responsive under load.** Heavy jobs, like formatting large JSON or compressing images, run in web workers so the page stays responsive.
 - **Keyboard-first.** A ⌘K command palette jumps to any tool, and the interface is built to be accessible, with semantic markup and skip links.
 - **Built with** Next.js, TypeScript and Tailwind CSS.
 

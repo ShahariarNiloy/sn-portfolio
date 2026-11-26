@@ -1,7 +1,7 @@
 ---
 title: 'Only the words a page needs'
-lede: 'A multilingual Next.js app was sending its entire translation dictionary — thousands of strings — inside every page, to show a few hundred of them. I rebuilt how text reaches the browser.'
-card: 'Each page now ships only its own translations — about 90% less text in the HTML.'
+lede: 'A multilingual Next.js app was sending its entire translation dictionary, 3,548 strings and about 60 KB compressed, inside every page, to show a few hundred of them. I rebuilt how text reaches the browser.'
+card: 'Each page now ships only its own translations: 60 KB down to 5–7 KB.'
 illustration: localization
 order: 5
 kicker: 'Internationalisation'
@@ -9,12 +9,13 @@ size: 4
 featuredOnHome: { order: 4, size: 4 }
 ---
 
+
 <MetaList
 	items={[
-		{ label: 'Type', value: 'Engineering case study' },
+		{ label: 'Product', value: '[adventure.inc](/work/adventure-inc)' },
 		{ label: 'Focus', value: 'Internationalisation and performance' },
 		{ label: 'Stack', value: 'Next.js App Router, React Server Components, TypeScript' },
-		{ label: 'Scale', value: 'Dozens of locales, thousands of strings' },
+		{ label: 'Scale', value: '26 languages, 92 country–language versions, 3,548 strings' },
 	]}
 />
 
@@ -23,10 +24,10 @@ featuredOnHome: { order: 4, size: 4 }
 <StatGrid
 	columns={2}
 	items={[
-		{ value: '~90%', label: "less translation data in each page's HTML" },
+		{ value: '5–7 KB', label: 'translation data per page, gzipped, down from 60 KB' },
+		{ value: '~90%', label: 'less translation data in each page' },
 		{ value: '~70%', label: 'less over a typical five-page first visit' },
 		{ value: '~90%', label: 'less on every visit after that' },
-		{ value: '1 year', label: 'how long browsers can cache the full dictionary' },
 	]}
 />
 
@@ -34,16 +35,20 @@ featuredOnHome: { order: 4, size: 4 }
 
 Interactive components need their text **on the very first render** — on the server and again while React hydrates — or visitors see raw keys or a flash of English. The simplest way to guarantee that was to embed the whole dictionary in every page.
 
-It worked, but it put tens of kilobytes of compressed text into every HTML response, before the page could render. No single page used more than a small fraction of it.
+It worked, but it put about 60 KB of compressed text (195 KB raw) into every page before it could render. No page needed most of it: the home page uses 323 of the 3,548 keys, and hotel details, one of the busiest, uses 463.
 
 ## Before and after
 
 <Compare
 	items={[
-		{ label: 'Before', width: 100, tone: 'mut', text: 'The whole dictionary, embedded in every page.' },
-		{ label: 'After', width: 10, tone: 'acc', text: "Just the page's own words. The rest arrives later, once, and stays cached." },
+		{ label: 'Before', width: 100, tone: 'mut', text: 'The whole dictionary, embedded in every page: about 60 KB.' },
+		{ label: 'After', width: 10, tone: 'acc', text: "Just the page's own words: 5.8–7.3 KB. The rest arrives later, once, and stays cached." },
 	]}
 />
+
+Over a five-page visit (home, hotels, a listing, a hotel, flights), that's **5 × 60.1 = 300.5 KB before**, against **31.2 + 61 = 92.2 KB after** on the first visit (−69%), including the full dictionary, and **31.2 KB** on later visits (−90%). In Japanese, where characters take more bytes, each page saves about 63 KB instead of 54.
+
+<Caption>Translation data in each page's server-component payload, gzipped. Two local production builds, 7 November 2026, desktop. Whole-page sizes aren't compared, because other optimisations shipped in the same period.</Caption>
 
 ## How it works
 
@@ -51,7 +56,7 @@ It worked, but it put tens of kilobytes of compressed text into every HTML respo
 	items={[
 		{
 			title: 'Find the words at build time',
-			body: "A generator reads the code with the TypeScript compiler, following every import — dynamic ones too — from each page and layout, and records which strings could be translation keys. A simple regex scan missed hundreds of keys; parsing the code didn't.",
+			body: "A generator reads the code with the TypeScript compiler, following every import — dynamic ones too — from each page and layout, and records which strings could be translation keys. A simple regex scan missed about 400 keys; parsing the code didn't.",
 		},
 		{
 			title: 'Pick them per request',
@@ -63,14 +68,18 @@ It worked, but it put tens of kilobytes of compressed text into every HTML respo
 		},
 		{
 			title: 'Send the rest later',
-			body: 'After the page has loaded and the browser is idle, the full dictionary arrives in the background and applies inside a React transition, so the page stays responsive. Its URL is content-hashed, so browsers cache it for a year and every country that shares a language shares one copy.',
+			body: 'After the page has loaded and the browser is idle, the full dictionary (61 KB gzipped) arrives in the background and applies inside a React transition, so the page stays responsive. Its URL is content-hashed, so browsers cache it for a year and every country that shares a language shares one copy.',
 		},
 	]}
 />
 
+## Between pages
+
+Moving to another page doesn't wait for the full dictionary. The next page brings its own words inside the page data Next.js fetches, and prefetched links already include them, so the text is right from the first frame. Only keys built at runtime show the English fallback until the full dictionary arrives. Changing language is always a full page load.
+
 ## The mistake that taught me the most
 
-My first version **preloaded** the full dictionary at low priority. On a throttled phone it still competed with the page's largest image and pushed Largest Contentful Paint back by more than a second and a half. Moving it to after load, at the next idle moment, removed the cost completely.
+My first version **preloaded** the full dictionary at low priority. On a throttled phone it still competed with the page's largest image and pushed the home page's Largest Contentful Paint back by **1.7 s**. Moving it to after load, at the next idle moment, removed the cost completely.
 
 ## Guardrails
 
@@ -78,12 +87,7 @@ My first version **preloaded** the full dictionary at low priority. On a throttl
 - **An escape hatch for keys built from data**, like a status code or a country name, so they can still travel with the page.
 - **Every string has an English fallback**, so a missing translation shows readable text, never a raw key.
 
-## The rest of the locale system
-
-- **The locale lives in the URL**, so every language version has its own indexable, shareable address, with canonical and hreflang links for search engines.
-- **Right-to-left support** through logical CSS properties, with icons and arrows that mirror.
-- **Dates, numbers and prices** formatted per language, with date locales loaded only when needed.
-- **Changing language in one tab** updates the others too.
+The rest of the locale system (language in the URL, right-to-left layouts, local dates and prices) is part of the wider [adventure.inc platform](/work/adventure-inc).
 
 ## What I took from it
 

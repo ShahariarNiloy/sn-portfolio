@@ -218,6 +218,13 @@
 		@apply mb-4 rounded-xl border border-line bg-card p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap text-prose;
 		tab-size: 2;
 	}
+	/* A component or list followed by another one, or by a paragraph, still needs air;
+	   important, because each component resets its own margin with m-0. Captions
+	   keep their own, tighter spacing. */
+	.case > :is(ul, ol, dl, div)[class] + :is(ul, ol, dl, div)[class],
+	.case > :is(ul, ol, dl, div) + p:not(.caption) {
+		@apply mt-4!;
+	}
 	.case > p strong,
 	.case > p em {
 		@apply font-medium text-fg not-italic;
@@ -426,6 +433,10 @@
 	.js [data-reveal] .ill .layer:not(.gfade) path {
 		stroke-dasharray: none;
 		stroke-dashoffset: 0;
+	}
+	/* Same selector as the hidden-fill rule above, so it wins and shapes stay solid. */
+	.js [data-reveal] .ill .layer:not(.gfade) path,
+	.js [data-reveal] .ill .layer:not(.gfade) path:is([class*='f-'], .dotf, .body, .pix, .accfill) {
 		fill-opacity: 1;
 	}
 	.js [data-reveal] .ill .gfade {

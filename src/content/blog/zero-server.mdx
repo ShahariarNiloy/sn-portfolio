@@ -1,31 +1,35 @@
 ---
 title: 'The best backend is the one you don’t need'
-summary: 'Why utilyx.dev runs every tool in the browser, with no servers doing the work.'
+summary: 'Why utilyx.dev does its work in the browser, and when it still needs a server.'
 topic: products
 status: published
 # TODO(owner): confirm the publish date (the mockup has none; set to launch day).
 publishedOn: 2026-11-24
 illustration: zero-server-post
 related:
-  href: '/highlights/zero-server'
-  label: 'Case study: Zero-server tools'
+  href: '/highlights/browser-first'
+  label: 'Case study: Browser-first tools'
 # TODO(owner): approve — `order` (not in the PRD schema) keeps the mockup order for lists and "Next post".
 order: 14
 ---
 
-Most online formatters, decoders and generators send whatever you paste to a server — just to format some JSON. That adds a round trip to every click, and the things developers paste are often exactly what shouldn’t leave their machine.
+Many online formatters, decoders and generators send whatever you paste to a server — just to format some JSON. That adds a round trip to every click, and the things developers paste are often exactly what shouldn’t leave their machine.
 
-## Static by default
+## Built ahead of time
 
-utilyx.dev is built ahead of time, so any CDN can serve it. There’s no backend to scale, patch or pay for as usage grows.
+Every tool page on utilyx.dev is generated at build time, so opening one doesn’t wait on a server working anything out.
 
 ## Your device does the work
 
-Every tool runs in the browser. Most operations finish in under a millisecond, and once a page has loaded, the tools keep working offline.
+Every tool processes its input in the browser. Heavy jobs, like formatting large JSON or compressing images, run in web workers, so the page stays responsive while they finish.
+
+## A server only where it has to be
+
+Some jobs a browser can’t do. It can’t fetch another site’s pages for you, so the SEO checker sends the address you enter to a small server route. It’s rate-limited, and nothing is stored or logged. That’s the exception, and it has to earn its place.
 
 ## Private by design
 
-No uploads, no accounts, no stored input. Privacy isn’t a policy you have to trust; it’s how the thing is built.
+What you paste is never uploaded, and there are no accounts. Some tools remember recent inputs, but only in your browser’s own storage. Privacy isn’t a policy you have to trust; it’s how the thing is built.
 
 ## And it’s fast
 

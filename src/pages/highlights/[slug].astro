@@ -39,6 +39,15 @@ const jsonLd = [
 						identifier: { '@type': 'PropertyValue', propertyID: 'DOI', value: paper.doi },
 						isPartOf: { '@type': 'PublicationEvent', name: paper.venue },
 						publisher: { '@type': 'Organization', name: 'IEEE' },
+						// Authors as published; the first is the site owner, linked to the site's Person.
+						// Guarded: a content cache from before `authors` existed would leave it undefined.
+						...(paper.authors?.length && {
+							author: paper.authors.map((name, i) =>
+								i === 0
+									? { '@type': 'Person', '@id': `${author.authorUrl}#person`, name, alternateName: author.authorName, url: author.authorUrl }
+									: { '@type': 'Person', name },
+							),
+						}),
 					},
 				}),
 			]

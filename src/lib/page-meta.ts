@@ -30,7 +30,7 @@ export const PAGE_META: Record<string, PageMeta> = {
 			'adventure.inc is a travel booking platform in 26 languages. What Shahariar Niloy owned or drove there: performance, search, SEO and design system.',
 	},
 	'/work/utilyx': {
-		description: 'utilyx.dev is a growing collection of 50+ developer tools that run entirely in your browser: nothing is uploaded, and no server to wait for.',
+		description: 'utilyx.dev is a growing collection of 50+ developer tools that do their work in your browser, so what you paste stays on your device.',
 	},
 	'/work/truly-remote-work': {
 		description:
@@ -52,22 +52,19 @@ export const PAGE_META: Record<string, PageMeta> = {
 	'/highlights/localization': {
 		description: 'A multilingual Next.js app sent its whole translation dictionary in every page. How each page came to ship about 90% less text in its HTML.',
 	},
-	'/highlights/taming-memory': {
-		description: 'How I tracked down why a large Next.js app kept running out of memory, and why raising the heap limit was never going to be the fix.',
-	},
 	'/highlights/performance': {
 		description:
 			"On a large production app I measure first, then cut what the browser doesn't need right away. Mobile Lighthouse went from 46 to 95 on average.",
 	},
-	'/highlights/zero-server': {
+	'/highlights/browser-first': {
 		description:
-			'utilyx.dev runs every developer tool in your browser. How a static, zero-server architecture keeps the tools private, instant and working offline.',
+			'utilyx.dev does its work in your browser and uses a server only where a browser can’t. How a browser-first design keeps the tools private and fast.',
 	},
 	'/highlights/seo': {
 		description: 'Sitemaps, hreflang and structured data across a platform in 26 languages, and the plumbing that helps search engines understand every page.',
 	},
 	'/highlights/research': {
-		description: 'A first-author IEEE paper on recognising Bangla handwritten characters with a convolutional neural network, from before frontend took over.',
+		description: 'A first-author IEEE paper on recognising Bangla handwritten characters with a convolutional neural network, from before software engineering took over.',
 	},
 	'/stack': { description: "The tools behind the speed: what I reach for every day, what I use for data and performance, and what I'm learning next." },
 	'/timeline': {
@@ -131,7 +128,7 @@ export const PAGE_META: Record<string, PageMeta> = {
 			'Retries feel like resilience until they hold on to memory. Per-attempt abort signals, timers that always clear, and actions that never retry.',
 	},
 	'/blog/zero-server': {
-		description: 'Why utilyx.dev runs every tool in the browser, with no servers doing the work: static by default, private by design, and fast as a result.',
+		description: 'Why utilyx.dev does its work in the browser, and when it still needs a server: pre-built pages, private by design, and fast as a result.',
 	},
 	'/off-the-clock': {
 		description: 'Nothing here is about work. Short essays on the self, people, gratitude and character: the things I keep thinking about on long walks.',

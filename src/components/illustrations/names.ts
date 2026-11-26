@@ -27,7 +27,7 @@ export const ILLUSTRATION_NAMES = [
 	'zero-server-post',
 	'memory',
 	'performance',
-	'zero-server',
+	'browser-first',
 	'seo',
 	'research',
 ] as const;
