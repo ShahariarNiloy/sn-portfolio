@@ -10,6 +10,8 @@ import NextLink from '@/components/content/NextLink.astro';
 import { MDX_COMPONENTS } from '@/components/content/mdx';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getNext, getProjects } from '@/lib/content';
+import { shareImageUrl } from '@/lib/og';
+import { buildProjectJsonLd } from '@/lib/seo';
 
 export async function getStaticPaths() {
 	const projects = await getProjects();
@@ -19,15 +21,34 @@ export async function getStaticPaths() {
 const { project, next } = Astro.props;
 const { Content } = await render(project);
 const isFirst = next?.data.order === 1;
+const origin = Astro.site?.origin ?? 'https://shahariarniloy.com';
+const jsonLd = [
+	buildProjectJsonLd({
+		name: project.data.name,
+		description: project.data.lede,
+		pageUrl: new URL(Astro.url.pathname, origin).href,
+		siteUrl: project.data.url,
+		authorUrl: new URL('/', origin).href,
+		image: shareImageUrl(Astro.url.pathname, origin),
+	}),
+];
 ---
 
-<PageLayout title={project.data.name} lede={project.data.lede} badge={project.data.badge} trail={[{ label: 'Work', href: '/work' }]} active="work">
+<PageLayout
+	title={project.data.name}
+	lede={project.data.lede}
+	badge={project.data.badge}
+	trail={[{ label: 'Work', href: '/work' }]}
+	active="work"
+	jsonLd={jsonLd}
+	isArticle
+>
 	<MetaList items={project.data.meta} />
 	<div class="case">
 		<Content components={MDX_COMPONENTS} />
 	</div>
 	{next && (
-		<section class="section-gap">
+		<section slot="after" class="section-gap">
 			<NextLink href={`/work/${next.id}`} kicker={isFirst ? 'Back to the start' : 'Next project'} title={next.data.name} />
 		</section>
 	)}

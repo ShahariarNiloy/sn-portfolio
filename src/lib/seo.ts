@@ -46,40 +46,99 @@ export function stripInline(text: string): string {
 		.replace(/\\\n/g, ' ');
 }
 
-/** JSON-LD Person, for Home. */
-export function buildPersonJsonLd(site: SiteIdentity, url: string): Record<string, unknown> {
+/** Optional facts that enrich the Person entry (Home and About). */
+export interface PersonExtras {
+	image?: string | undefined;
+	worksFor?: { name: string; url?: string | undefined } | undefined;
+	alumniOf?: string | undefined;
+	knowsAbout?: string[] | undefined;
+	award?: string[] | undefined;
+}
+
+/** JSON-LD Person, for Home and About. `url` is the site's root URL, which also serves as its id. */
+export function buildPersonJsonLd(site: SiteIdentity, url: string, extras: PersonExtras = {}): Record<string, unknown> {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'Person',
+		'@id': `${url}#person`,
 		name: site.name,
 		jobTitle: site.role,
 		url,
 		email: `mailto:${site.email}`,
-		address: { '@type': 'PostalAddress', addressLocality: site.location },
+		address: { '@type': 'PostalAddress', addressLocality: site.location, addressCountry: 'BD' },
 		sameAs: [site.github, site.linkedin],
+		...(extras.image && { image: extras.image }),
+		...(extras.worksFor && { worksFor: { '@type': 'Organization', ...extras.worksFor } }),
+		...(extras.alumniOf && { alumniOf: { '@type': 'CollegeOrUniversity', name: extras.alumniOf } }),
+		...(extras.knowsAbout?.length && { knowsAbout: extras.knowsAbout }),
+		...(extras.award?.length && { award: extras.award }),
 	};
 }
 
-/** Options for a BlogPosting. */
+/** JSON-LD WebSite, for Home: the site's name, for search results. */
+export function buildWebSiteJsonLd(name: string, url: string): Record<string, unknown> {
+	return { '@context': 'https://schema.org', '@type': 'WebSite', name, url, author: { '@id': `${url}#person` } };
+}
+
+/** JSON-LD ProfilePage, for About: the page is about the Person. */
+export function buildProfilePageJsonLd(person: Record<string, unknown>, url: string): Record<string, unknown> {
+	const { '@context': context, ...entity } = person;
+	return { '@context': context, '@type': 'ProfilePage', url, mainEntity: entity };
+}
+
+/** Options for an article-like entry: posts, essays, case studies and the paper. */
 export interface PostingOptions {
+	/** BlogPosting for posts and essays, Article for case studies. */
+	type?: 'BlogPosting' | 'Article' | 'ScholarlyArticle' | undefined;
 	title: string;
 	summary: string;
 	url: string;
-	publishedOn: Date;
+	publishedOn?: Date | string | undefined;
 	authorName: string;
 	authorUrl: string;
+	/** Absolute URL of the share image. */
+	image?: string | undefined;
+	/** Extra properties, e.g. a paper's DOI. */
+	extra?: Record<string, unknown> | undefined;
 }
 
-/** JSON-LD BlogPosting, for published posts. */
+/** JSON-LD for one article-like page. The author is also the publisher. */
 export function buildPostingJsonLd(options: PostingOptions): Record<string, unknown> {
+	const date = options.publishedOn instanceof Date ? options.publishedOn.toISOString() : options.publishedOn;
+	const author = { '@type': 'Person', '@id': `${options.authorUrl}#person`, name: options.authorName, url: options.authorUrl };
 	return {
 		'@context': 'https://schema.org',
-		'@type': 'BlogPosting',
+		'@type': options.type ?? 'BlogPosting',
 		headline: options.title,
 		description: options.summary,
 		url: options.url,
-		datePublished: options.publishedOn.toISOString(),
-		author: { '@type': 'Person', name: options.authorName, url: options.authorUrl },
+		mainEntityOfPage: options.url,
+		...(date && { datePublished: date, dateModified: date }),
+		author,
+		publisher: author,
+		...(options.image && { image: options.image }),
+		...options.extra,
+	};
+}
+
+/** JSON-LD CreativeWork, for a project page. */
+export function buildProjectJsonLd(options: {
+	name: string;
+	description: string;
+	pageUrl: string;
+	siteUrl?: string | undefined;
+	authorUrl: string;
+	image?: string | undefined;
+}): Record<string, unknown> {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'CreativeWork',
+		name: options.name,
+		description: options.description,
+		url: options.siteUrl ?? options.pageUrl,
+		mainEntityOfPage: options.pageUrl,
+		creator: { '@id': `${options.authorUrl}#person` },
+		...(options.image && { image: options.image }),
 	};
 }
 

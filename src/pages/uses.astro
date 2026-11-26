@@ -7,14 +7,14 @@ import Inline from '@/components/ui/Inline.astro';
 import SectionLabel from '@/components/ui/SectionLabel.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getUses } from '@/lib/content';
-import { formatDay } from '@/lib/format';
+import { formatDay, formatIsoDay } from '@/lib/format';
 
 const uses = await getUses();
 ---
 
 <PageLayout title="Uses" lede="The hardware, software and small tools I use every day. People ask; this is the list.">
 	<p slot="after-lede" class="stamp">
-		Updated {formatDay(uses.updatedOn)}
+		Updated <time datetime={formatIsoDay(uses.updatedOn)}>{formatDay(uses.updatedOn)}</time>
 	</p>
 	{uses.groups.map((g) => (
 		<section class="section-gap">

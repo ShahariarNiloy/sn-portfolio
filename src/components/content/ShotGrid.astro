@@ -17,10 +17,10 @@ export interface Props {
 const { items } = Astro.props;
 ---
 
-<div class="mt-6 breakout grid grid-cols-1 gap-x-4 gap-y-6 md:grid-cols-6">
+<ul class="mt-6 mb-0 breakout grid list-none grid-cols-1 gap-x-4 gap-y-6 md:grid-cols-6">
 	{items.map((item, i) => (
-		<div class={cx(i < 2 ? 'md:col-span-3' : 'md:col-span-2')}>
+		<li class={cx(i < 2 ? 'md:col-span-3' : 'md:col-span-2')}>
 			<Shot {...item} size={i < 2 ? 'md' : 'sm'} inGrid />
-		</div>
+		</li>
 	))}
-</div>
+</ul>

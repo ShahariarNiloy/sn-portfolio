@@ -88,6 +88,8 @@ const highlights = defineCollection({
 		size: highlightSize,
 		/** Its place and width on Home, if it is shown there. */
 		featuredOnHome: z.object({ order: z.number().int(), size: highlightSize }).optional(),
+		/** For a published paper: its DOI, where it's published and when, for ScholarlyArticle JSON-LD. */
+		paper: z.object({ title: z.string(), doi: z.string(), url: z.url(), venue: z.string(), publishedOn: z.string() }).optional(),
 	}),
 });
 

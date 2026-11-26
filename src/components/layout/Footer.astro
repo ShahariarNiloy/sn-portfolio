@@ -35,10 +35,10 @@ const links = [
 <footer class={isHome ? 'mt-10' : 'mt-24'}>
 	<Container class="flex flex-col flex-wrap justify-between gap-3 border-t border-line pt-8 pb-10 text-xs text-mut">
 		<span class="flex flex-col gap-1.5">
-			<span>
+			<small class="text-xs">
 				&copy; {year} {siteName}
 				{isHome && ` · Built light, in ${location}.`}
-			</span>
+			</small>
 			<PageWeight />
 		</span>
 		<nav id="site-links" aria-label="Site" class="-mx-1.5 flex flex-wrap items-start">

@@ -23,7 +23,7 @@ const isWide = (i: number): boolean => i % 4 === 3 || isAlone(i);
 
 {notes.map((note, i) => (
 	<figure class={cx('m-0 flex min-w-0 flex-col justify-between gap-4 rounded-xl border border-line bg-card p-5', isAlone(i) ? 'sm:col-span-6' : SPANS[i % 4])}>
-		<p class={cx('m-0 leading-relaxed wrap-anywhere text-fg', isWide(i) ? 'text-lg' : 'text-base')}>{note.body}</p>
+		<blockquote class={cx('m-0 leading-relaxed wrap-anywhere text-fg', isWide(i) ? 'text-lg' : 'text-base')}>{note.body}</blockquote>
 		<NoteByline githubId={note.githubId} name={note.githubName} date={parseUtcTimestamp(note.createdAt)} />
 	</figure>
 ))}

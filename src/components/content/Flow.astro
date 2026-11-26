@@ -12,13 +12,13 @@ export interface Props {
 const { rows } = Astro.props;
 ---
 
-<div class="flex flex-col gap-3">
+<ul class="m-0 flex list-none flex-col gap-3 p-0">
 	{rows.map((row) => (
-		<div class={cx('rounded-xl border bg-card p-4', row.good ? 'flow-good border-acc/45' : 'border-line')}>
+		<li class={cx('rounded-xl border bg-card p-4', row.good ? 'flow-good border-acc/45' : 'border-line')}>
 			<span class="mb-2.5 block font-mono text-xs text-mut">{row.label}</span>
-			<div class="flex flex-wrap items-center gap-1.5">
+			<ol class="m-0 flex list-none flex-wrap items-center gap-1.5 p-0">
 				{row.chips.map((chip, i) => (
-					<>
+					<li class="flex items-center gap-1.5">
 						{i > 0 && (
 							<i class="text-xs text-mut not-italic" aria-hidden="true">
 								→
@@ -33,9 +33,9 @@ const { rows } = Astro.props;
 						>
 							{chip.text}
 						</span>
-					</>
+					</li>
 				))}
-			</div>
-		</div>
+			</ol>
+		</li>
 	))}
-</div>
+</ul>

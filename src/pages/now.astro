@@ -7,14 +7,14 @@ import KeyValueRows from '@/components/content/KeyValueRows.astro';
 import Link from '@/components/ui/Link.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getNow } from '@/lib/content';
-import { formatDay } from '@/lib/format';
+import { formatDay, formatIsoDay } from '@/lib/format';
 
 const now = await getNow();
 ---
 
 <PageLayout title="Now" lede="What I'm focused on at this point in my life. If we haven't talked in a while, start here.">
 	<p slot="after-lede" class="stamp">
-		Updated {formatDay(now.updatedOn)} · {now.place}
+		Updated <time datetime={formatIsoDay(now.updatedOn)}>{formatDay(now.updatedOn)}</time> · {now.place}
 	</p>
 	<section class="pt-12">
 		<KeyValueRows rows={now.items.map((i) => ({ label: i.label, value: i.body }))} />

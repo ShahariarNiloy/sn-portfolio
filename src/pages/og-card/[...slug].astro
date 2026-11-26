@@ -1,0 +1,100 @@
+---
+/**
+ * /og-card/[...] — the 1200 × 630 share card for one page, rendered only in
+ * `astro dev` so `pnpm og` (scripts/og-images.mjs) can photograph it. Production
+ * builds get no paths, so none of these pages ship.
+ */
+import '@fontsource/geist/latin-400.css';
+import '@fontsource/geist/latin-600.css';
+import '@fontsource/geist-mono/latin-400.css';
+import '@fontsource/instrument-serif/latin-400.css';
+import '@/styles/global.css';
+
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+import Illustration from '@/components/illustrations/Illustration.astro';
+import type { IllustrationName } from '@/components/illustrations/names';
+import avatar from '@/assets/avatar.png';
+import { getEssays, getHighlights, getProjects, getPublishedPosts, getSite } from '@/lib/content';
+import { cx } from '@/lib/cx';
+import { TOPICS } from '@/lib/topics';
+
+interface Card {
+	kicker: string;
+	title: string;
+	illustration?: IllustrationName | undefined;
+	shot?: ImageMetadata | undefined;
+	serif?: boolean | undefined;
+}
+
+export async function getStaticPaths() {
+	if (import.meta.env.PROD) return [];
+	const [projects, highlights, posts, essays] = await Promise.all([getProjects(), getHighlights(), getPublishedPosts(), getEssays()]);
+	const card = (slug: string, props: Card) => ({ params: { slug }, props });
+	return [
+		card('about', { kicker: 'About', title: 'From machine learning research to leading a frontend department.' }),
+		...projects.map((p) => card(`work/${p.id}`, { kicker: p.data.badge ?? 'Project', title: p.data.name, shot: p.data.thumbnail })),
+		...highlights.map((h) => card(`highlights/${h.id}`, { kicker: `Case study · ${h.data.kicker}`, title: h.data.title, illustration: h.data.illustration })),
+		...posts.map((p) =>
+			card(`blog/${p.id}`, {
+				kicker: `Blog · ${TOPICS.find((t) => t.id === p.data.topic)?.label ?? p.data.topic}`,
+				title: p.data.title,
+				illustration: p.data.illustration,
+			}),
+		),
+		...essays.map((e) => card(`off-the-clock/${e.id}`, { kicker: 'Off the clock', title: e.data.title, serif: true })),
+	];
+}
+
+const { kicker, title, illustration, shot, serif = false } = Astro.props as Card;
+const site = await getSite();
+const hasArt = Boolean(illustration || shot);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex" />
+		<title>{title}</title>
+	</head>
+	<body class="m-0 bg-bg">
+		<div class="relative flex h-157.5 w-300 flex-col overflow-hidden bg-bg p-20 font-sans text-fg" data-card>
+			<div class="backdrop-glow pointer-events-none absolute -top-40 -right-40 h-140 w-200" aria-hidden="true"></div>
+			<img src="/images/logo.png" alt="" width="46" height="40" class="relative block h-10 w-auto self-start" />
+			<div class="relative my-auto flex items-center gap-12">
+				<div class={cx('flex flex-col gap-6', hasArt ? 'w-130' : 'w-250')}>
+					<p class="m-0 font-mono text-2xl text-mut">{kicker}</p>
+					<p
+						class={cx(
+							'm-0 text-head',
+							serif ? 'font-serif text-7xl leading-tight' : 'leading-tight font-semibold tracking-tight',
+							!serif && (title.length > 48 ? 'text-5xl' : 'text-6xl'),
+						)}
+					>
+						{title}
+					</p>
+				</div>
+				{illustration && (
+					<div class="flex h-80 w-110 items-center justify-center rounded-3xl border border-line bg-card p-4">
+						<Illustration name={illustration} />
+					</div>
+				)}
+				{shot && <Image src={shot} alt="" width={880} class="block h-80 w-110 rounded-3xl border border-line2 object-cover object-top" />}
+			</div>
+			<div class="relative flex items-center justify-between">
+				<div class="flex items-center gap-4">
+					<Image src={avatar} alt="" width={112} class="block size-14 rounded-full ring-1 ring-line2" />
+					<div class="flex flex-col">
+						<span class="text-2xl font-semibold text-head">{site.name}</span>
+						<span class="text-xl text-mut">
+							{site.role} · {site.location}
+						</span>
+					</div>
+				</div>
+				<span class="font-mono text-2xl text-mut">{site.domain}</span>
+			</div>
+		</div>
+	</body>
+</html>

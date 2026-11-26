@@ -12,7 +12,7 @@ import Link from '@/components/ui/Link.astro';
 import Pill from '@/components/ui/Pill.astro';
 import { formatCareerSummary } from '@/lib/career';
 import { cx } from '@/lib/cx';
-import { formatRange } from '@/lib/format';
+import DateRange from '@/components/ui/DateRange.astro';
 
 export interface Props {
 	/** Companies, newest first, each with its roles newest first (from getCareer()). */
@@ -30,7 +30,7 @@ const { companies } = Astro.props;
 				<h3 class="m-0 text-lg font-semibold tracking-tight text-head">
 					{company.href ? <Link href={company.href}>{company.company}</Link> : company.company}
 				</h3>
-				<span class="font-mono text-meta whitespace-nowrap text-mut">{formatRange(company.from, company.to)}</span>
+				<DateRange from={company.from} to={company.to} />
 			</div>
 			<ol class="m-0 mt-4 list-none border-l border-line2 p-0 pl-5">
 				{company.roles.map((role) => {
@@ -46,7 +46,7 @@ const { companies } = Astro.props;
 									</Pill>
 								)}
 							</span>
-							<span class="font-mono text-meta whitespace-nowrap text-mut">{formatRange(role.from, role.to)}</span>
+							<DateRange from={role.from} to={role.to} />
 						</li>
 					);
 				})}

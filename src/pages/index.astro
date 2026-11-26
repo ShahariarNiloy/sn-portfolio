@@ -14,8 +14,9 @@ import Link from '@/components/ui/Link.astro';
 import SectionLabel from '@/components/ui/SectionLabel.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCareer, getHomeHighlights, getLatestPosts, getNow, getProjects, getSite, getStack } from '@/lib/content';
-import { formatMonth } from '@/lib/format';
-import { buildPersonJsonLd } from '@/lib/seo';
+import { formatIsoDay, formatMonth } from '@/lib/format';
+import { getPersonJsonLd } from '@/lib/person';
+import { buildWebSiteJsonLd } from '@/lib/seo';
 
 const [site, projects, now, highlights, stack, posts, career] = await Promise.all([
 	getSite(),
@@ -27,18 +28,23 @@ const [site, projects, now, highlights, stack, posts, career] = await Promise.al
 	getCareer(),
 ]);
 const { home } = site;
+const person = await getPersonJsonLd(Astro.site?.origin ?? 'https://shahariarniloy.com');
 const more = 'mt-5 inline-flex min-h-11 items-center';
 ---
 
-<BaseLayout isHome jsonLd={[buildPersonJsonLd(site, Astro.site?.href ?? '/')]}>
+<BaseLayout isHome jsonLd={[buildWebSiteJsonLd(site.name, Astro.site?.href ?? '/'), person]}>
 	<HomeIntro title={home.title} intro={home.intro} cta={home.cta} linkedin={site.linkedin} facts={home.facts} name={site.name} />
 	<section id="work" aria-labelledby="work-h" class="section-gap">
 		<SectionLabel id="work-h">Work</SectionLabel>
-		{projects
-			.filter((p) => p.data.showOnHome !== false)
-			.map((p) => (
-				<WorkRow project={p} context="home" />
-			))}
+		<ul class="m-0 list-none p-0">
+			{projects
+				.filter((p) => p.data.showOnHome !== false)
+				.map((p) => (
+					<li>
+						<WorkRow project={p} context="home" />
+					</li>
+				))}
+		</ul>
 		<p class={more}>
 			<Link href="/work">All work →</Link>
 		</p>
@@ -86,7 +92,7 @@ const more = 'mt-5 inline-flex min-h-11 items-center';
 		<SectionLabel id="now-h">Now</SectionLabel>
 		<NowList lines={now.home} />
 		<p class="mt-3.5 mb-0 font-mono text-meta text-mut">
-			Updated {formatMonth(now.updatedOn)} · <Link href="/now">More on the Now page →</Link>
+			Updated <time datetime={formatIsoDay(now.updatedOn).slice(0, 7)}>{formatMonth(now.updatedOn)}</time> · <Link href="/now">More on the Now page →</Link>
 		</p>
 	</section>
 	<section id="contact" aria-labelledby="contact-h" class="section-gap pb-6">

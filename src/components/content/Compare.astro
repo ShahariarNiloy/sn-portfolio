@@ -13,14 +13,14 @@ export interface Props {
 const { items } = Astro.props;
 ---
 
-<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+<ul class="m-0 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2">
 	{items.map((c) => (
-		<div class="rounded-xl border border-line bg-card p-4">
+		<li class="rounded-xl border border-line bg-card p-4">
 			<span class="mb-2.5 block font-mono text-xs text-mut">{c.label}</span>
 			<div class={cx('bar-fill mb-2.5 h-2 rounded-r', c.tone === 'acc' ? 'bg-acc' : 'bg-mut/45')} style={`--w: ${c.width}%`} aria-hidden="true" />
 			<p class="m-0 text-sm leading-relaxed text-mut">
 				<Inline text={c.text} />
 			</p>
-		</div>
+		</li>
 	))}
-</div>
+</ul>

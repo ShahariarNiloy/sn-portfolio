@@ -74,6 +74,12 @@ export function formatYearMonth(value: string): string {
 	return `${MONTHS[Number(month) - 1] ?? ''} ${year}`;
 }
 
+/** "2023" + "Oct" as "2023-10", for a <time> datetime; undefined unless both are exact. */
+export function isoYearMonth(year: string, month: string | undefined): string | undefined {
+	const i = MONTHS.indexOf(month as (typeof MONTHS)[number]);
+	return /^\d{4}$/.test(year) && i >= 0 ? `${year}-${String(i + 1).padStart(2, '0')}` : undefined;
+}
+
 /** "Oct 2023 – Present" when `to` is null, else "May 2022 – Oct 2023" (en dash). */
 export function formatRange(from: string, to: string | null): string {
 	return `${formatYearMonth(from)} – ${to === null ? 'Present' : formatYearMonth(to)}`;

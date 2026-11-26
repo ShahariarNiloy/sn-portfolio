@@ -31,9 +31,12 @@ export interface Props {
 	jsonLd?: Record<string, unknown>[] | undefined;
 	ogType?: 'website' | 'article' | undefined;
 	noindex?: boolean | undefined;
+	/** Wraps the title and body in <article>; the `after` slot (next links) stays outside. */
+	isArticle?: boolean | undefined;
 }
 
-const { title, seoTitle, lede, description, trail = [], crumbLabel, badge, isDraft = false, active, jsonLd, ogType, noindex } = Astro.props;
+const { title, seoTitle, lede, description, trail = [], crumbLabel, badge, isDraft = false, active, jsonLd, ogType, noindex, isArticle = false } = Astro.props;
+const Wrapper = isArticle ? 'article' : 'div';
 const crumbs: Crumb[] = [{ label: 'Home', href: '/' }, ...trail, { label: crumbLabel ?? title }];
 ---
 
@@ -46,27 +49,30 @@ const crumbs: Crumb[] = [{ label: 'Home', href: '/' }, ...trail, { label: crumbL
 	ogType={ogType}
 	noindex={noindex}
 >
-	<section class="pt-12 motion-safe:animate-rise sm:pt-16">
-		<Breadcrumb items={crumbs} />
-		{Astro.slots.has('title') ? (
-			<slot name="title" />
-		) : (
-			<h1 class="mt-4 mb-0 text-3xl leading-tight font-semibold tracking-tight text-head sm:text-4xl">
-				{title}
-				{badge && <Pill class="ml-1">{badge}</Pill>}
-				{isDraft && (
-					<Pill dashed class="ml-2">
-						Draft
-					</Pill>
-				)}
-			</h1>
-		)}
-		{lede && (
-			<p class="mt-4 mb-0 text-base leading-relaxed text-mut">
-				<Inline text={lede} />
-			</p>
-		)}
-		<slot name="after-lede" />
-	</section>
-	<slot />
+	<Wrapper>
+		<section class="pt-12 motion-safe:animate-rise sm:pt-16">
+			<Breadcrumb items={crumbs} />
+			{Astro.slots.has('title') ? (
+				<slot name="title" />
+			) : (
+				<h1 class="mt-4 mb-0 text-3xl leading-tight font-semibold tracking-tight text-head sm:text-4xl">
+					{title}
+					{badge && <Pill class="ml-1">{badge}</Pill>}
+					{isDraft && (
+						<Pill dashed class="ml-2">
+							Draft
+						</Pill>
+					)}
+				</h1>
+			)}
+			{lede && (
+				<p class="mt-4 mb-0 text-base leading-relaxed text-mut">
+					<Inline text={lede} />
+				</p>
+			)}
+			<slot name="after-lede" />
+		</section>
+		<slot />
+	</Wrapper>
+	<slot name="after" />
 </BaseLayout>

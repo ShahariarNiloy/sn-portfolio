@@ -20,6 +20,7 @@ import Footer from '@/components/layout/Footer.astro';
 import Nav, { type NavSection } from '@/components/layout/Nav.astro';
 import { getPaletteEntries, getSite } from '@/lib/content';
 import { assertPageMeta, PAGE_META } from '@/lib/page-meta';
+import { shareImageFor } from '@/lib/og';
 import { buildBreadcrumbJsonLd, buildDescription, buildTitle, type Crumb } from '@/lib/seo';
 
 export interface Props {
@@ -37,11 +38,11 @@ export interface Props {
 	ogType?: 'website' | 'article' | undefined;
 	/** Keeps the page out of search results (admin). */
 	noindex?: boolean | undefined;
-	/** Share image path, 1200 × 630; the default when a page has none of its own. */
+	/** Share image path, 1200 × 630; defaults to the page's own card (lib/og.ts), else the site card. */
 	ogImage?: string | undefined;
 }
 
-const { title, description, active, isHome = false, crumbs, jsonLd = [], ogType = 'website', noindex = false, ogImage = '/og/default.png' } = Astro.props;
+const { title, description, active, isHome = false, crumbs, jsonLd = [], ogType = 'website', noindex = false } = Astro.props;
 const [site, paletteEntries] = await Promise.all([getSite(), getPaletteEntries()]);
 const origin = Astro.site?.origin ?? 'https://shahariarniloy.com';
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -51,7 +52,7 @@ const pageTitle = meta?.title ?? buildTitle(site.name, title);
 const pageDescription = meta?.description ?? buildDescription(description ?? site.description);
 // Drafts exist only in dev and have no entry yet.
 if (import.meta.env.PROD && !noindex) assertPageMeta(path, pageTitle, pageDescription);
-const shareImage = new URL(ogImage, origin).href;
+const shareImage = new URL(Astro.props.ogImage ?? shareImageFor(path), origin).href;
 const structured = [...jsonLd, ...(crumbs ? [buildBreadcrumbJsonLd(crumbs, canonical, origin)] : [])];
 ---
 

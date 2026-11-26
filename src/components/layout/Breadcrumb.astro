@@ -12,20 +12,22 @@ export interface Props {
 const { items } = Astro.props;
 ---
 
-<nav aria-label="Breadcrumb" class="flex flex-wrap items-center gap-2 font-mono text-xs text-mut">
-	{items.map((item, i) => (
-		<>
-			{i > 0 && <span aria-hidden="true">/</span>}
-			{item.href ? (
-				<a
-					href={item.href}
-					class="inline-flex -mx-2 min-h-11 min-w-11 items-center px-2 py-2.5 text-mut no-underline transition-colors duration-200 hover:text-fg"
-				>
-					{item.label}
-				</a>
-			) : (
-				<span aria-current="page">{item.label}</span>
-			)}
-		</>
-	))}
+<nav aria-label="Breadcrumb" class="font-mono text-xs text-mut">
+	<ol class="m-0 flex list-none flex-wrap items-center gap-2 p-0">
+		{items.map((item, i) => (
+			<li class="flex items-center gap-2">
+				{i > 0 && <span aria-hidden="true">/</span>}
+				{item.href ? (
+					<a
+						href={item.href}
+						class="inline-flex -mx-2 min-h-11 min-w-11 items-center px-2 py-2.5 text-mut no-underline transition-colors duration-200 hover:text-fg"
+					>
+						{item.label}
+					</a>
+				) : (
+					<span aria-current="page">{item.label}</span>
+				)}
+			</li>
+		))}
+	</ol>
 </nav>

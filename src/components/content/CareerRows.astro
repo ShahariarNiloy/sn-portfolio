@@ -19,12 +19,12 @@ const items = rows.map((row) => {
 });
 ---
 
-<div class="border-b border-line">
+<ul class="m-0 list-none border-b border-line p-0">
 	{items.map((row) => (
-		<div class="grid grid-cols-1 gap-0.5 border-t border-line py-3.5 sm:grid-cols-label sm:gap-4">
+		<li class="grid grid-cols-1 gap-0.5 border-t border-line py-3.5 sm:grid-cols-label sm:gap-4">
 			<span class="pt-0.5 font-mono text-meta text-mut">{row.period}</span>
 			<div>
-				<div class="font-medium">{row.title}</div>
+				<h3 class="m-0 text-sm/relaxed font-medium text-fg">{row.title}</h3>
 				<div class="text-sm text-mut">{row.body}</div>
 				{row.ladder.length > 0 && (
 					<ol class="m-0 mt-3 flex list-none flex-wrap items-baseline gap-x-2 gap-y-1 p-0 text-sm" aria-label={`Roles at ${row.title}, oldest first`}>
@@ -43,6 +43,6 @@ const items = rows.map((row) => {
 					</ol>
 				)}
 			</div>
-		</div>
+		</li>
 	))}
-</div>
+</ul>

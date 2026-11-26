@@ -8,6 +8,7 @@ import type { CollectionEntry } from 'astro:content';
 
 import Inline from '@/components/ui/Inline.astro';
 import { cx } from '@/lib/cx';
+import { isoYearMonth } from '@/lib/format';
 import { formatTimelineMeta } from '@/lib/timeline';
 
 type Entry = CollectionEntry<'timeline'>['data'];
@@ -48,8 +49,16 @@ const splitTitle = (title: string): { name: string; place: string | undefined } 
 					const { name, place } = splitTitle(e.title);
 					return (
 						<li class={cx('timeline-entry relative max-w-lg pb-8', marker(e.kind))}>
-							<p class="m-0 mb-1.5 font-mono text-meta text-mut">{formatTimelineMeta(e.month, KIND_LABEL[e.kind])}</p>
-							<p class="m-0 text-base font-medium text-fg">{name}</p>
+							<p class="m-0 mb-1.5 font-mono text-meta text-mut">
+								{isoYearMonth(y.year, e.month) ? (
+									<>
+										<time datetime={isoYearMonth(y.year, e.month)}>{e.month}</time> · {KIND_LABEL[e.kind]}
+									</>
+								) : (
+									formatTimelineMeta(e.month, KIND_LABEL[e.kind])
+								)}
+							</p>
+							<h4 class="m-0 text-base font-medium text-fg">{name}</h4>
 							{place && <p class="m-0 text-sm text-fg">{place}</p>}
 							{e.body && (
 								<p class="m-0 mt-2 text-sm leading-relaxed text-mut">

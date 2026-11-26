@@ -8,6 +8,7 @@ import { render } from 'astro:content';
 import { MDX_COMPONENTS } from '@/components/content/mdx';
 import PostLayout from '@/layouts/PostLayout.astro';
 import { getNext, getPublishedPosts, getRoutablePosts, getSite } from '@/lib/content';
+import { shareImageUrl } from '@/lib/og';
 import { buildPostingJsonLd } from '@/lib/seo';
 import { TOPICS } from '@/lib/topics';
 
@@ -24,7 +25,19 @@ const isDraft = status === 'draft';
 const topicLabel = TOPICS.find((t) => t.id === topic)?.label ?? topic;
 const url = new URL(Astro.url.pathname, Astro.site).href;
 const jsonLd =
-	publishedOn && !isDraft ? [buildPostingJsonLd({ title, summary, url, publishedOn, authorName: site.name, authorUrl: Astro.site?.href ?? '/' })] : [];
+	publishedOn && !isDraft
+		? [
+				buildPostingJsonLd({
+					title,
+					summary,
+					url,
+					publishedOn,
+					authorName: site.name,
+					authorUrl: Astro.site?.href ?? '/',
+					image: shareImageUrl(Astro.url.pathname, Astro.site?.origin ?? 'https://shahariarniloy.com'),
+				}),
+			]
+		: [];
 ---
 
 <PostLayout

@@ -1,0 +1,20 @@
+---
+/**
+ * DateRange — "Oct 2023 – Present" in mono, each end a <time> with its
+ * year-month, so the range is machine-readable.
+ */
+import { formatYearMonth } from '@/lib/format';
+
+export interface Props {
+	/** "YYYY-MM". */
+	from: string;
+	/** "YYYY-MM", or null while it's still going. */
+	to: string | null;
+}
+
+const { from, to } = Astro.props;
+---
+
+<span class="font-mono text-meta whitespace-nowrap text-mut">
+	<time datetime={from}>{formatYearMonth(from)}</time> – {to === null ? 'Present' : <time datetime={to}>{formatYearMonth(to)}</time>}
+</span>

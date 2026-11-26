@@ -22,11 +22,13 @@ const groups = TOPICS.map((t) => ({ ...t, posts: posts.filter((p) => p.data.topi
 	{groups.map((g) => (
 		<section class="section-gap">
 			<SectionLabel>{g.label}</SectionLabel>
-			<div class="flex flex-col">
+			<ul class="m-0 flex list-none flex-col p-0">
 				{g.posts.map((p) => (
-					<PostRow href={`/blog/${p.id}`} title={p.data.title} summary={p.data.summary} date={p.data.publishedOn} />
+					<li>
+						<PostRow href={`/blog/${p.id}`} title={p.data.title} summary={p.data.summary} date={p.data.publishedOn} />
+					</li>
 				))}
-			</div>
+			</ul>
 		</section>
 	))}
 	<p class="mt-12 mb-0 text-sm text-mut">

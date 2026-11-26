@@ -23,11 +23,15 @@ const GROUPS = [
 	{GROUPS.map((g, i) => (
 		<section class={i === 0 ? 'pt-16' : 'pt-12'}>
 			<SectionLabel>{g.label}</SectionLabel>
-			{projects
-				.filter((p) => p.data.group === g.id)
-				.map((p) => (
-					<WorkRow project={p} context="work" />
-				))}
+			<ul class="m-0 list-none p-0">
+				{projects
+					.filter((p) => p.data.group === g.id)
+					.map((p) => (
+						<li>
+							<WorkRow project={p} context="work" />
+						</li>
+					))}
+			</ul>
 		</section>
 	))}
 </PageLayout>
