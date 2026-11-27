@@ -67,7 +67,7 @@ const reasons: Record<SignInError, { tag: string; title: string; hint: string; b
 				)}
 				<div class="mt-8 flex flex-wrap gap-2.5">
 					{reason !== 'config' && (
-						<Button variant="primary" href="/api/guestbook/login">
+						<Button variant="primary" href="/api/guestbook/login" data-astro-prefetch="false">
 							Try signing in again
 						</Button>
 					)}
