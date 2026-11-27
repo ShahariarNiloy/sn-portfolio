@@ -20,8 +20,11 @@ export type SignInError = (typeof SIGN_IN_ERRORS)[number];
 /**
  * Sends a browser that was mid sign-in to the friendly error page. The sign-in
  * routes are full-page navigations, so a JSON body would show up as raw text.
+ * Logs the reason and the hostname only (no names, tokens or cookies), so a failure
+ * shows up in Workers Logs afterwards.
  */
-export function signInError(reason: SignInError): Response {
+export function signInError(reason: SignInError, hostname = ''): Response {
+	console.warn(JSON.stringify({ event: 'guestbook_sign_in_failed', reason, hostname }));
 	return new Response(null, {
 		status: 302,
 		headers: { Location: `/guestbook/sign-in-error?reason=${reason}`, 'Cache-Control': 'no-store' },

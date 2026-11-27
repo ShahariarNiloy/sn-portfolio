@@ -34,4 +34,10 @@
 		},
 	],
 	"r2_buckets": [{ "binding": "FILES", "bucket_name": "shahariarniloy-files" }],
+	// Keep Workers Logs (console output plus one log per request) so a failed sign-in can be
+	// traced afterwards. Traces stay off. A deploy overwrites what the dashboard says.
+	"observability": {
+		"logs": { "enabled": true, "invocation_logs": true },
+		"traces": { "enabled": false },
+	},
 }

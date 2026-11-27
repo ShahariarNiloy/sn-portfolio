@@ -43,9 +43,15 @@ export async function exchangeCode(app: GitHubApp, options: { code: string; code
 			code_verifier: options.codeVerifier,
 		}),
 	});
-	if (!response.ok) return null;
-	const data = (await response.json()) as { access_token?: unknown };
-	return typeof data.access_token === 'string' ? data.access_token : null;
+	if (!response.ok) {
+		console.warn(JSON.stringify({ event: 'github_token_exchange_failed', status: response.status }));
+		return null;
+	}
+	const data = (await response.json()) as { access_token?: unknown; error?: unknown };
+	if (typeof data.access_token === 'string') return data.access_token;
+	// GitHub answers 200 with an error code (e.g. redirect_uri_mismatch); log the code only.
+	console.warn(JSON.stringify({ event: 'github_token_exchange_failed', error: typeof data.error === 'string' ? data.error : 'unknown' }));
+	return null;
 }
 
 /** Reads the signed-in user's id and display name. */
