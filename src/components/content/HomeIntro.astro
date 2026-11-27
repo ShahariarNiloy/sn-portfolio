@@ -1,7 +1,7 @@
 ---
 /**
  * HomeIntro — Home's hero: the title, the round avatar beside the intro text (which wraps around it on phones),
- * the sentence with the LinkedIn pill, and the facts row. The only animated block on Home. The avatar
+ * the sentence with the "Let's talk" pill (to /contact, where the CV is too), and the facts row. The only animated block on Home. The avatar
  * is the shared Avatar component (one cached file for Home and About).
  */
 import Avatar from '@/components/ui/Avatar.astro';
@@ -12,12 +12,11 @@ export interface Props {
 	title: [string, string];
 	intro: string;
 	cta: { text: string; label: string };
-	linkedin: string;
 	facts: { label: string; value: string }[];
 	name: string;
 }
 
-const { title, intro, cta, linkedin, facts, name } = Astro.props;
+const { title, intro, cta, facts, name } = Astro.props;
 ---
 
 <section aria-label="Introduction" class="pt-24 pb-6 motion-safe:animate-rise max-sm:pt-12">
@@ -31,12 +30,15 @@ const { title, intro, cta, linkedin, facts, name } = Astro.props;
 			class="size-24 max-sm:float-left max-sm:mr-4 max-sm:mb-2 max-sm:[shape-margin:0.875rem] max-sm:[shape-outside:circle(50%_at_50%_50%)_border-box]"
 		/>
 		<div>
-			<p class="m-0 text-base leading-relaxed text-mut">
-				<Inline text={intro} />
-			</p>
+			{/* A blank line in the intro starts a new paragraph. */}
+			{intro.split('\n\n').map((para, i) => (
+				<p class:list={['mb-0 text-base leading-relaxed text-mut', i === 0 ? 'mt-0' : 'mt-4']}>
+					<Inline text={para} />
+				</p>
+			))}
 			<p class="mt-6 mb-0 text-base leading-7 text-mut">
 				{cta.text}{' '}
-				<CtaPill href={linkedin} srSuffix="on LinkedIn" class="max-sm:mt-2 sm:ml-1">
+				<CtaPill href="/contact" class="max-sm:mt-2 sm:ml-1">
 					{cta.label}
 				</CtaPill>
 			</p>

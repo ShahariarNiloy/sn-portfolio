@@ -3,6 +3,7 @@
  * /timeline — the CV (view or download), the Career card and the year-by-year timeline.
  */
 import CareerCard from '@/components/content/CareerCard.astro';
+import { CV_URL } from '@/lib/cv';
 import Timeline from '@/components/content/Timeline.astro';
 import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
@@ -11,8 +12,6 @@ import PageLayout from '@/layouts/PageLayout.astro';
 import { getCareer, getTimeline } from '@/lib/content';
 
 const [years, career] = await Promise.all([getTimeline(), getCareer()]);
-// The file in public/. Replace it under the same name to update the CV.
-const CV_URL = '/shahariar-niloy-cv.pdf';
 ---
 
 <PageLayout title="Timeline" active="timeline" lede="Newest first: roles, research, recognition and the steps in between.">

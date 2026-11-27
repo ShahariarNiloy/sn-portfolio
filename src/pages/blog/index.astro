@@ -4,6 +4,7 @@
  * Drafts never appear in production builds.
  */
 import PostRow from '@/components/content/PostRow.astro';
+import { postDate } from '@/lib/post-dates';
 import Link from '@/components/ui/Link.astro';
 import SectionLabel from '@/components/ui/SectionLabel.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
@@ -25,7 +26,7 @@ const groups = TOPICS.map((t) => ({ ...t, posts: posts.filter((p) => p.data.topi
 			<ul class="m-0 flex list-none flex-col p-0">
 				{g.posts.map((p) => (
 					<li>
-						<PostRow href={`/blog/${p.id}`} title={p.data.title} summary={p.data.summary} date={p.data.publishedOn} />
+						<PostRow href={`/blog/${p.id}`} title={p.data.title} summary={p.data.summary} date={postDate(p.data.publishedOn)} />
 					</li>
 				))}
 			</ul>

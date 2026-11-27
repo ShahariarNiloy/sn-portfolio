@@ -3,6 +3,7 @@
  * Home — hero, Work, Highlights, Latest posts, Stack, Career, Now and Contact.
  */
 import CareerRows from '@/components/content/CareerRows.astro';
+import { postDate } from '@/lib/post-dates';
 import ContactLine from '@/components/content/ContactLine.astro';
 import HighlightGrid from '@/components/content/HighlightGrid.astro';
 import HomeIntro from '@/components/content/HomeIntro.astro';
@@ -33,7 +34,7 @@ const more = 'mt-5 inline-flex min-h-11 items-center';
 ---
 
 <BaseLayout isHome jsonLd={[buildWebSiteJsonLd(site.name, Astro.site?.href ?? '/'), person]}>
-	<HomeIntro title={home.title} intro={home.intro} cta={home.cta} linkedin={site.linkedin} facts={home.facts} name={site.name} />
+	<HomeIntro title={home.title} intro={home.intro} cta={home.cta} facts={home.facts} name={site.name} />
 	<section id="work" aria-labelledby="work-h" class="section-gap">
 		<SectionLabel id="work-h">Work</SectionLabel>
 		<ul class="m-0 list-none p-0">
@@ -60,7 +61,7 @@ const more = 'mt-5 inline-flex min-h-11 items-center';
 		<SectionLabel id="blog-h">Latest posts</SectionLabel>
 		<NumberedPosts
 			mobileLimit={3}
-			posts={posts.map((p) => ({ href: `/blog/${p.id}`, title: p.data.title, summary: p.data.summary, date: p.data.publishedOn }))}
+			posts={posts.map((p) => ({ href: `/blog/${p.id}`, title: p.data.title, summary: p.data.summary, date: postDate(p.data.publishedOn) }))}
 		/>
 		<p class={more}>
 			<Link href="/blog">All posts →</Link>

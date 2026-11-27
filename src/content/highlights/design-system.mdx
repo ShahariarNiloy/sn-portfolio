@@ -1,6 +1,7 @@
 ---
 title: 'A lighter design system'
 lede: "At work, I built our booking platform's design system from scratch: a drop-in replacement for the component library we used before, with the same APIs and about half the JavaScript."
+companyWork: true
 card: "Our platform's component library, rebuilt from scratch with about half the JavaScript."
 illustration: design-system
 order: 1
@@ -26,7 +27,7 @@ Behind that number is someone on a phone. They know where they want to go, and t
 
 On a booking site, **bundle size is conversion**. Every kilobyte delays the one thing the visitor came to do, and they can always go and do it somewhere else.
 
-Our toolbox was antd, and for us it was heavy. Bundled together, the 46 antd components the platform used came to 407 KB gzipped. That isn't a knock on antd. It's a good library, built to cover every product, and we only needed to cover ours. Its styles are CSS-in-JS, which is JavaScript that works out the styles in the browser. And a component library is awkward to replace, because screens depend on how it behaves as well as how it looks.
+Our toolbox was antd, and for us it was heavy. Bundled together, the antd components the platform used came to about 400 KB gzipped. That isn't a knock on antd. It's a good library, built to cover every product, and we only needed to cover ours. Its styles are CSS-in-JS, which is JavaScript that works out the styles in the browser. And a component library is awkward to replace, because screens depend on how it behaves as well as how it looks.
 
 ## Why not a headless library
 
@@ -90,14 +91,14 @@ Motion got the same treatment. The language is calm: purposeful, brief, never bo
 
 ## Was it lighter?
 
-"It feels faster" isn't a result, so each component was measured against its closest antd equivalent. Both were bundled with esbuild on their own, with everything they import, then minified and gzipped in the same way. React was left out, since the app ships it either way. The figures are from 15 November 2026, against antd 5.29.3.
+"It feels faster" isn't a result, so each component was measured against its closest antd equivalent. Both were bundled with esbuild on their own, with everything they import, then minified and gzipped in the same way. React was left out, since the app ships it either way. The figures are from November 2026, rounded.
 
 <StatGrid
 	columns={2}
 	items={[
-		{ value: '186 KB', label: 'every component together, gzipped, against 407 KB for antd' },
+		{ value: '~190 KB', label: 'every component together, gzipped, against about 400 KB for antd' },
 		{ value: '54%', label: 'smaller across the whole library' },
-		{ value: '~6×', label: 'smaller for the median component: 12.9 KB against 74.9 KB' },
+		{ value: '~6×', label: 'smaller for the median component: about 13 KB against 75 KB' },
 		{ value: '9 KB', label: 'of shared base code, against about 30 KB' },
 	]}
 />
@@ -118,7 +119,7 @@ Motion got the same treatment. The language is calm: purposeful, brief, never bo
 	]}
 />
 
-<Caption>KB, minified + gzipped. Each component measured on its own with everything it imports; React excluded. Bars are scaled to the largest, antd's table at 203 KB (ours is 19.2 KB).</Caption>
+<Caption>KB, minified + gzipped. Each component measured on its own with everything it imports; React excluded. Bars are scaled to the largest, antd's table at about 200 KB (ours is about 20 KB).</Caption>
 
 ### Reading the numbers
 

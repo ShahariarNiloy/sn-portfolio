@@ -19,7 +19,7 @@ const MAX_DESCRIPTION = 160;
 export const PAGE_META: Record<string, PageMeta> = {
 	'/': {
 		title: 'Shahariar Niloy — Senior Software Engineer',
-		description: 'Shahariar Niloy makes software lighter and faster. Senior Software Engineer in Dhaka, leading frontend on a platform used by millions.',
+		description: 'Shahariar Niloy makes software lighter and faster. Senior Software Engineer in Dhaka, leading a team of about 14 on a travel platform used by millions.',
 	},
 	'/work': {
 		description:
@@ -66,20 +66,20 @@ export const PAGE_META: Record<string, PageMeta> = {
 	'/highlights/research': {
 		description: 'A first-author IEEE paper on recognising Bangla handwritten characters with a convolutional neural network, from before software engineering took over.',
 	},
-	'/stack': { description: "The tools behind the speed: what I reach for every day, what I use for data and performance, and what I'm learning next." },
+	'/stack': { description: "Shahariar Niloy's stack: the tools used every day, the rest shipped to production, from Go and NestJS to PostgreSQL, and what's next to learn." },
 	'/timeline': {
 		description:
 			'The career of Shahariar Niloy, newest first: roles at Adventure Dhaka Limited and Sheba Technologies, research, recognition and the steps between.',
 	},
 	'/about': {
 		description:
-			'How Shahariar Niloy went from machine learning research to leading a frontend department in Dhaka: the path, the way of working, and what matters along it.',
+			'How Shahariar Niloy went from machine learning research to leading an engineering team in Dhaka: the path, the way of working, and what matters along it.',
 	},
 	'/contact': {
 		description: 'How to reach Shahariar Niloy, a Senior Software Engineer in Dhaka: by email for roles, projects and questions, or on LinkedIn and GitHub.',
 	},
 	'/now': {
-		description: 'What Shahariar Niloy is focused on now: leading frontend on adventure.inc, building Repo Galaxy, redesigning utilyx.dev and learning Rust.',
+		description: 'What Shahariar Niloy is focused on now: leading a team on adventure.inc, building Repo Galaxy, redesigning utilyx.dev and learning Rust.',
 	},
 	'/uses': {
 		description: 'The hardware, software and small tools Shahariar Niloy uses every day to build lighter, faster software. People ask, so this is the list.',
@@ -102,7 +102,7 @@ export const PAGE_META: Record<string, PageMeta> = {
 	},
 	'/blog/hreflang': {
 		description:
-			'Dozens of languages, one URL per page, and every version pointing to its siblings: the hreflang rules that matter and the bugs that break them.',
+			'26 languages, one URL per page, and every version pointing to its siblings: the hreflang rules that matter and the bugs that break them.',
 	},
 	'/blog/lighter-component-library': {
 		title: 'A component library, half the JavaScript — Shahariar Niloy',

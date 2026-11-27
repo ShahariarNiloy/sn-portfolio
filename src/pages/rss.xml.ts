@@ -2,6 +2,7 @@
  * /rss.xml — RSS feed of published posts (drafts never appear).
  */
 import rss from '@astrojs/rss';
+import { postDate } from '@/lib/post-dates';
 import type { APIRoute } from 'astro';
 
 import { getLatestPosts, getSite } from '@/lib/content';
@@ -16,7 +17,7 @@ export const GET: APIRoute = async (context) => {
 			title: post.data.title,
 			description: post.data.summary,
 			link: `/blog/${post.id}`,
-			pubDate: post.data.publishedOn,
+			pubDate: postDate(post.data.publishedOn),
 		})),
 	});
 };

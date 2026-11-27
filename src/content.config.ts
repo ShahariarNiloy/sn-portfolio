@@ -48,6 +48,8 @@ const projects = defineCollection({
 			name: z.string(),
 			group: z.enum(['company', 'product', 'building']),
 			lede: z.string(),
+			/** Company work: shows a note that it is described in general terms, with figures rounded. */
+			companyWork: z.boolean().optional(),
 			url: z.url().optional(),
 			sourceUrl: z.url().optional(),
 			meta: z.array(metaItem),
@@ -78,6 +80,8 @@ const highlights = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		lede: z.string(),
+		/** Company work: shows a note that it is described in general terms, with figures rounded. */
+		companyWork: z.boolean().optional(),
 		card: z.string().max(140),
 		illustration,
 		/** Order on /highlights, in the palette and in "Next highlight". */
@@ -142,7 +146,10 @@ const stack = defineCollection({
 	loader: file('./src/content/data/stack.json'),
 	schema: z.object({
 		name: z.string(),
-		group: z.enum(['every-day', 'state-and-data', 'runtime-build-delivery', 'learning']),
+		/** core: used every day; production: shipped with it; learning: not in production yet. */
+		group: z.enum(['core', 'production', 'learning']),
+		/** Shown on Home when its group is too long to list in full (over six); the rest are counted and linked to /stack. */
+		featured: z.boolean().optional(),
 		/** What it is for, on /stack. */
 		description: z.string(),
 		icon: z.string(),
@@ -157,8 +164,6 @@ const stack = defineCollection({
 			.optional(),
 		symbol: z.string().optional(),
 		category: z.string().optional(),
-		/** Its group and place in Home's Stack section. */
-		home: z.object({ group: z.enum(['languages', 'frameworks', 'libraries', 'data', 'runtime-hosting', 'tooling']), order: z.number().int() }).optional(),
 	}),
 });
 

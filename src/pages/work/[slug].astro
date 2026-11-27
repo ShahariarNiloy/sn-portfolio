@@ -9,6 +9,7 @@ import MetaList from '@/components/content/MetaList.astro';
 import NextLink from '@/components/content/NextLink.astro';
 import { MDX_COMPONENTS } from '@/components/content/mdx';
 import PageLayout from '@/layouts/PageLayout.astro';
+import CompanyNote from '@/components/ui/CompanyNote.astro';
 import { getNext, getProjects } from '@/lib/content';
 import { shareImageUrl } from '@/lib/og';
 import { buildProjectJsonLd } from '@/lib/seo';
@@ -43,6 +44,7 @@ const jsonLd = [
 	jsonLd={jsonLd}
 	isArticle
 >
+	{project.data.companyWork && <CompanyNote slot="after-lede" />}
 	<MetaList items={project.data.meta} />
 	<div class="case">
 		<Content components={MDX_COMPONENTS} />

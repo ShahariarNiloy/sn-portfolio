@@ -1,30 +1,29 @@
 ---
 /**
- * StackList — Home's Stack section: one row per kind of tool, a mono label then
- * every tool as a grey logo and its name. Reads the same data as /stack.
+ * StackList — Home's Stack section: one row per group (core, also in production,
+ * learning), a mono label then each tool as a grey logo and its name. A long group
+ * lists only its featured tools and links the rest to /stack. Same data and groups as /stack.
  */
 import type { CollectionEntry } from 'astro:content';
 
 import Icon from '@/components/ui/Icon.astro';
+import Link from '@/components/ui/Link.astro';
 import type { IconName } from '@/components/ui/icons';
+import { STACK_GROUPS } from '@/lib/stack';
 
 export interface Props {
 	items: CollectionEntry<'stack'>[];
 }
 
 const { items } = Astro.props;
-const GROUPS = [
-	{ id: 'languages', label: 'Languages' },
-	{ id: 'frameworks', label: 'Frameworks' },
-	{ id: 'libraries', label: 'Libraries' },
-	{ id: 'data', label: 'Data' },
-	{ id: 'runtime-hosting', label: 'Runtime & hosting' },
-	{ id: 'tooling', label: 'Tooling' },
-] as const;
-const rows = GROUPS.map((g) => ({
-	...g,
-	tools: items.filter((i) => i.data.home?.group === g.id).sort((a, b) => (a.data.home?.order ?? 0) - (b.data.home?.order ?? 0)),
-}));
+const rows = STACK_GROUPS.map((g) => {
+	const all = items.filter((i) => i.data.group === g.id);
+	// A long group shows its featured tools, or its first six if none are marked (e.g. a
+	// content cache from before `featured` existed), and links the rest to /stack.
+	const featured = all.filter((i) => i.data.featured);
+	const tools = all.length <= 6 ? all : featured.length ? featured : all.slice(0, 6);
+	return { ...g, tools, more: all.length - tools.length };
+});
 ---
 
 <div class="flex flex-col">
@@ -40,6 +39,13 @@ const rows = GROUPS.map((g) => ({
 						{tool.data.name}
 					</li>
 				))}
+				{row.more > 0 && (
+					<li class="inline-flex items-baseline">
+						<Link href="/stack">
+							+{row.more} more<span class="sr-only"> tools, on the Stack page</span>
+						</Link>
+					</li>
+				)}
 			</ul>
 		</div>
 	))}

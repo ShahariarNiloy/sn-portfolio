@@ -1,6 +1,7 @@
 ---
 title: 'Only the words a page needs'
-lede: 'A multilingual Next.js app was sending its entire translation dictionary, 3,548 strings and about 60 KB compressed, inside every page, to show a few hundred of them. I rebuilt how text reaches the browser.'
+lede: 'A multilingual Next.js app was sending its entire translation dictionary, thousands of strings and about 60 KB compressed, inside every page, to show a few hundred of them. I rebuilt how text reaches the browser.'
+companyWork: true
 card: 'Each page now ships only its own translations: 60 KB down to 5–7 KB.'
 illustration: localization
 order: 5
@@ -15,7 +16,7 @@ featuredOnHome: { order: 4, size: 4 }
 		{ label: 'Product', value: '[adventure.inc](/work/adventure-inc)' },
 		{ label: 'Focus', value: 'Internationalisation and performance' },
 		{ label: 'Stack', value: 'Next.js App Router, React Server Components, TypeScript' },
-		{ label: 'Scale', value: '26 languages, 92 country–language versions, 3,548 strings' },
+		{ label: 'Scale', value: '26 languages, 90+ country–language versions, thousands of strings' },
 	]}
 />
 
@@ -35,20 +36,20 @@ featuredOnHome: { order: 4, size: 4 }
 
 Interactive components need their text **on the very first render** — on the server and again while React hydrates — or visitors see raw keys or a flash of English. The simplest way to guarantee that was to embed the whole dictionary in every page.
 
-It worked, but it put about 60 KB of compressed text (195 KB raw) into every page before it could render. No page needed most of it: the home page uses 323 of the 3,548 keys, and hotel details, one of the busiest, uses 463.
+It worked, but it put about 60 KB of compressed text (nearly 200 KB raw) into every page before it could render. No page needed most of it: even the busiest pages use only a few hundred of the thousands of keys.
 
 ## Before and after
 
 <Compare
 	items={[
 		{ label: 'Before', width: 100, tone: 'mut', text: 'The whole dictionary, embedded in every page: about 60 KB.' },
-		{ label: 'After', width: 10, tone: 'acc', text: "Just the page's own words: 5.8–7.3 KB. The rest arrives later, once, and stays cached." },
+		{ label: 'After', width: 10, tone: 'acc', text: "Just the page's own words: 5–7 KB. The rest arrives later, once, and stays cached." },
 	]}
 />
 
-Over a five-page visit (home, hotels, a listing, a hotel, flights), that's **5 × 60.1 = 300.5 KB before**, against **31.2 + 61 = 92.2 KB after** on the first visit (−69%), including the full dictionary, and **31.2 KB** on later visits (−90%). In Japanese, where characters take more bytes, each page saves about 63 KB instead of 54.
+Over a five-page visit (home, hotels, a listing, a hotel, flights), that's about **5 × 60 = 300 KB before**, against about **31 + 61 = 92 KB after** on the first visit (about 70% less), including the full dictionary, and about **31 KB** on later visits (about 90% less). In Japanese, where characters take more bytes, each page saves even more.
 
-<Caption>Translation data in each page's server-component payload, gzipped. Two local production builds, 7 November 2026, desktop. Whole-page sizes aren't compared, because other optimisations shipped in the same period.</Caption>
+<Caption>Translation data in each page's server-component payload, gzipped. Production builds, November 2026, rounded. Whole-page sizes aren't compared, because other optimisations shipped in the same period.</Caption>
 
 ## How it works
 
@@ -68,7 +69,7 @@ Over a five-page visit (home, hotels, a listing, a hotel, flights), that's **5 �
 		},
 		{
 			title: 'Send the rest later',
-			body: 'After the page has loaded and the browser is idle, the full dictionary (61 KB gzipped) arrives in the background and applies inside a React transition, so the page stays responsive. Its URL is content-hashed, so browsers cache it for a year and every country that shares a language shares one copy.',
+			body: 'After the page has loaded and the browser is idle, the full dictionary (about 60 KB gzipped) arrives in the background and applies inside a React transition, so the page stays responsive. Its URL is content-hashed, so browsers cache it for a year and every country that shares a language shares one copy.',
 		},
 	]}
 />

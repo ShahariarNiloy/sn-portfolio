@@ -5,6 +5,7 @@
  * "Next …" card. `variant` picks long-form (post) or case-study styling.
  */
 import Card from '@/components/ui/Card.astro';
+import CompanyNote from '@/components/ui/CompanyNote.astro';
 import Icon from '@/components/ui/Icon.astro';
 import DayStamp from '@/components/ui/DayStamp.astro';
 import SectionLabel from '@/components/ui/SectionLabel.astro';
@@ -34,9 +35,11 @@ export interface Props {
 	next?: { href: string; kicker: string; title: string } | undefined;
 	active?: NavSection | undefined;
 	jsonLd?: Record<string, unknown>[] | undefined;
+	/** Company work: adds the "described in general terms" note under the lede. */
+	companyWork?: boolean | undefined;
 }
 
-const { variant, title, lede, trail, crumbLabel, illustration, meta, date, isDraft = false, related, next, active, jsonLd } = Astro.props;
+const { variant, title, lede, trail, crumbLabel, illustration, meta, date, isDraft = false, related, next, active, jsonLd, companyWork = false } = Astro.props;
 ---
 
 <PageLayout title={title} lede={lede} trail={trail} crumbLabel={crumbLabel} isDraft={isDraft} active={active} jsonLd={jsonLd} ogType="article" isArticle>
@@ -48,6 +51,7 @@ const { variant, title, lede, trail, crumbLabel, illustration, meta, date, isDra
 			))}
 		</p>
 	)}
+	{companyWork && <CompanyNote slot="after-lede" />}
 	<section class={variant === 'post' ? 'pt-10' : 'pt-12'}>
 		<IllustrationReveal>
 			<Card padding="lg">

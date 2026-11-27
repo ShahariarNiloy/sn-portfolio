@@ -8,7 +8,7 @@
 	},
 	{
 		"id": "02",
-		"year": "1998 – 2017",
+		"year": "2017",
 		"month": "Sep",
 		"title": "Started a BSc at East West University",
 		"kind": "education",
@@ -108,7 +108,7 @@
 		"month": "Oct",
 		"title": "Senior Software Engineer · Adventure Dhaka Limited",
 		"kind": "role",
-		"body": "Head of the frontend department. [Memory audit](/blog/memory-limit), [SEO across 26 languages](/highlights/seo) and flight search."
+		"body": "Head of Frontend, leading a team of about 14 engineers. [Memory audit](/blog/memory-limit), [SEO across 26 languages](/highlights/seo) and flight search."
 	},
 	{
 		"id": "15",

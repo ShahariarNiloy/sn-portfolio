@@ -29,7 +29,7 @@ export async function getStaticPaths() {
 	const [projects, highlights, posts, essays] = await Promise.all([getProjects(), getHighlights(), getPublishedPosts(), getEssays()]);
 	const card = (slug: string, props: Card) => ({ params: { slug }, props });
 	return [
-		card('about', { kicker: 'About', title: 'From machine learning research to leading a frontend department.' }),
+		card('about', { kicker: 'About', title: 'From machine learning research to leading an engineering team.' }),
 		...projects.map((p) => card(`work/${p.id}`, { kicker: p.data.badge ?? 'Project', title: p.data.name, shot: p.data.thumbnail })),
 		...highlights.map((h) => card(`highlights/${h.id}`, { kicker: `Case study · ${h.data.kicker}`, title: h.data.title, illustration: h.data.illustration })),
 		...posts.map((p) =>

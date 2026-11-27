@@ -29,7 +29,7 @@ export async function getPersonJsonLd(origin: string): Promise<Record<string, un
 			'Design systems',
 			'Search engine optimisation',
 			'Accessibility',
-			...stack.filter((s) => s.data.home).map((s) => s.data.name),
+			...stack.filter((s) => s.data.group !== 'learning').map((s) => s.data.name),
 		],
 		award: site.home.recognition.filter((r) => r.title.startsWith('Best ')).map((r) => `${r.title} (${r.detail})`),
 	});

@@ -7,6 +7,7 @@
 import KeyValueRows from '@/components/content/KeyValueRows.astro';
 import Avatar from '@/components/ui/Avatar.astro';
 import CtaPill from '@/components/ui/CtaPill.astro';
+import { CV_URL } from '@/lib/cv';
 import Inline from '@/components/ui/Inline.astro';
 import Link from '@/components/ui/Link.astro';
 import SectionLabel from '@/components/ui/SectionLabel.astro';
@@ -20,8 +21,8 @@ const origin = Astro.site?.origin ?? 'https://shahariarniloy.com';
 const profile = buildProfilePageJsonLd(await getPersonJsonLd(origin), new URL('/about', origin).href);
 
 const intro = [
-	"I'm Niloy, a software engineer in Dhaka. I started with machine learning research, moved to the web, and now lead a frontend department.",
-	'At Adventure Dhaka Limited I lead the frontend team behind [a travel booking platform in 26 languages](/work/adventure-inc), used by millions: about fourteen engineers. I still write code.',
+	"I'm Niloy, a software engineer in Dhaka. I started with machine learning research, moved to the web, and am now the tech lead for a team of about 14 engineers.",
+	'At Adventure Dhaka Limited that team builds [a travel booking platform in 26 languages](/work/adventure-inc), used by millions. I still write code.',
 	'Outside work I build my own products end to end: [utilyx.dev](/work/utilyx), [Truly Remote Work](/work/truly-remote-work) and [GeoRenus](/work/georenus).',
 ];
 
@@ -42,12 +43,12 @@ const principles = [
 
 const facts = [
 	{ label: 'Based in', value: 'Dhaka, Bangladesh' },
-	{ label: 'Role', value: `${site.role} and head of frontend, Adventure Dhaka Limited` },
+	{ label: 'Role', value: `${site.role} and tech lead, Adventure Dhaka Limited` },
 	{ label: 'In production', value: 'Since 2022' },
 	{ label: 'Education', value: 'BSc in Computer Science & Engineering, East West University' },
 	{ label: 'Research', value: '[First-author IEEE paper](/highlights/research) on handwritten Bangla, 2022' },
 	{ label: 'Speaks', value: 'English, Bengali' },
-	{ label: 'Recognition', value: 'Best Employee of the Year, FY 2023–24 and FY 2025–26' },
+	{ label: 'Recognition', value: 'Best Employee of the Year, FY 2023–24 and FY 2025–26; Best Flexible Employee, FY 2024–25' },
 ];
 
 const story: { title: string; body: string[] }[] = [
@@ -56,14 +57,14 @@ const story: { title: string; body: string[] }[] = [
 		body: [
 			'I studied computer science at East West University in Dhaka. My research there was in machine learning: teaching a model to read handwritten Bangla, a script full of characters that look almost alike. That work became [a first-author IEEE paper](/highlights/research), presented in India in September 2022.',
 			"By then I was already working. I joined Sheba Technologies as an intern in February 2022 and became a junior engineer that May. I worked on learning platforms for BRAC, one of the world's largest NGOs, built the admin panel of an attendance system from scratch, and brought TypeScript into the codebase.",
-			'In October 2023 I joined Adventure Dhaka Limited, again as a junior, on [a travel booking platform in 26 languages](/work/adventure-inc). A year later I was a Software Engineer, working on search, one module for hotels and vacation rentals, and faster pages. A year after that, a Senior Software Engineer and head of the frontend department.',
+			'In October 2023 I joined Adventure Dhaka Limited, again as a junior, on [a travel booking platform in 26 languages](/work/adventure-inc). A year later I was a Software Engineer, working on search, one module for hotels and vacation rentals, and faster pages. A year after that, a Senior Software Engineer.',
 			"It wasn't a straight line from reading handwriting to building booking pages. The dates are on [the timeline](/timeline).",
 		],
 	},
 	{
 		title: 'Leading a team',
 		body: [
-			"I lead and mentor a team of about fourteen frontend engineers. I still write code. Much of the rest is code reviews, working through performance problems together, and sharing what we've learned with the teams around us.",
+			"I lead and mentor a team of about 14 frontend engineers. I still write code. Much of the rest is code reviews, working through performance problems together, and sharing what we've learned with the teams around us.",
 			"Much of the work shown here was done alongside other people. On the company pages I've tried to list only what I owned or drove, and two of the products were built with someone else: [Truly Remote Work](/work/truly-remote-work) and [GeoRenus](/work/georenus).",
 		],
 	},
@@ -72,7 +73,6 @@ const story: { title: string; body: string[] }[] = [
 		body: [
 			"Software that doesn't waste people's time, their data or their patience. Pages that work with a keyboard, in any language, on a slow connection.",
 			"And people, more than software. [Off the clock](/off-the-clock) I write short essays about gratitude, character and the way we treat each other. One of them is about arguments: go in with something to learn, rather than something to prove. It's as useful in a code review as anywhere else.",
-			'The rest is long walks, slow mornings, and a debate between tea and coffee that neither side is losing.',
 		],
 	},
 ];
@@ -83,7 +83,7 @@ const more = [
 	{ label: 'Stack', note: 'What I build with', href: '/stack' },
 	{ label: 'Uses', note: 'My setup', href: '/uses' },
 	{ label: 'Guestbook', note: 'Leave a note', href: '/guestbook' },
-	{ label: 'CV', note: 'PDF', href: '/shahariar-niloy-cv.pdf' },
+	{ label: 'CV', note: 'PDF', href: CV_URL },
 ];
 ---
 
@@ -91,7 +91,7 @@ const more = [
 	title="About"
 	active="about"
 	lede="The longer version: who I am, how I work, and where to find the rest."
-	description="I'm Niloy, a software engineer in Dhaka. I started with machine learning research, moved to the web, and now lead a frontend department."
+	description="I'm Niloy, a software engineer in Dhaka. I started with machine learning research, moved to the web, and am now the tech lead for a team of about 14 engineers."
 	jsonLd={[profile]}
 >
 	<div class="mt-10 grid grid-cols-[4rem_minmax(0,1fr)] items-start gap-4 motion-safe:animate-rise sm:grid-cols-[6rem_minmax(0,1fr)] sm:gap-6">

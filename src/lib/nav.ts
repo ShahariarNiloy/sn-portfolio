@@ -4,7 +4,7 @@
  */
 
 /** Which nav item is the current section. */
-export type NavSection = 'work' | 'stack' | 'blog' | 'timeline' | 'about' | 'guestbook';
+export type NavSection = 'work' | 'stack' | 'blog' | 'timeline' | 'about' | 'contact' | 'guestbook';
 
 /** The primary links, in header order. */
 export const NAV_LINKS: { key: NavSection; label: string; href: string }[] = [
@@ -12,5 +12,5 @@ export const NAV_LINKS: { key: NavSection; label: string; href: string }[] = [
 	{ key: 'blog', label: 'Blog', href: '/blog' },
 	{ key: 'timeline', label: 'Timeline', href: '/timeline' },
 	{ key: 'about', label: 'About', href: '/about' },
-	{ key: 'guestbook', label: 'Guestbook', href: '/guestbook' },
+	{ key: 'contact', label: 'Contact', href: '/contact' },
 ];

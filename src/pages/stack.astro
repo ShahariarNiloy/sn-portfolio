@@ -7,25 +7,20 @@ import StackRow from '@/components/content/StackRow.astro';
 import SectionLabel from '@/components/ui/SectionLabel.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getStack } from '@/lib/content';
+import { STACK_GROUPS } from '@/lib/stack';
 
 const stack = await getStack();
-const GROUPS = [
-	{ id: 'every-day', label: 'Every day' },
-	{ id: 'state-and-data', label: 'State & data' },
-	{ id: 'runtime-build-delivery', label: 'Runtime, build & delivery' },
-	{ id: 'learning', label: 'Learning' },
-] as const;
 ---
 
 <PageLayout
 	title="Stack"
 	active="stack"
-	lede="The tools behind the speed — what I reach for every day, what I use for data and performance, and what I'm learning next."
+	lede="What I use every day, what else I've shipped to production, and what I'm learning next."
 >
 	<div class="breakout-wide px-6 pt-14 max-sm:hidden">
 		<StackGrid items={stack} />
 	</div>
-	{GROUPS.map((g) => (
+	{STACK_GROUPS.map((g) => (
 		<section class="section-gap">
 			<SectionLabel>{g.label}</SectionLabel>
 			<dl class="m-0 border-b border-line">

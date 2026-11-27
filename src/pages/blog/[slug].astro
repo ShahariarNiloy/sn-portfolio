@@ -4,6 +4,7 @@
  * illustration, article, related link and next post. Drafts are only built in dev.
  */
 import { render } from 'astro:content';
+import { postDate } from '@/lib/post-dates';
 
 import { MDX_COMPONENTS } from '@/components/content/mdx';
 import PostLayout from '@/layouts/PostLayout.astro';
@@ -24,20 +25,20 @@ const { title, summary, topic, status, publishedOn, illustration, related } = po
 const isDraft = status === 'draft';
 const topicLabel = TOPICS.find((t) => t.id === topic)?.label ?? topic;
 const url = new URL(Astro.url.pathname, Astro.site).href;
-const jsonLd =
-	publishedOn && !isDraft
-		? [
-				buildPostingJsonLd({
-					title,
-					summary,
-					url,
-					publishedOn,
-					authorName: site.name,
-					authorUrl: Astro.site?.href ?? '/',
-					image: shareImageUrl(Astro.url.pathname, Astro.site?.origin ?? 'https://shahariarniloy.com'),
-				}),
-			]
-		: [];
+const shownDate = postDate(publishedOn);
+const jsonLd = !isDraft
+	? [
+			buildPostingJsonLd({
+				title,
+				summary,
+				url,
+				publishedOn: shownDate,
+				authorName: site.name,
+				authorUrl: Astro.site?.href ?? '/',
+				image: shareImageUrl(Astro.url.pathname, Astro.site?.origin ?? 'https://shahariarniloy.com'),
+			}),
+		]
+	: [];
 ---
 
 <PostLayout
@@ -48,7 +49,7 @@ const jsonLd =
 	crumbLabel={topicLabel}
 	illustration={illustration}
 	meta={[topicLabel, ...(isDraft ? ['Outline'] : []), `By ${site.name}`]}
-	date={publishedOn}
+	date={shownDate}
 	isDraft={isDraft}
 	related={related}
 	next={next && { href: `/blog/${next.id}`, kicker: 'Next post', title: next.data.title }}

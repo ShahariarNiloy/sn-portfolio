@@ -2,7 +2,7 @@
 	{
 		"id": "typescript",
 		"name": "TypeScript",
-		"group": "every-day",
+		"group": "core",
 		"description": "The default for everything I write.",
 		"icon": "typescript",
 		"colour": "#5B9BEA",
@@ -10,31 +10,24 @@
 		"grid": "2,2",
 		"symbol": "Ts",
 		"category": "lang",
-		"home": {
-			"group": "languages",
-			"order": 1
-		}
+		"featured": true
 	},
 	{
 		"id": "javascript",
 		"name": "JavaScript",
-		"group": "every-day",
+		"group": "core",
 		"description": "The language under it all — and what I optimise for the browser.",
 		"icon": "javascript",
 		"colour": "#E8CB3A",
 		"logoColour": "#F7DF1E",
 		"grid": "2,0",
 		"symbol": "Js",
-		"category": "lang",
-		"home": {
-			"group": "languages",
-			"order": 2
-		}
+		"category": "lang"
 	},
 	{
 		"id": "react",
 		"name": "React",
-		"group": "every-day",
+		"group": "core",
 		"description": "UI on adventure.inc and my own products.",
 		"icon": "react",
 		"colour": "#61DAFB",
@@ -42,15 +35,12 @@
 		"grid": "3,1",
 		"symbol": "Re",
 		"category": "library",
-		"home": {
-			"group": "frameworks",
-			"order": 1
-		}
+		"featured": true
 	},
 	{
 		"id": "next-js",
 		"name": "Next.js",
-		"group": "every-day",
+		"group": "core",
 		"description": "Server rendering, routing and SEO on a large multilingual app.",
 		"icon": "next-js",
 		"colour": "var(--color-fg)",
@@ -58,140 +48,12 @@
 		"grid": "5,1",
 		"symbol": "Nx",
 		"category": "framework",
-		"home": {
-			"group": "frameworks",
-			"order": 2
-		}
-	},
-	{
-		"id": "astro",
-		"name": "Astro",
-		"group": "every-day",
-		"description": "Content sites that ship almost no JavaScript, this portfolio included.",
-		"icon": "astro",
-		"colour": "#C77DF3",
-		"logoColour": "#BC52EE",
-		"grid": "2,4",
-		"symbol": "As",
-		"category": "framework",
-		"home": {
-			"group": "frameworks",
-			"order": 6
-		}
-	},
-	{
-		"id": "tailwind-css",
-		"name": "Tailwind CSS",
-		"group": "every-day",
-		"description": "Styling that stays consistent as a team grows.",
-		"icon": "tailwind",
-		"colour": "#38BDF8",
-		"logoColour": "#06B6D4",
-		"grid": "5,3",
-		"symbol": "Tw",
-		"category": "css",
-		"home": {
-			"group": "libraries",
-			"order": 1
-		}
-	},
-	{
-		"id": "react-query",
-		"name": "React Query",
-		"group": "state-and-data",
-		"description": "Server state, caching and infinite scroll.",
-		"icon": "react-query",
-		"colour": "#F472B6",
-		"logoColour": "#FF4154",
-		"grid": "0,2",
-		"symbol": "Rq",
-		"category": "data",
-		"home": {
-			"group": "libraries",
-			"order": 2
-		}
-	},
-	{
-		"id": "trpc",
-		"name": "tRPC",
-		"group": "state-and-data",
-		"icon": "trpc",
-		"colour": "#4DB2D6",
-		"logoColour": "#2596BE",
-		"home": {
-			"group": "libraries",
-			"order": 3
-		},
-		"description": "The type-safe backend-for-frontend layer on adventure.inc."
-	},
-	{
-		"id": "zustand",
-		"name": "Zustand",
-		"group": "state-and-data",
-		"description": "Small, fast client state without the boilerplate.",
-		"icon": "zustand",
-		"colour": "#D4A373",
-		"logoColour": "#D4A373",
-		"grid": "6,2",
-		"symbol": "Zu",
-		"category": "state",
-		"home": {
-			"group": "libraries",
-			"order": 4
-		}
-	},
-	{
-		"id": "postgresql",
-		"name": "PostgreSQL",
-		"group": "state-and-data",
-		"description": "Relational data for data pipelines and products.",
-		"icon": "postgresql",
-		"colour": "#7FA7DB",
-		"logoColour": "#7FA7DB",
-		"grid": "7,1",
-		"symbol": "Pg",
-		"category": "database",
-		"home": {
-			"group": "data",
-			"order": 1
-		}
-	},
-	{
-		"id": "drizzle",
-		"name": "Drizzle",
-		"group": "state-and-data",
-		"description": "Typed SQL from TypeScript.",
-		"icon": "drizzle",
-		"colour": "#C5F74F",
-		"logoColour": "#C5F74F",
-		"grid": "4,2",
-		"symbol": "Dz",
-		"category": "orm",
-		"home": {
-			"group": "data",
-			"order": 3
-		}
-	},
-	{
-		"id": "redis",
-		"name": "Redis",
-		"group": "state-and-data",
-		"description": "Caching hot data.",
-		"icon": "redis",
-		"colour": "#FF4D4D",
-		"logoColour": "#FF4438",
-		"grid": "4,4",
-		"symbol": "Rd",
-		"category": "cache",
-		"home": {
-			"group": "data",
-			"order": 2
-		}
+		"featured": true
 	},
 	{
 		"id": "node-js",
 		"name": "Node.js",
-		"group": "runtime-build-delivery",
+		"group": "core",
 		"description": "Servers, scripts and build tooling.",
 		"icon": "node-js",
 		"colour": "#6CC24A",
@@ -199,57 +61,47 @@
 		"grid": "4,0",
 		"symbol": "No",
 		"category": "runtime",
-		"home": {
-			"group": "runtime-hosting",
-			"order": 1
-		}
+		"featured": true
 	},
 	{
-		"id": "nestjs",
-		"name": "NestJS",
-		"group": "runtime-build-delivery",
-		"description": "Structured APIs on Node.js, with modules and dependency injection.",
-		"icon": "nestjs",
-		"colour": "#F0566F",
-		"logoColour": "#E0234E",
-		"grid": "6,4",
-		"symbol": "Ne",
-		"category": "framework",
-		"home": {
-			"group": "frameworks",
-			"order": 3
-		}
+		"id": "trpc",
+		"name": "tRPC",
+		"group": "core",
+		"icon": "trpc",
+		"colour": "#4DB2D6",
+		"logoColour": "#2596BE",
+		"description": "The type-safe backend-for-frontend layer on adventure.inc.",
+		"featured": true
 	},
 	{
-		"id": "express",
-		"name": "Express",
-		"group": "runtime-build-delivery",
-		"icon": "express",
-		"colour": "var(--color-fg)",
-		"logoColour": "#EDEEF0",
-		"home": {
-			"group": "frameworks",
-			"order": 4
-		},
-		"description": "A minimal web framework for Node.js."
+		"id": "react-query",
+		"name": "React Query",
+		"group": "core",
+		"description": "Server state, caching and infinite scroll.",
+		"icon": "react-query",
+		"colour": "#F472B6",
+		"logoColour": "#FF4154",
+		"grid": "0,2",
+		"symbol": "Rq",
+		"category": "data",
+		"featured": true
 	},
 	{
-		"id": "hono",
-		"name": "Hono",
-		"group": "runtime-build-delivery",
-		"icon": "hono",
-		"colour": "#FF7A2F",
-		"logoColour": "#E36002",
-		"home": {
-			"group": "frameworks",
-			"order": 5
-		},
-		"description": "A small, fast web framework for edge runtimes."
+		"id": "tailwind-css",
+		"name": "Tailwind CSS",
+		"group": "core",
+		"description": "Styling that stays consistent as a team grows.",
+		"icon": "tailwind",
+		"colour": "#38BDF8",
+		"logoColour": "#06B6D4",
+		"grid": "5,3",
+		"symbol": "Tw",
+		"category": "css"
 	},
 	{
 		"id": "go",
 		"name": "Go",
-		"group": "runtime-build-delivery",
+		"group": "production",
 		"description": "The job pipeline behind Truly Remote Work.",
 		"icon": "go",
 		"colour": "#29BEB0",
@@ -257,60 +109,117 @@
 		"grid": "3,3",
 		"symbol": "Go",
 		"category": "learning",
-		"home": {
-			"group": "languages",
-			"order": 3
-		}
+		"featured": true
+	},
+	{
+		"id": "nestjs",
+		"name": "NestJS",
+		"group": "production",
+		"description": "Structured APIs on Node.js, with modules and dependency injection.",
+		"icon": "nestjs",
+		"colour": "#F0566F",
+		"logoColour": "#E0234E",
+		"grid": "6,4",
+		"symbol": "Ne",
+		"category": "framework",
+		"featured": true
+	},
+	{
+		"id": "postgresql",
+		"name": "PostgreSQL",
+		"group": "production",
+		"description": "Relational data for data pipelines and products.",
+		"icon": "postgresql",
+		"colour": "#7FA7DB",
+		"logoColour": "#7FA7DB",
+		"grid": "7,1",
+		"symbol": "Pg",
+		"category": "database",
+		"featured": true
+	},
+	{
+		"id": "redis",
+		"name": "Redis",
+		"group": "production",
+		"description": "Caching hot data.",
+		"icon": "redis",
+		"colour": "#FF4D4D",
+		"logoColour": "#FF4438",
+		"grid": "4,4",
+		"symbol": "Rd",
+		"category": "cache",
+		"featured": true
+	},
+	{
+		"id": "drizzle",
+		"name": "Drizzle",
+		"group": "production",
+		"description": "Typed SQL from TypeScript.",
+		"icon": "drizzle",
+		"colour": "#C5F74F",
+		"logoColour": "#C5F74F",
+		"grid": "4,2",
+		"symbol": "Dz",
+		"category": "orm"
+	},
+	{
+		"id": "hono",
+		"name": "Hono",
+		"group": "production",
+		"icon": "hono",
+		"colour": "#FF7A2F",
+		"logoColour": "#E36002",
+		"description": "A small, fast web framework for edge runtimes."
+	},
+	{
+		"id": "express",
+		"name": "Express",
+		"group": "production",
+		"icon": "express",
+		"colour": "var(--color-fg)",
+		"logoColour": "#EDEEF0",
+		"description": "A minimal web framework for Node.js."
+	},
+	{
+		"id": "zustand",
+		"name": "Zustand",
+		"group": "production",
+		"description": "Small, fast client state without the boilerplate.",
+		"icon": "zustand",
+		"colour": "#D4A373",
+		"logoColour": "#D4A373",
+		"grid": "6,2",
+		"symbol": "Zu",
+		"category": "state"
+	},
+	{
+		"id": "astro",
+		"name": "Astro",
+		"group": "production",
+		"description": "Content sites that ship almost no JavaScript, this portfolio included.",
+		"icon": "astro",
+		"colour": "#C77DF3",
+		"logoColour": "#BC52EE",
+		"grid": "2,4",
+		"symbol": "As",
+		"category": "framework"
 	},
 	{
 		"id": "vite",
 		"name": "Vite",
-		"group": "runtime-build-delivery",
+		"group": "production",
 		"description": "Fast builds and dev servers.",
 		"icon": "vite",
 		"colour": "#B07CFF",
 		"logoColour": "#9135FF",
 		"grid": "1,3",
 		"symbol": "Vi",
-		"category": "build",
-		"home": {
-			"group": "tooling",
-			"order": 1
-		}
-	},
-	{
-		"id": "bundle-analyzer",
-		"name": "Bundle Analyzer",
-		"group": "runtime-build-delivery",
-		"icon": "bundle-analyzer",
-		"colour": "var(--color-fg)",
-		"logoColour": "#EDEEF0",
-		"home": {
-			"group": "tooling",
-			"order": 2
-		},
-		"description": "Shows what is inside a JavaScript bundle."
-	},
-	{
-		"id": "vercel",
-		"name": "Vercel",
-		"group": "runtime-build-delivery",
-		"description": "Where most of my sites deploy: previews on every push, served from the edge.",
-		"icon": "vercel",
-		"colour": "var(--color-fg)",
-		"logoColour": "#EDEEF0",
-		"grid": "5,5",
-		"symbol": "Vc",
-		"category": "deploy",
-		"home": {
-			"group": "runtime-hosting",
-			"order": 2
-		}
+		"category": "build"
 	},
 	{
 		"id": "cloudflare",
 		"name": "Cloudflare",
-		"group": "runtime-build-delivery",
+		"group": "production",
 		"description": "Edge hosting, DNS and caching close to every visitor.",
 		"icon": "cloudflare",
 		"colour": "#F38020",
@@ -318,15 +227,24 @@
 		"grid": "3,5",
 		"symbol": "Cf",
 		"category": "edge",
-		"home": {
-			"group": "runtime-hosting",
-			"order": 3
-		}
+		"featured": true
+	},
+	{
+		"id": "vercel",
+		"name": "Vercel",
+		"group": "production",
+		"description": "Where most of my sites deploy: previews on every push, served from the edge.",
+		"icon": "vercel",
+		"colour": "var(--color-fg)",
+		"logoColour": "#EDEEF0",
+		"grid": "5,5",
+		"symbol": "Vc",
+		"category": "deploy"
 	},
 	{
 		"id": "aws-s3",
 		"name": "AWS S3",
-		"group": "runtime-build-delivery",
+		"group": "production",
 		"description": "File and image storage.",
 		"icon": "aws-s3",
 		"colour": "#F29D38",
@@ -334,26 +252,28 @@
 		"grid": "6,0",
 		"symbol": "S3",
 		"category": "storage",
-		"home": {
-			"group": "runtime-hosting",
-			"order": 4
-		}
+		"featured": true
 	},
 	{
 		"id": "lighthouse",
 		"name": "Lighthouse",
-		"group": "runtime-build-delivery",
+		"group": "production",
 		"description": "Where every performance change starts: measure first.",
 		"icon": "lighthouse",
 		"colour": "#FF7A66",
 		"logoColour": "#F44B21",
 		"grid": "7,3",
 		"symbol": "Lh",
-		"category": "audit",
-		"home": {
-			"group": "tooling",
-			"order": 3
-		}
+		"category": "audit"
+	},
+	{
+		"id": "bundle-analyzer",
+		"name": "Bundle Analyzer",
+		"group": "production",
+		"icon": "bundle-analyzer",
+		"colour": "var(--color-fg)",
+		"logoColour": "#EDEEF0",
+		"description": "Shows what is inside a JavaScript bundle."
 	},
 	{
 		"id": "rust",

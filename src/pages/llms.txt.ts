@@ -4,6 +4,7 @@
  * essay with its one-line summary. Built from content, so it never drifts.
  */
 import type { APIRoute } from 'astro';
+import { CV_URL } from '@/lib/cv';
 
 import { getEssays, getHighlights, getProjects, getPublishedPosts, getSite } from '@/lib/content';
 import { stripInline } from '@/lib/seo';
@@ -28,7 +29,7 @@ export const GET: APIRoute = async (context) => {
 		link('Stack', '/stack', 'The tools I use, and what for.'),
 		link('Now', '/now', "What I'm focused on at the moment."),
 		link('Contact', '/contact', 'Email, LinkedIn and GitHub.'),
-		link('CV (PDF)', '/shahariar-niloy-cv.pdf', 'One-page CV.'),
+		link('CV (PDF)', CV_URL, 'One-page CV.'),
 		'',
 		'## Work',
 		'',

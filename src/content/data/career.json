@@ -6,7 +6,7 @@
 		"from": "2023-10",
 		"to": null,
 		"roles": [
-			{ "title": "Senior Software Engineer · Head of Frontend", "short": "Senior and Head of Frontend", "from": "2025-10", "to": null },
+			{ "title": "Senior Software Engineer · Head of Frontend", "short": "Senior and tech lead", "from": "2025-10", "to": null },
 			{ "title": "Software Engineer", "short": "Engineer", "from": "2024-10", "to": "2025-10" },
 			{ "title": "Junior Software Engineer", "short": "Junior", "from": "2023-10", "to": "2024-10" }
 		]

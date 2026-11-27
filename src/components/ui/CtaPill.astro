@@ -1,10 +1,12 @@
 ---
 /**
- * CtaPill — the small rounded "Let's talk ↗" link that sits at the end of a
- * sentence (Home intro, About). Opens in a new tab and says so to screen
- * readers; its tap area is padded past the pill with ::after.
+ * CtaPill — the small rounded "Let's talk" link that sits at the end of a
+ * sentence (Home intro, About). External links open in a new tab and say so to
+ * screen readers (↗); internal ones stay in the tab (→). The tap area is padded
+ * past the pill with ::after.
  */
 import { cx } from '@/lib/cx';
+import { isExternalHref } from '@/lib/format';
 
 export interface Props {
 	href: string;
@@ -14,18 +16,19 @@ export interface Props {
 }
 
 const { href, srSuffix, class: className } = Astro.props;
+const external = isExternalHref(href);
 ---
 
 <a
 	href={href}
-	target="_blank"
-	rel="noopener"
+	target={external ? '_blank' : undefined}
+	rel={external ? 'noopener' : undefined}
 	class={cx(
 		'relative inline-flex items-center gap-1.5 rounded-full border border-line2 bg-card px-2.5 py-0.5 text-sm font-medium whitespace-nowrap text-fg no-underline transition-colors duration-200 ease-out after:absolute after:-inset-x-1 after:-inset-y-2.5 hover:border-mut hover:bg-card2',
 		className,
 	)}
 >
 	<slot />
-	<span class="sr-only">{srSuffix ? `${srSuffix} (opens in a new tab)` : '(opens in a new tab)'}</span>
-	<span aria-hidden="true">↗</span>
+	{external && <span class="sr-only">{srSuffix ? `${srSuffix} (opens in a new tab)` : '(opens in a new tab)'}</span>}
+	<span aria-hidden="true">{external ? '↗' : '→'}</span>
 </a>

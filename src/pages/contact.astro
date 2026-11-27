@@ -1,7 +1,7 @@
 ---
 /**
- * /contact — how to reach me: by email or on LinkedIn, then the rest. No form, so
- * nothing is collected or stored.
+ * /contact — how to reach me: by email or on LinkedIn, then the rest, and the CV for
+ * hiring. No form, so nothing is collected or stored.
  */
 import KeyValueRows from '@/components/content/KeyValueRows.astro';
 import Button from '@/components/ui/Button.astro';
@@ -9,18 +9,21 @@ import Icon from '@/components/ui/Icon.astro';
 import Inline from '@/components/ui/Inline.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getSite } from '@/lib/content';
+import { CV_URL } from '@/lib/cv';
 
 const site = await getSite();
 const rows = [
 	{ label: 'Email', value: `[${site.email}](mailto:${site.email})` },
 	{ label: 'LinkedIn', value: `[in/${site.linkedin.split('/').at(-1)}](${site.linkedin})` },
 	{ label: 'GitHub', value: `[${site.github.split('/').at(-1)}](${site.github})` },
+	{ label: 'CV', value: `[One page, PDF](${CV_URL})` },
 	{ label: 'Based in', value: `${site.location}, Bangladesh (UTC+6)` },
 ];
 ---
 
 <PageLayout
 	title="Contact"
+	active="contact"
 	lede="Have something that should be faster? A role, a project, or a question about something I wrote: write to me, or find me on LinkedIn."
 >
 	<div slot="after-lede" class="mt-6 flex flex-wrap items-center gap-3">
@@ -38,6 +41,6 @@ const rows = [
 		<KeyValueRows rows={rows} />
 	</address>
 	<p class="mt-8 mb-0 text-mut">
-		<Inline text="Hiring? My CV is on [the timeline](/timeline). Just passing through? Leave a note in [the guestbook](/guestbook)." />
+		<Inline text="The year-by-year story is on [the timeline](/timeline). Just passing through? Leave a note in [the guestbook](/guestbook)." />
 	</p>
 </PageLayout>
