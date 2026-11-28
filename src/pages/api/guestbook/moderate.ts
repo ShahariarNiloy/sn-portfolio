@@ -36,7 +36,8 @@ export const POST: APIRoute = async ({ request, cookies, url }) => {
 	}
 
 	const hasWallChanged = before !== status && (before === 'approved' || status === 'approved');
-	const isRebuilding = !hasWallChanged || !config.deployHookUrl || (await startRebuild(config.deployHookUrl));
+	// A missing hook counts as a failed rebuild, so the admin page says the wall is stale instead of staying quiet.
+	const isRebuilding = !hasWallChanged || (config.deployHookUrl !== '' && (await startRebuild(config.deployHookUrl)));
 	return isForm
 		? seeOther(isRebuilding ? '/guestbook/admin' : '/guestbook/admin?rebuild=failed')
 		: Response.json({ ok: true, rebuild: isRebuilding ? 'ok' : 'failed' });
